@@ -2,7 +2,7 @@ var UIGrid = function(width, height) {
 
     this.width = width;
     this.height = height;
-  
+
     this.size = 24;
 
     this._dragging = false;
@@ -16,7 +16,7 @@ var UIGrid = function(width, height) {
         this._spatialStore[i] = [];
     }
     this._setSpacialStore(0,0,this.width,this.height, null)
-    
+
     this._generateGraphics();
 };
 
@@ -28,55 +28,55 @@ UIGrid.prototype._setSpacialStore = function(x,y,width,height, value) {
     if(!this.spatialConstraint) { return; }
 
     var iy, ix;
-    
+
     for(iy = y; iy < y + height; iy++) {
-        
+
         for(ix = x; ix < x + width; ix++) {
-        
+
             this._spatialStore[iy][ix] = value;
-        
+
         }
     }
-    
+
 };
 
 /**
  * create graphics objects used by the grid
  */
 UIGrid.prototype._generateGraphics = function() {
-    
+
     var container = new PIXI.DisplayObjectContainer();
-    
+
     var gfx = new PIXI.Graphics();
-    
+
     gfx.lineStyle(1, 0x888888);
-    
+
     var x, y, self = this;
-    
+
     gfx.drawRect(0,0, this.width * this.size, this.height * this.size);
-    
+
     // vertical lines
     for(y = 1; y < this.width; y++) {
         gfx.moveTo(y * this.size, 0);
-        gfx.lineTo(y * this.size, this.height * this.size); 
+        gfx.lineTo(y * this.size, this.height * this.size);
     }
-    
+
     // horizontal lines
     for(x = 1; x < this.height; x++) {
         gfx.moveTo(0, x * this.size);
-        gfx.lineTo(this.width * this.size, x * this.size); 
+        gfx.lineTo(this.width * this.size, x * this.size);
     }
-    
+
     container.addChild(gfx);
-  
+
     container.interactive = true;
-    container.hitArea = new PIXI.Rectangle(0,0, this.width * this.size, this.height * this.size);    
-    
+    container.hitArea = new PIXI.Rectangle(0,0, this.width * this.size, this.height * this.size);
+
     this.graphics = container;
 
     // highlight object
     this.highlight = new PIXI.Graphics();
-    
+
     container.addChild(this.highlight);
 };
 
@@ -85,7 +85,7 @@ UIGrid.prototype._generateGraphics = function() {
  * adjust the highlight graphics
  */
 UIGrid.prototype.resizeHighlight = function(position, item) {
-    
+
     this.highlight.clear();
     this.highlight.beginFill(0xFFFFFF, 0.3);
 
@@ -127,9 +127,9 @@ UIGrid.prototype.showHighlight = function() {
  * adjust the highlight graphics
  */
 UIGrid.prototype.clearHighlight = function() {
-    
+
     this.highlight.visible = false;
-    
+
 };
 
 /**
@@ -141,7 +141,7 @@ UIGrid.prototype.over = function(draggable) {
         draggable.position.x - this.graphics.position.x + (this.size / 2),
         draggable.position.y - this.graphics.position.y + (this.size / 2)
     );
-        
+
     var over = this.graphics.hitArea.contains(pos.x, pos.y);
 
     if(over) {
@@ -213,20 +213,20 @@ UIGrid.prototype.dragLeave = function(draggable, pos) {
  * drop a draggable item on the grid
  */
 UIGrid.prototype.drop = function(draggable) {
-    
+
     var pos = new PIXI.Point(
         draggable.position.x - this.graphics.position.x + (this.size / 2),
         draggable.position.y - this.graphics.position.y + (this.size / 2)
     );
-    
+
     var slot = this.getGridPositionAt(pos);
-    
+
     var item = draggable.gridItem;
-    
+
     if(this.canFit(item, slot)) {
-    
+
         item.grid.remove(item);
-        
+
         this.add(
             item,
             slot.x, slot.y
@@ -239,10 +239,10 @@ UIGrid.prototype.drop = function(draggable) {
         this._dragging = false;
 
         this.clearHighlight();
-        
+
         return true;
     }
-    
+
     return false;
 };
 
@@ -251,12 +251,12 @@ UIGrid.prototype.drop = function(draggable) {
  * get the grid position for a point on the graphics
  */
 UIGrid.prototype.getGridPositionAt = function(position, point) {
-    
+
     point = point || new PIXI.Point();
-    
+
     point.x = Math.floor(position.x / this.size);
     point.y = Math.floor(position.y / this.size);
-    
+
     return point;
 };
 
@@ -277,11 +277,11 @@ UIGrid.prototype.canFit = function(item, position) {
 
     if(maxX > this.width) { maxX = this.width; }
     if(maxY > this.height) { maxY = this.height; }
-    
+
     for(iy = position.y; iy < maxY; iy++) {
-        
+
         for(ix = position.x; ix < maxX; ix++) {
-            
+
             if(this._spatialStore[iy][ix] !== null && this._spatialStore[iy][ix] !== item) {
                 existing = true;
             }
@@ -301,15 +301,15 @@ UIGrid.prototype.canFit = function(item, position) {
  * add a griditem to the grid (such as when dropped)
  */
 UIGrid.prototype.add = function(item, x, y) {
-    
+
     item.position.set(x, y);
-    
+
     this.graphics.addChild(item.sprite);
 
     item.sprite.position.set(x * this.size, y * this.size);
-    
+
     item.grid = this;
-    
+
     // add to store
     this._setSpacialStore(item.position.x, item.position.y, item.width, item.height, item);
 };
@@ -319,9 +319,36 @@ UIGrid.prototype.add = function(item, x, y) {
  * remove an item from the grid
  */
 UIGrid.prototype.remove = function(item) {
-  
+
     item.grid = null;
-    
+
     // remove from store
     this._setSpacialStore(item.position.x, item.position.y, item.width, item.height, null);
+};
+
+
+
+
+UIGrid.prototype.populate = function(items) {
+
+    // todo add reset function to packer and create this in constructor
+    var packer = new Packer(this.width, this.height);
+
+    // convert to packer nodes
+    var nodes = items.map(function(item){
+        return { x : 0, y : 0, width: item.width, height: item.height, item : item };
+    });
+
+    // try to fit
+    packer.fit(nodes);
+
+    // apply the results
+    nodes.forEach(function(node){
+
+        if(node.fit) {
+            this.add(node.item, node.fit.x, node.fit.y);
+        }
+
+    }.bind(this));
+
 };

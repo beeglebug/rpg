@@ -6,7 +6,7 @@ DragDrop.init(stage);
 Debug.init(stage);
 
 // add to dom
-$('.canvas').append(renderer.view);
+//$('.canvas').append(renderer.view);
 
 var player = {
     position : new PIXI.Point(),
@@ -40,10 +40,7 @@ item2 = new UIGridItem(TextureCache['items/2x1'], 2, 1, TextureCache['items/1x1'
 item3 = new UIGridItem(TextureCache['items/2x3'], 2, 3, TextureCache['items/1x1']);
 item4 = new UIGridItem(TextureCache['items/1x2'], 1, 2, TextureCache['items/1x1']);
 
-grid1.add(item1, 0, 0);
-grid1.add(item2, 2, 0);
-grid1.add(item3, 0, 1);
-grid1.add(item4, 3, 1);
+grid1.populate([item1, item2, item3, item4]);
 
 // add to stage last so its on top
 stage.addChild(Debug.container);
@@ -57,3 +54,8 @@ function animate() {
 }
 
 requestAnimFrame( animate );
+
+
+
+
+
