@@ -118,18 +118,14 @@ UIGrid.prototype.moveHighlight = function(position) {
  * adjust the highlight graphics
  */
 UIGrid.prototype.showHighlight = function() {
-
     this.highlight.visible = true;
-
 };
 
 /**
  * adjust the highlight graphics
  */
-UIGrid.prototype.clearHighlight = function() {
-
+UIGrid.prototype.hideHighlight = function() {
     this.highlight.visible = false;
-
 };
 
 /**
@@ -189,7 +185,7 @@ UIGrid.prototype.dragMove = function(draggable, pos) {
 
     } else {
 
-        this.clearHighlight();
+        this.hideHighlight();
 
     }
 
@@ -200,7 +196,7 @@ UIGrid.prototype.dragLeave = function(draggable, pos) {
 
     this._dragging = false;
 
-    this.clearHighlight();
+    this.hideHighlight();
 
     if(!this.spatialConstraint) {
         draggable.gridItem.grow();
@@ -223,6 +219,10 @@ UIGrid.prototype.drop = function(draggable) {
 
     var item = draggable.gridItem;
 
+    this._dragging = false;
+
+    this.hideHighlight();
+
     if(this.canFit(item, slot)) {
 
         item.grid.remove(item);
@@ -231,19 +231,12 @@ UIGrid.prototype.drop = function(draggable) {
             item,
             slot.x, slot.y
         );
-
         if(!this.spatialConstraint) {
             item.shrink();
         }
 
-        this._dragging = false;
-
-        this.clearHighlight();
-
         return true;
     }
-
-    this.clearHighlight();
 
     return false;
 };
