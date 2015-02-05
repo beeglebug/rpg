@@ -1,4 +1,4 @@
-var UIGrid = function(width, height) {
+var UIGrid = function (width, height) {
 
     this.width = width;
     this.height = height;
@@ -12,10 +12,12 @@ var UIGrid = function(width, height) {
 
     // build empty spacial store
     this._spatialStore = [];
-    for(var i = 0; i < this.height; i++) {
+
+    for (var i = 0; i < this.height; i++) {
         this._spatialStore[i] = [];
     }
-    this._setSpacialStore(0,0,this.width,this.height, null)
+
+    this._setSpacialStore(0, 0, this.width, this.height, null)
 
     this._generateGraphics();
 };
@@ -23,27 +25,27 @@ var UIGrid = function(width, height) {
 /**
  * set values in the spacial store
  */
-UIGrid.prototype._setSpacialStore = function(x,y,width,height, value) {
+UIGrid.prototype._setSpacialStore = function (x, y, width, height, value) {
 
-    if(!this.spatialConstraint) { return; }
+    if (!this.spatialConstraint) {
+        return;
+    }
 
     var iy, ix;
 
-    for(iy = y; iy < y + height; iy++) {
+    for (iy = y; iy < y + height; iy++) {
 
-        for(ix = x; ix < x + width; ix++) {
+        for (ix = x; ix < x + width; ix++) {
 
             this._spatialStore[iy][ix] = value;
-
         }
     }
-
 };
 
 /**
  * create graphics objects used by the grid
  */
-UIGrid.prototype._generateGraphics = function() {
+UIGrid.prototype._generateGraphics = function () {
 
     var container = new PIXI.DisplayObjectContainer();
 
@@ -53,16 +55,16 @@ UIGrid.prototype._generateGraphics = function() {
 
     var x, y, self = this;
 
-    gfx.drawRect(0,0, this.width * this.size, this.height * this.size);
+    gfx.drawRect(0, 0, this.width * this.size, this.height * this.size);
 
     // vertical lines
-    for(y = 1; y < this.width; y++) {
+    for (y = 1; y < this.width; y++) {
         gfx.moveTo(y * this.size, 0);
         gfx.lineTo(y * this.size, this.height * this.size);
     }
 
     // horizontal lines
-    for(x = 1; x < this.height; x++) {
+    for (x = 1; x < this.height; x++) {
         gfx.moveTo(0, x * this.size);
         gfx.lineTo(this.width * this.size, x * this.size);
     }
@@ -70,7 +72,7 @@ UIGrid.prototype._generateGraphics = function() {
     container.addChild(gfx);
 
     container.interactive = true;
-    container.hitArea = new PIXI.Rectangle(0,0, this.width * this.size, this.height * this.size);
+    container.hitArea = new PIXI.Rectangle(0, 0, this.width * this.size, this.height * this.size);
 
     this.graphics = container;
 
@@ -84,7 +86,7 @@ UIGrid.prototype._generateGraphics = function() {
 /**
  * adjust the highlight graphics
  */
-UIGrid.prototype.resizeHighlight = function(position, item) {
+UIGrid.prototype.resizeHighlight = function (position, item) {
 
     this.highlight.clear();
     this.highlight.beginFill(0xFFFFFF, 0.3);
@@ -93,45 +95,43 @@ UIGrid.prototype.resizeHighlight = function(position, item) {
         height = this.size;
 
     // size matters bro
-    if(this.spatialConstraint) {
+    if (this.spatialConstraint) {
         width = item.width * this.size;
         height = item.height * this.size;
     }
 
     this.highlight.drawRect(0, 0, width, height);
-
 };
 
 /**
  * adjust the highlight graphics
  */
-UIGrid.prototype.moveHighlight = function(position) {
+UIGrid.prototype.moveHighlight = function (position) {
 
     this.highlight.position.set(
         position.x * this.size,
         position.y * this.size
     );
-
 };
 
 /**
  * adjust the highlight graphics
  */
-UIGrid.prototype.showHighlight = function() {
+UIGrid.prototype.showHighlight = function () {
     this.highlight.visible = true;
 };
 
 /**
  * adjust the highlight graphics
  */
-UIGrid.prototype.hideHighlight = function() {
+UIGrid.prototype.hideHighlight = function () {
     this.highlight.visible = false;
 };
 
 /**
  * check if a draggable item is over the grid
  */
-UIGrid.prototype.over = function(draggable) {
+UIGrid.prototype.over = function (draggable) {
 
     var pos = new PIXI.Point(
         draggable.position.x - this.graphics.position.x + (this.size / 2),
@@ -140,9 +140,9 @@ UIGrid.prototype.over = function(draggable) {
 
     var over = this.graphics.hitArea.contains(pos.x, pos.y);
 
-    if(over) {
+    if (over) {
 
-        if(this._dragging) {
+        if (this._dragging) {
             this.dragMove(draggable, pos);
         } else {
             this.dragEnter(draggable, pos);
@@ -152,18 +152,16 @@ UIGrid.prototype.over = function(draggable) {
 
     } else {
 
-        if(this._dragging) {
+        if (this._dragging) {
             this.dragLeave(draggable, pos);
         }
 
         return false;
-
     }
-
 };
 
 
-UIGrid.prototype.dragEnter = function(draggable, pos) {
+UIGrid.prototype.dragEnter = function (draggable, pos) {
 
     this._dragging = true;
 
@@ -175,11 +173,11 @@ UIGrid.prototype.dragEnter = function(draggable, pos) {
 
 };
 
-UIGrid.prototype.dragMove = function(draggable, pos) {
+UIGrid.prototype.dragMove = function (draggable, pos) {
 
     var slot = this.getGridPositionAt(pos);
 
-    if(this.canFit(draggable.gridItem, slot)) {
+    if (this.canDrop(draggable.gridItem, slot)) {
 
         this.showHighlight();
 
@@ -192,23 +190,22 @@ UIGrid.prototype.dragMove = function(draggable, pos) {
     this.moveHighlight(slot);
 };
 
-UIGrid.prototype.dragLeave = function(draggable, pos) {
+UIGrid.prototype.dragLeave = function (draggable, pos) {
 
     this._dragging = false;
 
     this.hideHighlight();
 
-    if(!this.spatialConstraint) {
+    if (!this.spatialConstraint) {
         draggable.gridItem.grow();
     }
 };
 
 
-
 /**
  * drop a draggable item on the grid
  */
-UIGrid.prototype.drop = function(draggable) {
+UIGrid.prototype.drop = function (draggable) {
 
     var pos = new PIXI.Point(
         draggable.position.x - this.graphics.position.x + (this.size / 2),
@@ -223,7 +220,7 @@ UIGrid.prototype.drop = function(draggable) {
 
     this.hideHighlight();
 
-    if(this.canFit(item, slot)) {
+    if (this.canDrop(item, slot)) {
 
         item.grid.remove(item);
 
@@ -231,7 +228,7 @@ UIGrid.prototype.drop = function(draggable) {
             item,
             slot.x, slot.y
         );
-        if(!this.spatialConstraint) {
+        if (!this.spatialConstraint) {
             item.shrink();
         }
 
@@ -245,7 +242,7 @@ UIGrid.prototype.drop = function(draggable) {
 /**
  * get the grid position for a point on the graphics
  */
-UIGrid.prototype.getGridPositionAt = function(position, point) {
+UIGrid.prototype.getGridPositionAt = function (position, point) {
 
     point = point || new PIXI.Point();
 
@@ -259,32 +256,36 @@ UIGrid.prototype.getGridPositionAt = function(position, point) {
 /**
  * check if a griditem can fit at a particular point
  */
-UIGrid.prototype.canFit = function(item, position) {
+UIGrid.prototype.canDrop = function (item, position) {
 
     var iy, ix, existing = false,
         maxX = position.x + item.width,
         maxY = position.y + item.height;
 
     var outside = (
-        maxX > this.width ||
-        maxY > this.height
+    maxX > this.width ||
+    maxY > this.height
     );
 
-    if(maxX > this.width) { maxX = this.width; }
-    if(maxY > this.height) { maxY = this.height; }
+    if (maxX > this.width) {
+        maxX = this.width;
+    }
+    if (maxY > this.height) {
+        maxY = this.height;
+    }
 
-    for(iy = position.y; iy < maxY; iy++) {
+    for (iy = position.y; iy < maxY; iy++) {
 
-        for(ix = position.x; ix < maxX; ix++) {
+        for (ix = position.x; ix < maxX; ix++) {
 
-            if(this._spatialStore[iy][ix] !== null && this._spatialStore[iy][ix] !== item) {
+            if (this._spatialStore[iy][ix] !== null && this._spatialStore[iy][ix] !== item) {
                 existing = true;
             }
         }
     }
 
     // return depends on constraints
-    if(!this.spatialConstraint) {
+    if (!this.spatialConstraint) {
         return !existing;
     } else {
         return !outside && !existing;
@@ -295,7 +296,7 @@ UIGrid.prototype.canFit = function(item, position) {
 /**
  * add a griditem to the grid (such as when dropped)
  */
-UIGrid.prototype.add = function(item, x, y) {
+UIGrid.prototype.add = function (item, x, y) {
 
     item.position.set(x, y);
 
@@ -313,7 +314,7 @@ UIGrid.prototype.add = function(item, x, y) {
 /**
  * remove an item from the grid
  */
-UIGrid.prototype.remove = function(item) {
+UIGrid.prototype.remove = function (item) {
 
     item.grid = null;
 
@@ -322,25 +323,23 @@ UIGrid.prototype.remove = function(item) {
 };
 
 
-
-
-UIGrid.prototype.populate = function(items) {
+UIGrid.prototype.populate = function (items) {
 
     // todo add reset function to packer and create this in constructor
     var packer = new Packer(this.width, this.height);
 
     // convert to packer nodes
-    var nodes = items.map(function(item){
-        return { x : 0, y : 0, width: item.width, height: item.height, item : item };
+    var nodes = items.map(function (item) {
+        return {x: 0, y: 0, width: item.width, height: item.height, item: item};
     });
 
     // try to fit
     packer.fit(nodes);
 
     // apply the results
-    nodes.forEach(function(node){
+    nodes.forEach(function (node) {
 
-        if(node.fit) {
+        if (node.fit) {
             this.add(node.item, node.fit.x, node.fit.y);
         }
 
