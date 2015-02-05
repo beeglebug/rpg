@@ -243,6 +243,8 @@ UIGrid.prototype.drop = function(draggable) {
         return true;
     }
 
+    this.clearHighlight();
+
     return false;
 };
 

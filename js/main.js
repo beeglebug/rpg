@@ -6,7 +6,7 @@ DragDrop.init(stage);
 Debug.init(stage);
 
 // add to dom
-//$('.canvas').append(renderer.view);
+$('.canvas').append(renderer.view);
 
 var player = {
     position : new PIXI.Point(),
@@ -35,12 +35,17 @@ grid3.graphics.position.set(500,500);
 stage.addChild(grid3.graphics);
 
 
-item1 = new UIGridItem(TextureCache['items/1x1'], 1, 1, TextureCache['items/1x1']);
-item2 = new UIGridItem(TextureCache['items/2x1'], 2, 1, TextureCache['items/1x1']);
-item3 = new UIGridItem(TextureCache['items/2x3'], 2, 3, TextureCache['items/1x1']);
-item4 = new UIGridItem(TextureCache['items/1x2'], 1, 2, TextureCache['items/1x1']);
+var items = [
+new UIGridItem(TextureCache['items/1x1'], 1, 1, TextureCache['items/1x1']),
+new UIGridItem(TextureCache['items/2x1'], 2, 1, TextureCache['items/1x1']),
+new UIGridItem(TextureCache['items/2x3'], 2, 3, TextureCache['items/1x1']),
+new UIGridItem(TextureCache['items/1x2'], 1, 2, TextureCache['items/1x1']),
+new UIGridItem(TextureCache['items/2x1'], 2, 1, TextureCache['items/1x1']),
+new UIGridItem(TextureCache['items/2x1'], 2, 1, TextureCache['items/1x1']),
+new UIGridItem(TextureCache['items/1x1'], 1, 1, TextureCache['items/1x1'])
+    ];
 
-grid1.populate([item1, item2, item3, item4]);
+grid1.populate(items);
 
 // add to stage last so its on top
 stage.addChild(Debug.container);
