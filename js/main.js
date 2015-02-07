@@ -22,9 +22,8 @@ Preloader.loadTextures([
     'items/2x3'
 ]);
 
-
 // add to dom
-$('.canvas').append(renderer.view);
+document.getElementById('canvas-wrapper').appendChild(renderer.view);
 
 var player = {
     position : new PIXI.Point(),
