@@ -21,7 +21,7 @@ stage.addChild(map.container);
 map.container.position.set(10, 10);
 
 // uigrid testing
-var grid1 = new UIGrid(4,4);
+var grid1 = new UIGrid(6,6);
 grid1.graphics.position.set(500,100);
 stage.addChild(grid1.graphics);
 
@@ -36,14 +36,13 @@ stage.addChild(grid3.graphics);
 
 
 var items = [
-new UIGridItem(TextureCache['items/1x1'], 1, 1, TextureCache['items/1x1']),
-new UIGridItem(TextureCache['items/2x1'], 2, 1, TextureCache['items/1x1']),
-new UIGridItem(TextureCache['items/2x3'], 2, 3, TextureCache['items/1x1']),
-new UIGridItem(TextureCache['items/1x2'], 1, 2, TextureCache['items/1x1']),
-new UIGridItem(TextureCache['items/2x1'], 2, 1, TextureCache['items/1x1']),
-new UIGridItem(TextureCache['items/2x1'], 2, 1, TextureCache['items/1x1']),
-new UIGridItem(TextureCache['items/1x1'], 1, 1, TextureCache['items/1x1'])
-    ];
+    new UIGridItem(TextureCache['items/1x4'], 1, 4, TextureCache['items/1x1']),
+    new UIGridItem(TextureCache['items/2x3'], 2, 3, TextureCache['items/1x1']),
+    new UIGridItem(TextureCache['items/2x2'], 2, 2, TextureCache['items/1x1']),
+    new UIGridItem(TextureCache['items/2x1'], 2, 1, TextureCache['items/1x1']),
+    new UIGridItem(TextureCache['items/2x1'], 2, 1, TextureCache['items/1x1']),
+    new UIGridItem(TextureCache['items/1x2'], 1, 2, TextureCache['items/1x1']),
+];
 
 grid1.populate(items);
 

@@ -11,7 +11,9 @@ var preload = [
     'items/1x1',
     'items/2x1',
     'items/1x2',
-    'items/2x3',
+    'items/1x4',
+    'items/2x2',
+    'items/2x3'
 ];
 
 var TextureCache = {};
