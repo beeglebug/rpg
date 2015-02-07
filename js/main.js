@@ -5,6 +5,24 @@ var renderer = PIXI.autoDetectRenderer(800, 600);
 DragDrop.init(stage);
 Debug.init(stage);
 
+Preloader.loadTextures([
+    'map-edge',
+    'house-n',
+    'house-s',
+    'road-h',
+    'road-v',
+    'road-t-s',
+    'garden-n',
+    'garden-s',
+    'items/1x1',
+    'items/2x1',
+    'items/1x2',
+    'items/1x4',
+    'items/2x2',
+    'items/2x3'
+]);
+
+
 // add to dom
 $('.canvas').append(renderer.view);
 
@@ -36,12 +54,12 @@ stage.addChild(grid3.graphics);
 
 
 var items = [
-    new UIGridItem(TextureCache['items/1x4'], 1, 4, TextureCache['items/1x1']),
-    new UIGridItem(TextureCache['items/2x3'], 2, 3, TextureCache['items/1x1']),
-    new UIGridItem(TextureCache['items/2x2'], 2, 2, TextureCache['items/1x1']),
-    new UIGridItem(TextureCache['items/2x1'], 2, 1, TextureCache['items/1x1']),
-    new UIGridItem(TextureCache['items/2x1'], 2, 1, TextureCache['items/1x1']),
-    new UIGridItem(TextureCache['items/1x2'], 1, 2, TextureCache['items/1x1']),
+    new UIGridItem(Cache.textures['items/1x4'], 1, 4, Cache.textures['items/1x1']),
+    new UIGridItem(Cache.textures['items/2x3'], 2, 3, Cache.textures['items/1x1']),
+    new UIGridItem(Cache.textures['items/2x2'], 2, 2, Cache.textures['items/1x1']),
+    new UIGridItem(Cache.textures['items/2x1'], 2, 1, Cache.textures['items/1x1']),
+    new UIGridItem(Cache.textures['items/2x1'], 2, 1, Cache.textures['items/1x1']),
+    new UIGridItem(Cache.textures['items/1x2'], 1, 2, Cache.textures['items/1x1']),
 ];
 
 grid1.populate(items);

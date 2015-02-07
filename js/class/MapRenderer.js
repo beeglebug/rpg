@@ -124,13 +124,13 @@ MapRenderer.prototype._generateTiles = function(data) {
             //temp
             switch(tile.type) {
                 case MapTile.TYPE_NULL : 
-                    texture = TextureCache['map-edge'];
+                    texture = Cache.textures['map-edge'];
                     break;
                 case MapTile.TYPE_HOUSE : 
-                    texture = TextureCache['house-s'];
+                    texture = Cache.textures['house-s'];
                     break;
                 case MapTile.TYPE_ROAD : 
-                    texture = TextureCache['road-h'];
+                    texture = Cache.textures['road-h'];
                     break;
             }
             
