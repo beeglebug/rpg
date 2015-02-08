@@ -124,19 +124,19 @@ MapRenderer.prototype._generateTiles = function(data) {
             //temp
             switch(tile.type) {
                 case MapTile.TYPE_NULL : 
-                    texture = Cache.textures['map-edge'];
+                    texture = 'img/map-edge.png';
                     break;
                 case MapTile.TYPE_HOUSE : 
-                    texture = Cache.textures['house-s'];
+                    texture = 'img/house-s.png';
                     break;
                 case MapTile.TYPE_ROAD : 
-                    texture = Cache.textures['road-h'];
+                    texture = 'img/road-h.png';
                     break;
             }
             
 
             // create the tile sprite
-            sprite = new PIXI.Sprite(texture);
+            sprite = new PIXI.Sprite.fromImage(texture);
             sprite.position.set(x * this.tileset.tileWidth, y * this.tileset.tileHeight);
 
             // link the sprite and the tile for easy access later

@@ -1,7 +1,7 @@
 var UIGridItem = function(texture, width, height, texture1x) {
 
-    this.texture = texture;
-    this.texture1x = texture1x;
+    this.texture = PIXI.Texture.fromImage(texture);
+    this.texture1x = PIXI.Texture.fromImage(texture1x);
 
     this.sprite = new PIXI.Sprite(this.texture);
 
