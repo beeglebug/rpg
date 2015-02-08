@@ -33,7 +33,7 @@ var player = {
 // map
 var mapData = generateMap(15, 15);
 var tileset = new TileSet(32, 32);
-var map = new MapRenderer(256, 256, mapData, tileset);
+var map = new MapRenderer(288, 288, mapData, tileset);
 stage.addChild(map.container);
 map.container.position.set(10, 10);
 
@@ -78,5 +78,19 @@ requestAnimFrame( animate );
 
 
 
+var assetsToLoader = ['font/munro.fnt'];
+
+var loader = new PIXI.AssetLoader(assetsToLoader);
 
 
+loader.onComplete = function()
+{
+    var bitmapFontText = new PIXI.BitmapText("test bitmap text", {font: "11px Munro", align: "right"});
+    bitmapFontText.position.x = 620 - bitmapFontText.width - 20;
+
+    bitmapFontText.position.y = 20;
+    stage.addChild(bitmapFontText);
+
+}
+
+loader.load();
