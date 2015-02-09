@@ -33,9 +33,9 @@ var MapRenderer = function(width, height, data, tileset) {
     this.container.addChild(mask);
     this.container.addChild(this.background);
     this.container.addChild(this.tiles);
-    this.container.addChild(this.grid);
-    this.container.addChild(this.currentTileHighlight);
-    this.container.addChild(this.hoverTileHighlight);
+    //this.container.addChild(this.grid);
+    //this.container.addChild(this.currentTileHighlight);
+    //this.container.addChild(this.hoverTileHighlight);
     
     var self = this;
     
@@ -67,7 +67,7 @@ var MapRenderer = function(width, height, data, tileset) {
 
 MapRenderer.prototype._drawGraphics = function() {
     
-    // draw the grid
+    //draw the grid
     this.grid.lineStyle(1, 0xFFFFFF);
     this.grid.alpha = 0.3;
 
@@ -96,7 +96,7 @@ MapRenderer.prototype._drawGraphics = function() {
     this.hoverTileHighlight.drawRect(0, 0, this.tileset.tileWidth - 1, this.tileset.tileHeight - 1);
 
     // background
-    this.background.beginFill(0x666666);
+    this.background.beginFill(0xCDCDCD);
     this.background.drawRect(0, 0, this.width, this.height);
     this.background.endFill();
 };
@@ -114,23 +114,19 @@ MapRenderer.prototype._generateTiles = function(data) {
 
             tile = data[y][x];
 
-            // record the map position
-            tile.position = new PIXI.Point(x,y);
-
-            // line of sight data
-            //tile.seen = false;
-            //tile.canSee = false;
+            // record the local (map) position
+            tile.position.set(x,y);
 
             //temp
             switch(tile.type) {
                 case MapTile.TYPE_NULL : 
                     texture = 'img/map-edge.png';
                     break;
-                case MapTile.TYPE_HOUSE : 
-                    texture = 'img/house-s.png';
+                case MapTile.TYPE_GRASS :
+                    texture = 'img/grass.png';
                     break;
                 case MapTile.TYPE_ROAD : 
-                    texture = 'img/road-h.png';
+                    texture = 'img/road.png';
                     break;
             }
             

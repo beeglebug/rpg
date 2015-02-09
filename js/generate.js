@@ -13,7 +13,7 @@ function generateMap(width, height) {
 
             if(x > 0 && x < width - 1 && y > 0 && y < height - 1) {
 
-                type = MapTile.TYPE_HOUSE;
+                type = MapTile.TYPE_GRASS;
 
                 if(y === Math.floor(height/2)) {
 

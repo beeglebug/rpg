@@ -36,16 +36,18 @@ Loader.load(function() {
 document.getElementById('canvas-wrapper').appendChild(renderer.view);
 
 var player = {
-    position : new PIXI.Point(),
+    position : new PIXI.Point(4,4),
     onTile : null
 };
 
 // map
-var mapData = generateMap(15, 15);
+var mapData = generateMap(7, 7);
 var tileset = new TileSet(32, 32);
 var map = new MapRenderer(288, 288, mapData, tileset);
 stage.addChild(map.container);
 map.container.position.set(10, 10);
+
+
 
 // uigrid testing
 var grid1 = new UIGrid(6,6);
