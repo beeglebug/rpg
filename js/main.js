@@ -6,6 +6,7 @@ DragDrop.init(stage);
 Debug.init(stage);
 
 Loader.add([
+    'img/target.png',
     'img/map-edge.png',
     'img/house-n.png',
     'img/house-s.png',
@@ -41,11 +42,11 @@ var player = {
 };
 
 // map
-var mapData = generateMap(7, 7);
+var map = generateMap(19,19);
 var tileset = new TileSet(32, 32);
-var map = new MapRenderer(288, 288, mapData, tileset);
-stage.addChild(map.container);
-map.container.position.set(10, 10);
+var mapRenderer = new MapRenderer(400, 300, map, tileset);
+stage.addChild(mapRenderer.container);
+mapRenderer.container.position.set(10, 10);
 
 
 
@@ -74,6 +75,8 @@ var items = [
 ];
 
 grid1.populate(items);
+
+mapRenderer.centerTile(map[3][3]);
 
 // add to stage last so its on top
 stage.addChild(Debug.container);

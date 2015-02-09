@@ -34,8 +34,8 @@ var MapRenderer = function(width, height, data, tileset) {
     this.container.addChild(this.background);
     this.container.addChild(this.tiles);
     //this.container.addChild(this.grid);
-    //this.container.addChild(this.currentTileHighlight);
-    //this.container.addChild(this.hoverTileHighlight);
+    this.container.addChild(this.currentTileHighlight);
+    this.container.addChild(this.hoverTileHighlight);
     
     var self = this;
     
@@ -83,20 +83,21 @@ MapRenderer.prototype._drawGraphics = function() {
         this.grid.lineTo(this.width, y * this.tileset.tileHeight);
     }
 
-    // current tile highlight
-    this.currentTileHighlight.lineStyle(1, 0xFFFFFF);
-    this.currentTileHighlight.drawRect(0, 0, this.tileset.tileWidth - 1, this.tileset.tileHeight - 1);
-    this.currentTileHighlight.position.set(
-        this.center.x,
-        this.center.y
-    );
+    //// current tile highlight
+    //this.currentTileHighlight.lineStyle(1, 0xFFFFFF);
+    //this.currentTileHighlight.drawRect(0, 0, this.tileset.tileWidth - 1, this.tileset.tileHeight - 1);
+    //
+    //this.currentTileHighlight.position.set(
+    //    this.center.x - (this.tileset.tileWidth / 2),
+    //    this.center.y - (this.tileset.tileHeight / 2)
+    //);
 
     // hover highlight
     this.hoverTileHighlight.lineStyle(1, 0x00FF00);
     this.hoverTileHighlight.drawRect(0, 0, this.tileset.tileWidth - 1, this.tileset.tileHeight - 1);
 
     // background
-    this.background.beginFill(0xCDCDCD);
+    this.background.beginFill(0x222222);
     this.background.drawRect(0, 0, this.width, this.height);
     this.background.endFill();
 };
@@ -176,18 +177,14 @@ MapRenderer.prototype.selectTileAt = function(x, y) {
 
 MapRenderer.prototype.selectTile = function(tile) {
 
-    // TODO calculate center
-    var x = this.center.x - tile.sprite.position.x,
-        y = this.center.y - tile.sprite.position.y;
-
     // TODO player.setTile
     player.position.set(tile.position.x, tile.position.y);
     player.onTile = tile;
     
     //$currentName.text(sprite.tile.name);
     
-    this.tiles.position.set(x,y);
-    
+    this.centerTile(tile);
+
     //resetLighting();
     
 //    calcVisibility(
@@ -202,8 +199,8 @@ MapRenderer.prototype.selectTile = function(tile) {
 
 MapRenderer.prototype.hover = function(e) {
 
-    var x = Math.floor(e.x / this.tileset.tileWidth) * this.tileset.tileWidth,
-        y = Math.floor(e.y / this.tileset.tileHeight) * this.tileset.tileHeight;
+    var x = (Math.floor((e.x - this.tiles.position.x) / this.tileset.tileWidth ) * this.tileset.tileWidth) + this.tiles.position.x,
+        y = (Math.floor((e.y - this.tiles.position.y) / this.tileset.tileHeight ) * this.tileset.tileHeight) + this.tiles.position.y;
 
     this.hoverTileHighlight.position.set(x,y);
 };
@@ -237,4 +234,17 @@ MapRenderer.prototype.mouseover = function(e) {
 
 MapRenderer.prototype.mouseout = function(e) {
     this.hoverTileHighlight.visible = false;
+};
+
+MapRenderer.prototype.centerTile = function(tile) {
+
+    var tileCenter = new PIXI.Point(
+        (tile.position.x * this.tileset.tileWidth) + (this.tileset.tileWidth / 2),
+        (tile.position.y * this.tileset.tileHeight) + (this.tileset.tileHeight / 2)
+    );
+
+    this.tiles.position.set(
+        this.center.x - tileCenter.x,
+        this.center.y - tileCenter.y
+    );
 };
