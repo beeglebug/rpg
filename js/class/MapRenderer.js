@@ -33,7 +33,7 @@ var MapRenderer = function(width, height, data, tileset) {
     this.container.addChild(mask);
     this.container.addChild(this.background);
     this.container.addChild(this.tiles);
-    //this.container.addChild(this.grid);
+    this.container.addChild(this.grid);
     this.container.addChild(this.currentTileHighlight);
     this.container.addChild(this.hoverTileHighlight);
     
@@ -69,19 +69,28 @@ MapRenderer.prototype._drawGraphics = function() {
     
     //draw the grid
     this.grid.lineStyle(1, 0xFFFFFF);
-    this.grid.alpha = 0.3;
+    this.grid.alpha = 0.1;
+
+    var width = Math.ceil(this.width / this.tileset.tileWidth) + 1;
+    var height = Math.ceil(this.height / this.tileset.tileHeight) + 1;
 
     // vertical lines
-    for(var x = 1; x < this.width; x++) {
+    for(var x = 0; x < width; x++) {
         this.grid.moveTo(x * this.tileset.tileWidth, 0);
-        this.grid.lineTo(x * this.tileset.tileWidth, this.height);
+        this.grid.lineTo(x * this.tileset.tileWidth, height * this.tileset.tileHeight);
     }
 
     // horizontal lines
-    for(var y = 1; y < this.height; y++) {
+    for(var y = 0; y < height; y++) {
         this.grid.moveTo(0, y * this.tileset.tileHeight);
-        this.grid.lineTo(this.width, y * this.tileset.tileHeight);
+        this.grid.lineTo(width * this.tileset.tileWidth, y * this.tileset.tileHeight);
     }
+
+    // TODO calculate
+    this.grid.position.set(
+        -8,
+        -26
+    );
 
     //// current tile highlight
     //this.currentTileHighlight.lineStyle(1, 0xFFFFFF);
@@ -247,4 +256,6 @@ MapRenderer.prototype.centerTile = function(tile) {
         this.center.x - tileCenter.x,
         this.center.y - tileCenter.y
     );
+
+
 };
