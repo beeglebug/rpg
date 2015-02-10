@@ -1,4 +1,4 @@
-var Map = function(data) {
+var MapData = function(data) {
     
     this.data = data;
     this.width = this.data[0].length;
@@ -6,7 +6,15 @@ var Map = function(data) {
     
 };
 
-Map.prototype.getTiles = function(x, y, range) {
+MapData.prototype.getTileAt = function(x, y) {
+
+    // check bounds
+    if(x < 0 || y < 0 || x >= this.width || y >= this.height) { return null; }
+
+    return this.data[y][x];
+};
+
+MapData.prototype.getTiles = function(x, y, range) {
     
     var minX = x - range;
     var minY = y - range;
@@ -30,7 +38,7 @@ Map.prototype.getTiles = function(x, y, range) {
 };
 
 
-Map.prototype.calculateVisibility = function(x, y, range) {
+MapData.prototype.calculateVisibility = function(x, y, range) {
 
     // get all the tiles in the range
     var tiles = this.getTiles(x, y, range);
@@ -72,7 +80,7 @@ Map.prototype.calculateVisibility = function(x, y, range) {
 
 
 // reset everything back to can't see before running los
-Map.prototype.resetLighting = function() {
+MapData.prototype.resetLighting = function() {
     
     var x, y, tile; 
     
