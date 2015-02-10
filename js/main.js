@@ -76,7 +76,7 @@ var items = [
 
 grid1.populate(items);
 
-mapRenderer.centerTile(map[3][3]);
+mapRenderer.centerTile(map.getTileAt(3,3));
 
 // add to stage last so its on top
 stage.addChild(Debug.container);

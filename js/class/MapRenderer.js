@@ -1,8 +1,8 @@
-var MapRenderer = function(width, height, data, tileset) {
+var MapRenderer = function(width, height, map, tileset) {
 
     this.width = width;
     this.height = height;
-    this.data = data;
+    this.map = map;
     this.tileset = tileset;
 
     this.center = new PIXI.Point(
@@ -24,9 +24,8 @@ var MapRenderer = function(width, height, data, tileset) {
     // create the structure
     this.background = new PIXI.Graphics();
     
-    this.tiles = this._generateTiles(this.data);
+    this.tiles = this._generateTiles();
     
-    this.currentTileHighlight = new PIXI.Graphics();
     this.hoverTileHighlight = new PIXI.Graphics();
     this.grid = new PIXI.Graphics();
     
@@ -34,7 +33,6 @@ var MapRenderer = function(width, height, data, tileset) {
     this.container.addChild(this.background);
     this.container.addChild(this.tiles);
     this.container.addChild(this.grid);
-    this.container.addChild(this.currentTileHighlight);
     this.container.addChild(this.hoverTileHighlight);
     
     var self = this;
@@ -92,15 +90,6 @@ MapRenderer.prototype._drawGraphics = function() {
         -26
     );
 
-    //// current tile highlight
-    //this.currentTileHighlight.lineStyle(1, 0xFFFFFF);
-    //this.currentTileHighlight.drawRect(0, 0, this.tileset.tileWidth - 1, this.tileset.tileHeight - 1);
-    //
-    //this.currentTileHighlight.position.set(
-    //    this.center.x - (this.tileset.tileWidth / 2),
-    //    this.center.y - (this.tileset.tileHeight / 2)
-    //);
-
     // hover highlight
     this.hoverTileHighlight.lineStyle(1, 0x00FF00);
     this.hoverTileHighlight.drawRect(0, 0, this.tileset.tileWidth - 1, this.tileset.tileHeight - 1);
@@ -112,17 +101,17 @@ MapRenderer.prototype._drawGraphics = function() {
 };
 
 
-MapRenderer.prototype._generateTiles = function(data) {
+MapRenderer.prototype._generateTiles = function() {
 
     var y, x, tile, texture, sprite, src;
     var self = this;
     var container = new PIXI.DisplayObjectContainer();
     
-    for(y = 0; y < data.length; y++) {
+    for(y = 0; y < this.map.data.length; y++) {
 
-        for(x = 0; x < data[y].length; x++) { 
+        for(x = 0; x < this.map.data[y].length; x++) {
 
-            tile = data[y][x];
+            tile = this.map.data[y][x];
 
             // record the local (map) position
             tile.position.set(x,y);
@@ -172,17 +161,15 @@ MapRenderer.prototype.click = function(position) {
     var x = Math.floor((position.x - this.tiles.position.x) / this.tileset.tileWidth);
     var y = Math.floor((position.y - this.tiles.position.y) / this.tileset.tileHeight);
 
-    return this.selectTileAt(x,y);
+    var tile = this.map.getTileAt(x,y);
+
+    if(!tile) { return; }
+
+    return this.selectTile(tile);
 
 };
 
-MapRenderer.prototype.selectTileAt = function(x, y) {
 
-    // check bounds
-    if(x < 0 || y < 0 || x >= this.data[0].length || y >= this.data.length) { return ;}
-
-    return this.selectTile(this.data[y][x]);
-};
 
 MapRenderer.prototype.selectTile = function(tile) {
 
@@ -206,10 +193,25 @@ MapRenderer.prototype.selectTile = function(tile) {
 
 };
 
-MapRenderer.prototype.hover = function(e) {
+MapRenderer.prototype.hover = function(position) {
 
-    var x = (Math.floor((e.x - this.tiles.position.x) / this.tileset.tileWidth ) * this.tileset.tileWidth) + this.tiles.position.x,
-        y = (Math.floor((e.y - this.tiles.position.y) / this.tileset.tileHeight ) * this.tileset.tileHeight) + this.tiles.position.y;
+    var mapX = Math.floor((position.x - this.tiles.position.x) / this.tileset.tileWidth );
+    var mapY = Math.floor((position.y - this.tiles.position.y) / this.tileset.tileHeight );
+
+    var tile = this.map.getTileAt(mapX,mapY);
+
+    var show = true;
+
+    if(!tile) { show = false; }
+
+    if(show) {
+        this.hoverTileHighlight.visible = true;
+    } else {
+        this.hoverTileHighlight.visible = false;
+    }
+
+    var x = (mapX * this.tileset.tileWidth) + this.tiles.position.x,
+        y = (mapY * this.tileset.tileHeight) + this.tiles.position.y;
 
     this.hoverTileHighlight.position.set(x,y);
 };
@@ -219,11 +221,11 @@ MapRenderer.prototype.renderLighting = function() {
        
     var x, y, tile;
     
-    for(y = 0; y < this.data.length; y++) {
+    for(y = 0; y < this.map.length; y++) {
         
-        for(x = 0; x < this.data[y].length; x++) {
+        for(x = 0; x < this.map[y].length; x++) {
             
-            tile = this.data[y][x];
+            tile = this.map[y][x];
             
             if (tile.canSee) {
                 tile.lightingSprite.alpha = 0;

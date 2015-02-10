@@ -29,6 +29,6 @@ function generateMap(width, height) {
         }
     }
     
-    return data;
+    return new MapData(data);
     
 }
