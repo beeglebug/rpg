@@ -14,7 +14,7 @@ MapData.prototype.getTileAt = function(x, y) {
     return this.data[y][x];
 };
 
-MapData.prototype.getTiles = function(x, y, range) {
+MapData.prototype.getTilesInRange = function(x, y, range) {
     
     var minX = x - range;
     var minY = y - range;
@@ -26,11 +26,19 @@ MapData.prototype.getTiles = function(x, y, range) {
     if(maxX >= this.width) { maxX = this.width - 1; }
     if(maxY >= this.height) { maxY = this.height - 1; }
     
-    var ix, iy, tiles = [];
+    var ix, iy, dx, dy, tile, tiles = [];
     
     for(iy = minY; y <= maxY; iy++) {
         for(ix = minX; x <= maxX; ix++) {
-            tiles.push(this.data[iy][ix]);
+
+            tile = this.data[iy][ix];
+
+            dx = Math.abs(x - tile.position.x);
+            dy = Math.abs(y - tile.position.y);
+
+            if((dx * dx) + (dy * dy) < range) {
+                tiles.push(tile);
+            }
         }
     }
     
@@ -41,7 +49,7 @@ MapData.prototype.getTiles = function(x, y, range) {
 MapData.prototype.calculateVisibility = function(x, y, range) {
 
     // get all the tiles in the range
-    var tiles = this.getTiles(x, y, range);
+    var tiles = this.getTilesInRange(x, y, range);
  
     // we can always see the tile we are on
     this.data[y][x].canSee = true;
