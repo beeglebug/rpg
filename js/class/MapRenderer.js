@@ -173,11 +173,7 @@ MapRenderer.prototype.click = function(position) {
 
 MapRenderer.prototype.selectTile = function(tile) {
 
-    // TODO player.setTile
-    player.position.set(tile.position.x, tile.position.y);
-    player.onTile = tile;
-    
-    //$currentName.text(sprite.tile.name);
+    player.moveToTile(tile);
     
     this.centerTile(tile);
 

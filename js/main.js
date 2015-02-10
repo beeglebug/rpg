@@ -36,10 +36,7 @@ Loader.load(function() {
 // add to dom
 document.getElementById('canvas-wrapper').appendChild(renderer.view);
 
-var player = {
-    position : new PIXI.Point(4,4),
-    onTile : null
-};
+var player = new Mob(4,4);
 
 // map
 var map = generateMap(19,19);
