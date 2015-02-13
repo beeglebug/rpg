@@ -1,0 +1,48 @@
+{"frames": {
+
+"grass.png":
+{
+	"frame": {"x":24,"y":2,"w":34,"h":17},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":34,"h":17},
+	"sourceSize": {"w":34,"h":17},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"house.png":
+{
+	"frame": {"x":2,"y":2,"w":20,"h":19},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":7,"y":10,"w":20,"h":19},
+	"sourceSize": {"w":34,"h":34},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"road.png":
+{
+	"frame": {"x":60,"y":2,"w":34,"h":17},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":34,"h":17},
+	"sourceSize": {"w":34,"h":17},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"trees.png":
+{
+	"frame": {"x":96,"y":2,"w":14,"h":15},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":10,"y":9,"w":14,"h":15},
+	"sourceSize": {"w":34,"h":34},
+	"pivot": {"x":0.5,"y":0.5}
+}},
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "tiles.png",
+	"format": "RGBA8888",
+	"size": {"w":112,"h":23},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:7efbd6b8ce4008b7868e5ac1ee64d532:07bef89bf4b3018976f2c3f4075c0b3a:accbe1e7e294ded8391337fc1c446319$"
+}
+}

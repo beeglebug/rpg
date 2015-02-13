@@ -81,10 +81,22 @@ stage.addChild(Debug.container);
 /**
  * main loop
  */
-function animate() {
+/**
+ * main loop
+ */
+function animate(time) {
+
     requestAnimFrame( animate );
+
+    TWEEN.update(time);
+
+    isoUpdate();
+
     renderer.render(stage);
 }
+
+requestAnimFrame( animate );
+
 
 requestAnimFrame( animate );
 
