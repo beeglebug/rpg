@@ -42,7 +42,7 @@ var player = new Mob(4,4);
 var map = generateMap(19,19);
 var tileset = new TileSet(32, 32);
 var mapRenderer = new MapRenderer(400, 300, map, tileset);
-stage.addChild(mapRenderer.container);
+//stage.addChild(mapRenderer.container);
 mapRenderer.container.position.set(10, 10);
 
 
