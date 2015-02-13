@@ -36,7 +36,7 @@ Loader.load(function() {
 // add to dom
 document.getElementById('canvas-wrapper').appendChild(renderer.view);
 
-var player = new Mob(4,4);
+var player = new Mob();
 
 // map
 var map = generateMap(19,19);
@@ -73,7 +73,9 @@ var items = [
 
 grid1.populate(items);
 
-mapRenderer.centerTile(map.getTileAt(3,3));
+player.moveToTile(map.getTileAt(3,3));
+
+
 
 // add to stage last so its on top
 stage.addChild(Debug.container);
@@ -90,3 +92,10 @@ requestAnimFrame( animate );
 
 
 
+function distanceBetween(a, b) {
+
+    var dx = Math.abs(a.x - b.x),
+        dy = Math.abs(a.y - b.y);
+
+    return (dx * dx) + (dy * dy);
+}

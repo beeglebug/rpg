@@ -43,6 +43,7 @@ Line.prototype.calculate = function(x0, y0, x1, y1) {
 		}
 	}
 
+    return this.points;
 };
 
 

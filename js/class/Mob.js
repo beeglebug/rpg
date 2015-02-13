@@ -12,4 +12,18 @@ Mob.prototype.moveToTile = function(tile) {
 
     this.position.set(tile.position.x, tile.position.y);
     this.tile = tile;
+
+    mapRenderer.centerOnTile(tile);
+
+    map.resetVisibility();
+
+    map.calculateVisibility(
+        tile.position.x,
+        tile.position.y,
+        4
+    );
+
+    mapRenderer.renderLighting();
+
+
 };
