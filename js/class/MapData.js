@@ -25,18 +25,18 @@ MapData.prototype.getTilesInRange = function(x, y, range) {
     if(minY < 0) { minY = 0; }
     if(maxX >= this.width) { maxX = this.width - 1; }
     if(maxY >= this.height) { maxY = this.height - 1; }
-    
+
     var ix, iy, dx, dy, tile, tiles = [];
     
-    for(iy = minY; y <= maxY; iy++) {
-        for(ix = minX; x <= maxX; ix++) {
+    for(iy = minY; iy <= maxY; iy++) {
+        for(ix = minX; ix <= maxX; ix++) {
 
             tile = this.data[iy][ix];
 
             dx = Math.abs(x - tile.position.x);
             dy = Math.abs(y - tile.position.y);
 
-            if((dx * dx) + (dy * dy) < range) {
+            if((dx * dx) + (dy * dy) <= (range * range)) {
                 tiles.push(tile);
             }
         }
@@ -52,32 +52,29 @@ MapData.prototype.calculateVisibility = function(x, y, range) {
     var tiles = this.getTilesInRange(x, y, range);
  
     // we can always see the tile we are on
-    this.data[y][x].canSee = true;
-    this.data[y][x].seen = true;
+    this.data[y][x].visibility = MapTile.VISIBILITY_VISIBLE;
     
     var line = new Line();
     
     tiles.forEach(function(tile) {
 
         // do a bresenhams line
-        var line = line.calculate(x, y, tile.position.x, tile.position.y);
+        var points = line.calculate(x, y, tile.position.x, tile.position.y);
 
-        var i, ix, iy, lineTile;
+        var i, ix, iy, tileAtPoint;
 
         // skip the first part of the line (its the tile we are on)
-        for(i = 1; i < line.length; i++) {
+        for(i = 1; i < points.length; i++) {
             
-            ix = line[i][0];
-            iy = line[i][1];
+            ix = points[i][0];
+            iy = points[i][1];
             
-            lineTile = this.data[iy][ix];
-        
-            // TODO use flags
-            lineTile.canSee = true;
-            lineTile.seen = true;
+            tileAtPoint = this.data[iy][ix];
+
+            tileAtPoint.visibility = MapTile.VISIBILITY_VISIBLE;
 
             // stop when we hit something solid
-            if(lineTile.visibility == 1) {
+            if(tileAtPoint.solid == true) {
                 break;
             }
         }
@@ -87,8 +84,7 @@ MapData.prototype.calculateVisibility = function(x, y, range) {
 };
 
 
-// reset everything back to can't see before running los
-MapData.prototype.resetLighting = function() {
+MapData.prototype.resetVisibility = function() {
     
     var x, y, tile; 
     
@@ -97,7 +93,12 @@ MapData.prototype.resetLighting = function() {
         for(x = 0; x < this.width; x++) { 
             
             tile = this.data[y][x];
-            tile.canSee = false;
+
+            if(tile.visibility == MapTile.VISIBILITY_VISIBLE) {
+                tile.visibility = MapTile.VISIBILITY_PREVIOUS;
+            }
+
+
         }
     }
 };

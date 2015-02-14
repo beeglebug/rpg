@@ -1,8 +1,9 @@
 var stage = new PIXI.Stage(0xDDDDDD, true);
 var renderer = PIXI.autoDetectRenderer(800, 600);
+var ui = new PIXI.DisplayObjectContainer();
 
 // init singletons
-DragDrop.init(stage);
+DragDrop.init(ui);
 Debug.init(stage);
 
 Loader.add([
@@ -36,7 +37,7 @@ Loader.load(function() {
 // add to dom
 document.getElementById('canvas-wrapper').appendChild(renderer.view);
 
-var player = new Mob(4,4);
+var player = new Mob();
 
 // map
 var map = generateMap(19,19);
@@ -45,22 +46,18 @@ var mapRenderer = new MapRenderer(400, 300, map, tileset);
 //stage.addChild(mapRenderer.container);
 mapRenderer.container.position.set(10, 10);
 
+ui.scale.set(2,2);
+stage.addChild(ui);
+
 
 
 // uigrid testing
 var grid1 = new UIGrid(6,6);
-grid1.graphics.position.set(500,100);
-stage.addChild(grid1.graphics);
+grid1.graphics.position.set(220,10);
+ui.addChild(grid1.graphics);
 
-var grid2 = new UIGrid(3,6);
-grid2.graphics.position.set(500,300);
-stage.addChild(grid2.graphics);
 
-var grid3 = new UIGrid(1,1);
-grid3.spatialConstraint = false;
-grid3.graphics.position.set(500,500);
-stage.addChild(grid3.graphics);
-
+DragDrop.registerDropTarget(grid1);
 
 var items = [
     new UIGridItem('img/items/1x4.png', 1, 4, 'img/items/1x1.png'),
@@ -73,7 +70,9 @@ var items = [
 
 grid1.populate(items);
 
-mapRenderer.centerTile(map.getTileAt(3,3));
+player.moveToTile(map.getTileAt(3,3));
+
+
 
 // add to stage last so its on top
 stage.addChild(Debug.container);
@@ -102,3 +101,10 @@ requestAnimFrame( animate );
 
 
 
+function distanceBetween(a, b) {
+
+    var dx = Math.abs(a.x - b.x),
+        dy = Math.abs(a.y - b.y);
+
+    return (dx * dx) + (dy * dy);
+}

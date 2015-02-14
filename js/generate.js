@@ -28,7 +28,10 @@ function generateMap(width, height) {
             data[y][x] = tile;
         }
     }
-    
+
+    data[3][4].type = MapTile.TYPE_BUILDING;
+    data[3][4].solid = true;
+
     return new MapData(data);
     
 }

@@ -1,10 +1,13 @@
 var DragDrop = {};
 
-DragDrop.init = function(stage) {
+DragDrop.init = function(root) {
   
     this.dragging = null;
     this.offset = new PIXI.Point();
-    
+
+    this.root = root;
+    this.root.interactive = true;
+
     this.origin = {
         position : new PIXI.Point(),
         parent : null
@@ -12,10 +15,11 @@ DragDrop.init = function(stage) {
     
     this.over = null;
 
+    this.dropTargets = [];
+
     var self = this;
-    
-    stage.mousemove = function(e) { self.move(this, e); };
-    stage.mouseup = function(e) { self.stop(this, e); };
+    this.root.mousemove = function(e) { self.move(this, e); };
+    this.root.mouseup = function(e) { self.stop(this, e); };
     
 };
 
@@ -33,7 +37,7 @@ DragDrop.start = function(sprite, e) {
     this.dragging = sprite;
     
     var pos = e.getLocalPosition(sprite);
-    
+
     this.offset.set(pos.x, pos.y);
     
     this.origin.position.set(
@@ -49,24 +53,22 @@ DragDrop.move = function(sprite, e) {
     var pos = e.getLocalPosition(sprite);
     
     if(this.dragging) {
-        
+
         this.dragging.position.set(
             pos.x - this.offset.x,
             pos.y - this.offset.y
         );
         
         // move out to global scope
-        stage.addChild(this.dragging);
+        this.root.addChild(this.dragging);
         
         this.over = null;
         
         // go through all possible drop targets
-        //TODO register drop targets
-        var targets = [grid1, grid2, grid3];
-        
-        for(var i = 0; i < targets.length; i++) {
-            if(targets[i].over(this.dragging)) {
-                this.over = targets[i];
+
+        for(var i = 0; i < this.dropTargets.length; i++) {
+            if(this.dropTargets[i].over(this.dragging)) {
+                this.over = this.dropTargets[i];
                 break;
             }
         }
@@ -104,4 +106,8 @@ DragDrop.stop = function(sprite, e) {
         this.dragging = null;
     }
 
+};
+
+DragDrop.registerDropTarget = function(target) {
+  this.dropTargets.push(target);
 };
