@@ -1,8 +1,17 @@
 var iso = new PIXI.DisplayObjectContainer();
 stage.addChild(iso);
 
+var floor = new PIXI.DisplayObjectContainer();
+var grid = new PIXI.DisplayObjectContainer();
+var gridUI = new PIXI.DisplayObjectContainer();
+var objects = new PIXI.DisplayObjectContainer();
+
+iso.addChildren([floor, grid, gridUI, objects]);
+iso.scale.set(2);
+
+grid.alpha = 0.05;
+
 PIXI.scaleModes.DEFAULT = PIXI.scaleModes.NEAREST;
-iso.scale.set(2,2);
 
 var loader = new PIXI.AssetLoader([
     './img/tiles.json',
@@ -11,15 +20,14 @@ var loader = new PIXI.AssetLoader([
 
 loader.addEventListener('onComplete', draw);
 loader.load();
-ISO_TILE_WIDTH = 32;
 
+ISO_TILE_WIDTH = 32;
 ISO_TILE_HEIGHT = 16;
 ISO_TILE_WIDTH_HALF = ISO_TILE_WIDTH / 2;
 ISO_TILE_HEIGHT_HALF = ISO_TILE_HEIGHT / 2;
+
 var offset = new PIXI.Point(200, 100);
-
 iso.position.add(offset);
-
 iso.interactive = true;
 
 iso.mousemove = function (e) {
@@ -28,12 +36,11 @@ iso.mousemove = function (e) {
 
     screenToMap(pos);
 
-    //highlight.move(pos);
+    highlight.move(pos);
 };
 
-// 1
 
-var x, y, type, map = [];
+var x, y, map = [];
 
 map = [
     [0,0,0,0,0],
@@ -60,13 +67,9 @@ var highlight = {
 
         this.position.set(pos.x, pos.y);
 
-        var tile = getTileAt(pos);
+        this.sprite.position.set(pos.x, pos.y);
 
-        if(tile) {
-            tile.addChildAt(this.base, 1);
-            tile.addChildAt(this.back, 2);
-            tile.addChild(this.front);
-        }
+        mapToScreen(this.sprite.position);
     }
 
 };
@@ -87,30 +90,18 @@ var marker, tween, man;
 
 function draw() {
 
-    highlight.base = PIXI.Sprite.fromFrame('highlight_base.png');
-    highlight.back = PIXI.Sprite.fromFrame('highlight_back.png');
-    highlight.front = PIXI.Sprite.fromFrame('highlight_front.png');
-
-    setPixelAnchor(highlight.base, 17, 17);
-    setPixelAnchor(highlight.back, 17, 17);
-    setPixelAnchor(highlight.front, 17, 17);
-
-    //iso.addChild(highlight.base);
-    //iso.addChild(highlight.back);
-    //iso.addChild(highlight.front);
-
-    marker = PIXI.Sprite.fromFrame('marker.png');
-    setPixelAnchor(marker, 7, 0);
-    marker.position.y = -20;
+    highlight.sprite = PIXI.Sprite.fromFrame('highlight.png');
+    setPixelAnchor(highlight.sprite, 17, 17);
+    gridUI.addChild(highlight.sprite);
 
     man = PIXI.Sprite.fromFrame('man.png');
-    man.mapPosition = new PIXI.Point();
-    man.mapPosition.z = 1;
+    man.mapPosition = new PIXI.Point(2,2);
+    man.mapPosition.z = 2;
     man.name = 'man';
-    setPixelAnchor(man, 2, 1);
-    iso.addChild(man);
+    setPixelAnchor(man, 3, 0);
+    objects.addChild(man);
 
-    tween = new TWEEN.Tween(marker.position).to({ y : -16 }, 500).repeat(Infinity).yoyo(true).start();
+    //tween = new TWEEN.Tween(marker.position).to({ y : -16 }, 500).repeat(Infinity).yoyo(true).start();
 
     var x, y, sprite, tile;
 
@@ -128,7 +119,7 @@ function draw() {
                 setPixelAnchor(tile, 17, 0);
             }
 
-            iso.addChild(tile);
+            floor.addChild(tile);
             tile.position.set(x, y);
             tile.mapPosition = new PIXI.Point(x,y);
             tile.mapPosition.z = 0;
@@ -139,27 +130,44 @@ function draw() {
         }
     }
 
-    x = 0; y = 1;
-    sprite = PIXI.Sprite.fromFrame('house.png');
-    sprite.name = 'house';
-    setPixelAnchor(sprite, 17, 17);
-    iso.addChild(sprite);
-    sprite.position.set(x, y);
-    sprite.mapPosition = new PIXI.Point(x,y);
-    sprite.mapPosition.z = 1;
-    mapToScreen(sprite.position);
+    for (y = 0; y < map.length; y++) {
 
-    x = 1; y = 1;
-    sprite = PIXI.Sprite.fromFrame('trees.png');
-    sprite.name = 'trees';
-    setPixelAnchor(sprite, 17, 17);
-    iso.addChild(sprite);
-    sprite.position.set(x, y);
-    sprite.mapPosition = new PIXI.Point(x,y);
-    sprite.mapPosition.z = 1;
-    mapToScreen(sprite.position);
+        for (x = 0; x < map[0].length; x++) {
 
-    tween = new TWEEN.Tween(man.mapPosition).to({ x : 4, y : 4 }, 5000).start();
+            tile = PIXI.Sprite.fromFrame('grid.png');
+            setPixelAnchor(tile,17,0);
+            tile.position.set(x, y);
+            mapToScreen(tile.position);
+            grid.addChild(tile);
+        }
+    }
+
+    var h1 = makeHouse(0,1);
+    var h2 = makeHouse(1,1);
+    var h3 = makeHouse(1,0);
+    var h4 = makeHouse(4,3);
+    var t1 = makeTrees(2,1);
+    var t2 = makeTrees(3,4);
+
+
+    map[0][0].tint = 0x000000;
+    map[1][1].tint = 0xCCCCCC;
+
+    map[0][1].tint = 0xCCCCCC;
+    map[0][2].tint = 0xCCCCCC;
+    map[0][3].tint = 0xCCCCCC;
+    map[0][4].tint = 0xCCCCCC;
+
+    map[1][0].tint = 0xCCCCCC;
+    map[2][0].tint = 0xCCCCCC;
+    map[3][0].tint = 0xCCCCCC;
+    map[4][0].tint = 0xCCCCCC;
+
+    h1.tint = 0xCCCCCC;
+    h2.tint = 0xCCCCCC;
+    h3.tint = 0xCCCCCC;
+
+    //tween = new TWEEN.Tween(man.mapPosition).to({ x : 4, y : 4 }, 5000).start();
 
     //map[4][4].addChild(marker);
     requestAnimFrame( animate );
@@ -172,7 +180,7 @@ function isoUpdate() {
         mapToScreen(man.position);
     }
 
-    sortIso(iso);
+    sortIso(objects);
 }
 
 function mapToScreen(map) {
@@ -217,3 +225,31 @@ function sortIso(displayObject) {
         return zA - zB;
     });
 }
+
+
+function makeHouse(x, y) {
+
+    var sprite = PIXI.Sprite.fromFrame('house.png');
+    sprite.name = 'house';
+    setPixelAnchor(sprite, 17, 15);
+    objects.addChild(sprite);
+    sprite.position.set(x, y);
+    sprite.mapPosition = new PIXI.Point(x,y);
+    sprite.mapPosition.z = 1;
+    mapToScreen(sprite.position);
+    return sprite;
+}
+
+function makeTrees(x,y) {
+
+    var sprite = PIXI.Sprite.fromFrame('trees.png');
+    sprite.name = 'trees';
+    setPixelAnchor(sprite, 17, 14);
+    objects.addChild(sprite);
+    sprite.position.set(x, y);
+    sprite.mapPosition = new PIXI.Point(x,y);
+    sprite.mapPosition.z = 1;
+    mapToScreen(sprite.position);
+    return sprite;
+}
+
