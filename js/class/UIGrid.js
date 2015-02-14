@@ -3,7 +3,7 @@ var UIGrid = function (width, height) {
     this.width = width;
     this.height = height;
 
-    this.size = 24;
+    this.size = 12;
 
     this._dragging = false;
 
