@@ -26,9 +26,13 @@ ISO_TILE_HEIGHT = 16;
 ISO_TILE_WIDTH_HALF = ISO_TILE_WIDTH / 2;
 ISO_TILE_HEIGHT_HALF = ISO_TILE_HEIGHT / 2;
 
+var player = new MapEntity();
+
 var offset = new PIXI.Point(200, 100);
 iso.position.add(offset);
 iso.interactive = true;
+
+var hoverTile = null;
 
 iso.mousemove = function (e) {
 
@@ -36,23 +40,47 @@ iso.mousemove = function (e) {
 
     screenToMap(pos);
 
-    highlight.move(pos);
+    hoverTile = map.getTileAt(pos.x, pos.y);
+
+    if (hoverTile) {
+        highlight.move(pos);
+        highlight.show();
+    } else {
+        highlight.hide();
+    }
 };
 
+iso.click = function (e) {
+
+    if (hoverTile) {
+        tileClicked(hoverTile);
+    }
+
+};
+
+function tileClicked(tile) {
+
+    // move player
+    player.setPosition(tile.position.x, tile.position.y);
+}
 
 var x, y, map = [];
 
-map = [
-    [0,0,0,0,0],
-    [0,0,0,0,0],
-    [2,2,2,2,2],
-    [0,0,0,0,0],
-    [0,0,0,0,0],
+var data = [
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0],
+    [2, 2, 2, 2, 2],
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0],
 ];
+
+var map = new MapData(data);
 
 var highlight = {
 
     position: new PIXI.Point(),
+
+    sprite: new PIXI.Sprite(),
 
     move: function (pos) {
 
@@ -70,115 +98,88 @@ var highlight = {
         this.sprite.position.set(pos.x, pos.y);
 
         mapToScreen(this.sprite.position);
-    }
+    },
 
+    show: function () {
+        this.sprite.visible = true;
+    },
+
+    hide: function () {
+        this.sprite.visible = false;
+    }
 };
 
-function getTileAt(pos) {
-
-    if(
-        pos.y < 0 || pos.y >= map.length ||
-        pos.x < 0 || pos.x >= map[pos.y].length
-    ) {
-        return null;
-    }
-
-    return map[pos.y][pos.x];
-}
-
-var marker, tween, man;
 
 function draw() {
 
     highlight.sprite = PIXI.Sprite.fromFrame('highlight.png');
-    setPixelAnchor(highlight.sprite, 17, 17);
+    highlight.sprite.setAnchor(16, 0);
+    highlight.sprite.animationSpeed = 0.05;
     gridUI.addChild(highlight.sprite);
+    highlight.hide();
 
-    man = PIXI.Sprite.fromFrame('man.png');
-    man.mapPosition = new PIXI.Point(2,2);
-    man.mapPosition.z = 2;
-    man.name = 'man';
-    setPixelAnchor(man, 3, 0);
-    objects.addChild(man);
-
-    //tween = new TWEEN.Tween(marker.position).to({ y : -16 }, 500).repeat(Infinity).yoyo(true).start();
+    player.sprite = PIXI.Sprite.fromFrame('man.png');
+    player.sprite.setAnchor(3, 0);
+    player.sprite.zIndex = 1;
+    objects.addChild(player.sprite);
 
     var x, y, sprite, tile;
 
-    for (y = 0; y < map.length; y++) {
+    // build floor layer
+    for (y = 0; y < map.data.length; y++) {
 
-        for (x = 0; x < map[0].length; x++) {
+        for (x = 0; x < map.data[0].length; x++) {
 
-            if (map[y][x] == 2) {
-                tile = PIXI.Sprite.fromFrame('road.png');
-                tile.name = 'road';
-                setPixelAnchor(tile, 17, 0);
+            tile = map.getTileAt(x, y);
+
+            if (tile.type == 2) {
+                tile.sprite = PIXI.Sprite.fromFrame('road.png');
             } else {
-                tile = PIXI.Sprite.fromFrame('grass.png');
-                tile.name = 'grass';
-                setPixelAnchor(tile, 17, 0);
+                tile.sprite = PIXI.Sprite.fromFrame('grass.png');
             }
 
-            floor.addChild(tile);
             tile.position.set(x, y);
-            tile.mapPosition = new PIXI.Point(x,y);
-            tile.mapPosition.z = 0;
-            mapToScreen(tile.position);
-
-            tile.type = map[y][x];
-            map[y][x] = tile;
+            tile.sprite.position.set(x, y);
+            tile.sprite.setAnchor(17, 0);
+            mapToScreen(tile.sprite.position);
+            floor.addChild(tile.sprite);
         }
     }
 
-    for (y = 0; y < map.length; y++) {
+    var gridTile;
 
-        for (x = 0; x < map[0].length; x++) {
-
-            tile = PIXI.Sprite.fromFrame('grid.png');
-            setPixelAnchor(tile,17,0);
-            tile.position.set(x, y);
-            mapToScreen(tile.position);
-            grid.addChild(tile);
+    // make a grid
+    for (y = 0; y < map.data.length; y++) {
+        for (x = 0; x < map.data[0].length; x++) {
+            gridTile = PIXI.Sprite.fromFrame('grid.png');
+            gridTile.position.set(x, y);
+            gridTile.setAnchor(17, 0);
+            mapToScreen(gridTile.position);
+            grid.addChild(gridTile);
         }
     }
 
-    var h1 = makeHouse(0,1);
-    var h2 = makeHouse(1,1);
-    var h3 = makeHouse(1,0);
-    var h4 = makeHouse(4,3);
-    var t1 = makeTrees(2,1);
-    var t2 = makeTrees(3,4);
+    var h1 = makeHouse(0, 1);
+    objects.addChild(h1.sprite);
+    var h2 = makeHouse(1, 1);
+    objects.addChild(h2.sprite);
+    var h3 = makeHouse(1, 0);
+    objects.addChild(h3.sprite);
+    var h4 = makeHouse(4, 3);
+    objects.addChild(h4.sprite);
+    var t1 = makeTrees(2, 1);
+    objects.addChild(t1.sprite);
+    var t2 = makeTrees(3, 4);
+    objects.addChild(t2.sprite);
 
+    map.getTileAt(1,1).solid = true;
+    map.getTileAt(0,1).solid = true;
+    map.getTileAt(1,0).solid = true;
 
-    map[0][0].tint = 0x000000;
-    map[1][1].tint = 0xCCCCCC;
-
-    map[0][1].tint = 0xCCCCCC;
-    map[0][2].tint = 0xCCCCCC;
-    map[0][3].tint = 0xCCCCCC;
-    map[0][4].tint = 0xCCCCCC;
-
-    map[1][0].tint = 0xCCCCCC;
-    map[2][0].tint = 0xCCCCCC;
-    map[3][0].tint = 0xCCCCCC;
-    map[4][0].tint = 0xCCCCCC;
-
-    h1.tint = 0xCCCCCC;
-    h2.tint = 0xCCCCCC;
-    h3.tint = 0xCCCCCC;
-
-    //tween = new TWEEN.Tween(man.mapPosition).to({ x : 4, y : 4 }, 5000).start();
-
-    //map[4][4].addChild(marker);
-    requestAnimFrame( animate );
+    player.setPosition(2, 2);
 }
 
 function isoUpdate() {
-
-    if(man) {
-        man.position.set(man.mapPosition.x, man.mapPosition.y);
-        mapToScreen(man.position);
-    }
 
     sortIso(objects);
 }
@@ -203,24 +204,15 @@ function screenToMap(screen) {
     return screen;
 }
 
-function setPixelAnchor(sprite, x, y) {
-
-    sprite.anchor.set(
-        x / sprite.width,
-        y / sprite.height
-    );
-
-    return sprite;
-}
 
 function sortIso(displayObject) {
 
     var zA, zB;
 
-    displayObject.children.sort(function(a, b) {
+    displayObject.children.sort(function (a, b) {
 
-        zA = a.mapPosition.x + a.mapPosition.y + ( a.mapPosition.z / 10 );
-        zB = b.mapPosition.x + b.mapPosition.y + ( b.mapPosition.z / 10 );
+        zA = a.position.x + a.position.y + (a.zIndex / 10);
+        zB = b.position.x + b.position.y + (b.zIndex / 10);
 
         return zA - zB;
     });
@@ -229,27 +221,57 @@ function sortIso(displayObject) {
 
 function makeHouse(x, y) {
 
-    var sprite = PIXI.Sprite.fromFrame('house.png');
-    sprite.name = 'house';
-    setPixelAnchor(sprite, 17, 15);
-    objects.addChild(sprite);
-    sprite.position.set(x, y);
-    sprite.mapPosition = new PIXI.Point(x,y);
-    sprite.mapPosition.z = 1;
-    mapToScreen(sprite.position);
-    return sprite;
+    var entity = new MapEntity(x, y);
+    entity.sprite = PIXI.Sprite.fromFrame('house.png');
+    entity.sprite.setAnchor(17, 15);
+    entity.sprite.position.set(x, y);
+    entity.sprite.zIndex = 0;
+    mapToScreen(entity.sprite.position);
+    var tile = map.getTileAt(x, y);
+    tile.entities.push(entity);
+    return entity;
 }
 
-function makeTrees(x,y) {
+function makeTrees(x, y) {
 
-    var sprite = PIXI.Sprite.fromFrame('trees.png');
-    sprite.name = 'trees';
-    setPixelAnchor(sprite, 17, 14);
-    objects.addChild(sprite);
-    sprite.position.set(x, y);
-    sprite.mapPosition = new PIXI.Point(x,y);
-    sprite.mapPosition.z = 1;
-    mapToScreen(sprite.position);
-    return sprite;
+    var entity = new MapEntity(x, y);
+    entity.sprite = PIXI.Sprite.fromFrame('trees.png');
+    entity.sprite.setAnchor(17, 14);
+    entity.sprite.position.set(x, y);
+    entity.sprite.zIndex = 0;
+    mapToScreen(entity.sprite.position);
+    var tile = map.getTileAt(x, y);
+    tile.entities.push(entity);
+    return entity;
 }
 
+function renderLighting() {
+
+    var x, y, tile;
+
+    for (y = 0; y < map.data.length; y++) {
+        for (x = 0; x < map.data[0].length; x++) {
+            tile = map.data[y][x];
+            setLighting(tile.sprite, tile.visibility);
+            tile.entities.forEach(function (entity) {
+                setLighting(entity.sprite, tile.visibility);
+            });
+        }
+    }
+}
+
+function setLighting(sprite, visibility) {
+
+    switch (visibility) {
+        case 0:
+            sprite.tint = 0x000000;
+            break;
+        case 1:
+            sprite.tint = 0x999999;
+            break;
+        case 2:
+            sprite.tint = 0xFFFFFF;
+            break;
+    }
+
+}

@@ -20,3 +20,14 @@ PIXI.DisplayObjectContainer.prototype.addChildren = function(children)
         this.addChild(children[i]);
     }
 };
+
+
+PIXI.Sprite.prototype.setAnchor = function(x, y) {
+
+    this.anchor.set(
+        x / this.width,
+        y / this.height
+    );
+
+    return this;
+};

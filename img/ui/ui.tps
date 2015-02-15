@@ -188,11 +188,11 @@
         </struct>
         <key>fileList</key>
         <array>
-            <filename>highlight_back.png</filename>
-            <filename>highlight_base.png</filename>
-            <filename>highlight_front.png</filename>
-            <filename>marker.png</filename>
             <filename>man.png</filename>
+            <filename>ants-1.png</filename>
+            <filename>ants-2.png</filename>
+            <filename>grid.png</filename>
+            <filename>highlight.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
