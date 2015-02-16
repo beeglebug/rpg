@@ -14,20 +14,6 @@ var UIGrid = function (width, height) {
 
     this._dragging = false;
 
-    // TODO remove this flag for now
-    // should the grid care about the size of items?
-    this.spatialConstraint = true;
-
-    // todo this becomes an inventory object
-    // build empty spacial store
-    this._spatialStore = [];
-
-    for (var i = 0; i < this.height; i++) {
-        this._spatialStore[i] = [];
-    }
-
-    this._setSpacialStore(0, 0, this.width, this.height, null)
-
     this._generateGraphics();
 };
 
@@ -59,7 +45,6 @@ UIGrid.prototype._generateGraphics = function () {
     }
 
     container.addChild(gfx);
-
     container.interactive = true;
     container.hitArea = new PIXI.Rectangle(0, 0, this.width * this.size, this.height * this.size);
 
@@ -67,6 +52,7 @@ UIGrid.prototype._generateGraphics = function () {
 
     // highlight object
     this.highlight = new PIXI.Graphics();
+    this.highlight.alpha = 0.3;
 
     container.addChild(this.highlight);
 };
@@ -78,16 +64,10 @@ UIGrid.prototype._generateGraphics = function () {
 UIGrid.prototype.resizeHighlight = function (position, item) {
 
     this.highlight.clear();
-    this.highlight.beginFill(0xFFFFFF, 0.3);
+    this.highlight.beginFill(0xFFFFFF);
 
-    var width = this.size,
-        height = this.size;
-
-    // size matters bro
-    if (this.spatialConstraint) {
-        width = item.width * this.size;
+    var width = item.width * this.size,
         height = item.height * this.size;
-    }
 
     this.highlight.drawRect(0, 0, width, height);
 };
@@ -240,129 +220,4 @@ UIGrid.prototype.getGridPositionAt = function (position, point) {
     point.y = Math.floor(position.y / this.size);
 
     return point;
-};
-
-
-
-
-
-/**
- * TODO move all this stuff to Inventory object
- */
-
-
-/**
- * check if a griditem can fit at a particular point
- * TODO rename canAcceptItemAtPosition
- */
-UIGrid.prototype.canDrop = function (item, position) {
-
-    var iy, ix, existing = false,
-        maxX = position.x + item.width,
-        maxY = position.y + item.height;
-
-    var outside = (
-    maxX > this.width ||
-    maxY > this.height
-    );
-
-    if (maxX > this.width) {
-        maxX = this.width;
-    }
-    if (maxY > this.height) {
-        maxY = this.height;
-    }
-
-    for (iy = position.y; iy < maxY; iy++) {
-
-        for (ix = position.x; ix < maxX; ix++) {
-
-            if (this._spatialStore[iy][ix] !== null && this._spatialStore[iy][ix] !== item) {
-                existing = true;
-            }
-        }
-    }
-
-    // return depends on constraints
-    if (!this.spatialConstraint) {
-        return !existing;
-    } else {
-        return !outside && !existing;
-    }
-};
-
-
-/**
- * add a griditem to the grid (such as when dropped)
- */
-UIGrid.prototype.add = function (item, x, y) {
-
-    item.position.set(x, y);
-
-    this.graphics.addChild(item.sprite);
-
-    item.sprite.position.set(x * this.size, y * this.size);
-
-    item.grid = this;
-
-    // add to store
-    this._setSpacialStore(item.position.x, item.position.y, item.width, item.height, item);
-};
-
-
-/**
- * remove an item from the grid
- */
-UIGrid.prototype.remove = function (item) {
-
-    item.grid = null;
-
-    // remove from store
-    this._setSpacialStore(item.position.x, item.position.y, item.width, item.height, null);
-};
-
-
-UIGrid.prototype.populate = function (items) {
-
-    // todo add reset function to packer and create this in constructor
-    var packer = new Packer(this.width, this.height);
-
-    // convert to packer nodes
-    var nodes = items.map(function (item) {
-        return {x: 0, y: 0, width: item.width, height: item.height, item: item};
-    });
-
-    // try to fit
-    packer.fit(nodes);
-
-    // apply the results
-    nodes.forEach(function (node) {
-
-        if (node.fit) {
-            this.add(node.item, node.fit.x, node.fit.y);
-        }
-
-    }.bind(this));
-
-};
-
-
-/**
- * set values in the spacial store
- */
-UIGrid.prototype._setSpacialStore = function (x, y, width, height, value) {
-
-    if (!this.spatialConstraint) {
-        return;
-    }
-
-    var iy, ix;
-
-    for (iy = y; iy < y + height; iy++) {
-
-        for (ix = x; ix < x + width; ix++) {
-
-            this._spatialStore[iy][ix] = value;
-        }
-    }
 };

@@ -54,7 +54,7 @@ iso.click = function (e) {
 
     if (hoverTile) {
         // move player
-        player.setPosition(tile.position.x, tile.position.y);
+        player.setPosition(hoverTile.position.x, hoverTile.position.y);
     }
 
 };
