@@ -1,3 +1,10 @@
+/**
+ * all the ui stuff for displaying and manipulating an inventory
+ * @param width
+ * @param height
+ * @constructor
+ */
+
 var UIGrid = function (width, height) {
 
     this.width = width;
