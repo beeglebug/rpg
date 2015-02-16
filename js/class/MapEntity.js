@@ -13,6 +13,7 @@ MapEntity.prototype.setPosition = function(x, y) {
         mapToScreen(this.sprite.position);
     }
 
+    // todo only do this for the player
     map.resetVisibility();
     map.calculateVisibility(x, y, 2);
     renderLighting();

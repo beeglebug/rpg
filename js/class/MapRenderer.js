@@ -1,3 +1,4 @@
+// todo remove, not needed any more?
 var MapRenderer = function (width, height, map, tileset) {
 
     this.width = width;

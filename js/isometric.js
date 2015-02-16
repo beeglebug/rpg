@@ -1,17 +1,17 @@
-var iso = new PIXI.DisplayObjectContainer();
-stage.addChild(iso);
+PIXI.scaleModes.DEFAULT = PIXI.scaleModes.NEAREST;
 
+// build display list
+var iso = new PIXI.DisplayObjectContainer();
 var floor = new PIXI.DisplayObjectContainer();
 var grid = new PIXI.DisplayObjectContainer();
-var gridUI = new PIXI.DisplayObjectContainer();
+var gridUI = new PIXI.DisplayObjectContainer(); // highlights etc
 var objects = new PIXI.DisplayObjectContainer();
 
 iso.addChildren([floor, grid, gridUI, objects]);
+stage.addChild(iso);
+
 iso.scale.set(2);
-
 grid.alpha = 0.05;
-
-PIXI.scaleModes.DEFAULT = PIXI.scaleModes.NEAREST;
 
 var loader = new PIXI.AssetLoader([
     './img/tiles.json',
@@ -53,16 +53,12 @@ iso.mousemove = function (e) {
 iso.click = function (e) {
 
     if (hoverTile) {
-        tileClicked(hoverTile);
+        // move player
+        player.setPosition(tile.position.x, tile.position.y);
     }
 
 };
 
-function tileClicked(tile) {
-
-    // move player
-    player.setPosition(tile.position.x, tile.position.y);
-}
 
 var x, y, map = [];
 
@@ -76,6 +72,7 @@ var data = [
 
 var map = new MapData(data);
 
+// map highlight
 var highlight = {
 
     position: new PIXI.Point(),
@@ -109,7 +106,7 @@ var highlight = {
     }
 };
 
-
+// generate graphics
 function draw() {
 
     highlight.sprite = PIXI.Sprite.fromFrame('highlight.png');
@@ -179,11 +176,13 @@ function draw() {
     player.setPosition(2, 2);
 }
 
+// isometric functions
 function isoUpdate() {
 
     sortIso(objects);
 }
 
+// isometric functions
 function mapToScreen(map) {
 
     map.set(
@@ -194,6 +193,7 @@ function mapToScreen(map) {
     return map;
 }
 
+// isometric functions
 function screenToMap(screen) {
 
     screen.set(
@@ -204,7 +204,7 @@ function screenToMap(screen) {
     return screen;
 }
 
-
+// isometric functions
 function sortIso(displayObject) {
 
     var zA, zB;
@@ -218,7 +218,7 @@ function sortIso(displayObject) {
     });
 }
 
-
+// map generation
 function makeHouse(x, y) {
 
     var entity = new MapEntity(x, y);
@@ -232,6 +232,7 @@ function makeHouse(x, y) {
     return entity;
 }
 
+// map generation
 function makeTrees(x, y) {
 
     var entity = new MapEntity(x, y);
@@ -245,6 +246,7 @@ function makeTrees(x, y) {
     return entity;
 }
 
+// lighting
 function renderLighting() {
 
     var x, y, tile;
@@ -260,6 +262,7 @@ function renderLighting() {
     }
 }
 
+// lighting
 function setLighting(sprite, visibility) {
 
     switch (visibility) {
@@ -273,5 +276,10 @@ function setLighting(sprite, visibility) {
             sprite.tint = 0xFFFFFF;
             break;
     }
+
+}
+
+// todo keep player tile centered
+function centerMap() {
 
 }
