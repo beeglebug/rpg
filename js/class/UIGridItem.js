@@ -1,3 +1,4 @@
+//todo get rid of texture1x and shrink/grow stuff for now
 var UIGridItem = function(texture, width, height, texture1x) {
 
     this.texture = PIXI.Texture.fromImage(texture);

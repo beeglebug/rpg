@@ -14,9 +14,11 @@ var UIGrid = function (width, height) {
 
     this._dragging = false;
 
+    // TODO remove this flag for now
     // should the grid care about the size of items?
     this.spatialConstraint = true;
 
+    // todo this becomes an inventory object
     // build empty spacial store
     this._spatialStore = [];
 
@@ -27,26 +29,6 @@ var UIGrid = function (width, height) {
     this._setSpacialStore(0, 0, this.width, this.height, null)
 
     this._generateGraphics();
-};
-
-/**
- * set values in the spacial store
- */
-UIGrid.prototype._setSpacialStore = function (x, y, width, height, value) {
-
-    if (!this.spatialConstraint) {
-        return;
-    }
-
-    var iy, ix;
-
-    for (iy = y; iy < y + height; iy++) {
-
-        for (ix = x; ix < x + width; ix++) {
-
-            this._spatialStore[iy][ix] = value;
-        }
-    }
 };
 
 /**
@@ -137,6 +119,7 @@ UIGrid.prototype.hideHighlight = function () {
 
 /**
  * check if a draggable item is over the grid
+ * TODO rename isOver
  */
 UIGrid.prototype.over = function (draggable) {
 
@@ -260,8 +243,17 @@ UIGrid.prototype.getGridPositionAt = function (position, point) {
 };
 
 
+
+
+
+/**
+ * TODO move all this stuff to Inventory object
+ */
+
+
 /**
  * check if a griditem can fit at a particular point
+ * TODO rename canAcceptItemAtPosition
  */
 UIGrid.prototype.canDrop = function (item, position) {
 
@@ -352,4 +344,25 @@ UIGrid.prototype.populate = function (items) {
 
     }.bind(this));
 
+};
+
+
+/**
+ * set values in the spacial store
+ */
+UIGrid.prototype._setSpacialStore = function (x, y, width, height, value) {
+
+    if (!this.spatialConstraint) {
+        return;
+    }
+
+    var iy, ix;
+
+    for (iy = y; iy < y + height; iy++) {
+
+        for (ix = x; ix < x + width; ix++) {
+
+            this._spatialStore[iy][ix] = value;
+        }
+    }
 };

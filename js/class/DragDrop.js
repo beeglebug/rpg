@@ -29,7 +29,6 @@ DragDrop.enable = function(item) {
 
     item.interactive = true;
     item.mousedown = function(e) { self.start(this, e); }
-
 };
 
 DragDrop.start = function(sprite, e) {
@@ -38,8 +37,10 @@ DragDrop.start = function(sprite, e) {
     
     var pos = e.getLocalPosition(sprite);
 
+    //todo rename to dragStart
     this.offset.set(pos.x, pos.y);
-    
+
+    // remember where it came from
     this.origin.position.set(
         sprite.position.x,
         sprite.position.y
@@ -50,64 +51,68 @@ DragDrop.start = function(sprite, e) {
 
 DragDrop.move = function(sprite, e) {
 
+    if(!this.dragging) { return; }
+
     var pos = e.getLocalPosition(sprite);
-    
-    if(this.dragging) {
 
-        this.dragging.position.set(
-            pos.x - this.offset.x,
-            pos.y - this.offset.y
-        );
-        
-        // move out to global scope
-        this.root.addChild(this.dragging);
-        
-        this.over = null;
-        
-        // go through all possible drop targets
+    this.dragging.position.set(
+        pos.x - this.offset.x,
+        pos.y - this.offset.y
+    );
 
-        for(var i = 0; i < this.dropTargets.length; i++) {
-            if(this.dropTargets[i].over(this.dragging)) {
-                this.over = this.dropTargets[i];
-                break;
-            }
+    // todo move to start
+    // move out to global scope
+    this.root.addChild(this.dragging);
+
+    this.over = null;
+
+    // go through all possible drop targets
+    for(var i = 0; i < this.dropTargets.length; i++) {
+        if(this.dropTargets[i].over(this.dragging)) {
+            this.over = this.dropTargets[i];
+            break;
         }
-        
     }
-    
-    // debug
-    Debug.setMousePos(pos);
 };
 
 DragDrop.stop = function(sprite, e) {
 
-    if(this.dragging) {
+    if(!this.dragging) { return; }
         
-        var dropped = false;
-        
-        if(this.over) {
-            
-            // drop it on target        
-            dropped = this.over.drop(this.dragging);
-        
-        }
-        
-        if(!dropped) {
-            
-            // put it back where it came from
-            this.origin.parent.addChild(this.dragging);
+    var dropSuccess = false;
 
-            this.dragging.position.set(
-                this.origin.position.x,
-                this.origin.position.y
-            );
-        }
-        
-        this.dragging = null;
+    if(this.over) {
+        // try to drop it on the target
+        dropSuccess = this.over.drop(this.dragging);
     }
+
+    // either not over a target at all
+    // or unsuccessful for other reasons
+    if(!dropSuccess) {
+        this.revert();
+    }
+
+    this.dragging = null;
 
 };
 
+/**
+ * put the current draggable back where it came from
+ */
+DragDrop.revert = function() {
+
+    this.origin.parent.addChild(this.dragging);
+
+    this.dragging.position.set(
+        this.origin.position.x,
+        this.origin.position.y
+    );
+
+};
+
+/**
+ * must have a drop method
+ */
 DragDrop.registerDropTarget = function(target) {
-  this.dropTargets.push(target);
+    this.dropTargets.push(target);
 };
