@@ -298,3 +298,4 @@ invui.graphics.position.set(400,50);
 ui.addChild(invui.graphics);
 //DragDrop.registerDropTarget(invui);
 
+stage.addChild(ui);

@@ -1,10 +1,10 @@
 var stage = new PIXI.Stage(0xDDDDDD, true);
 var renderer = PIXI.autoDetectRenderer(800, 600);
 var ui = new PIXI.DisplayObjectContainer();
-stage.addChild(ui);
+
 //ui.scale.set(2);
 // init singletons
-DragDrop.init(ui);
+DragDropManager.init();
 Debug.init(stage);
 
 Loader.add([

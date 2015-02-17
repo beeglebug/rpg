@@ -2,7 +2,6 @@
  * all the ui stuff for displaying and manipulating an inventory
  * @constructor
  */
-
 var InventoryUI = function (inventory, slotWidth, slotHeight) {
 
     this.inventory = inventory;
@@ -13,9 +12,9 @@ var InventoryUI = function (inventory, slotWidth, slotHeight) {
     // create graphics
     this.graphics = new PIXI.DisplayObjectContainer();
 
-    this.highlight = new PIXI.Graphics();
-    this.highlight.alpha = 0.3;
-    this.graphics.addChild(this.highlight);
+    //this.highlight = new PIXI.Graphics();
+    //this.highlight.alpha = 0.3;
+    //this.graphics.addChild(this.highlight);
 
     var grid = this._generateGrid();
 
@@ -66,9 +65,9 @@ InventoryUI.prototype.addItem = function(item) {
     gfx.beginFill(0xFFFFFF);
     gfx.alpha = 0.8;
     gfx.drawRect(0, 0, item.width * this.slotWidth, item.height * this.slotHeight);
-    gfx.position.set(item.position.x * this.slotWidth, item.position.y * this.slotHeight);
 
     var draggable = new Draggable(gfx);
+    draggable.position.set(item.position.x * this.slotWidth, item.position.y * this.slotHeight);
 
     this.graphics.addChild(draggable);
 };
