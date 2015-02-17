@@ -1,7 +1,7 @@
 var Inventory = function (width, height) {
 
-    this.width = width;
-    this.height = height;
+    this.width = width || 1;
+    this.height = height || 1;
 
     this.data = [];
 
