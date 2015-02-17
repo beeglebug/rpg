@@ -3,9 +3,10 @@
  * and placed in an inventory
  * @constructor
  */
-var InventoryItem = function() {
+var InventoryItem = function(width, height) {
 
-    this.width = 1;
-    this.height = 1;
+    this.width = width || 1;
+    this.height = height || 1;
+    this.position = new PIXI.Point();
 
 };
