@@ -17,4 +17,9 @@ MapEntity.prototype.setPosition = function(x, y) {
     map.resetVisibility();
     map.calculateVisibility(x, y, 2);
     renderLighting();
+
+    var tile = map.getTileAt(x, y);
+
+    //floorInventory.clear();
+
 };

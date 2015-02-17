@@ -55,6 +55,7 @@ iso.mousemove = function (e) {
 iso.click = function (e) {
 
     if (hoverTile) {
+
         // move player
         player.setPosition(hoverTile.position.x, hoverTile.position.y);
     }
@@ -73,7 +74,7 @@ var data = [
 ];
 
 var road = rng.randomIntBetween(0,4);
-console.log(road);
+
 data[road] = [2,2,2,2,2];
 
 var map = new MapData(data);
@@ -296,18 +297,10 @@ function centerMap() {
 
 }
 
-var inventory = new Inventory(5,5);
+var floorInventory = new Inventory(7,7);
 
-inventory.populate([
-    new InventoryItem(1,1),
-    new InventoryItem(2,1),
-    new InventoryItem(2,2),
-    new InventoryItem(3,2)
-]);
-
-var invui = new InventoryUI(inventory, 24, 24);
-invui.graphics.position.set(400,50);
-ui.addChild(invui.graphics);
-//DragDrop.registerDropTarget(invui);
+var floorInventoryUI = new InventoryUI(floorInventory, 24, 24);
+floorInventoryUI.graphics.position.set(400,50);
+ui.addChild(floorInventoryUI.graphics);
 
 stage.addChild(ui);
