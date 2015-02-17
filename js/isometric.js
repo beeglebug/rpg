@@ -283,3 +283,12 @@ function setLighting(sprite, visibility) {
 function centerMap() {
 
 }
+
+var inventory = new Inventory(5,5);
+
+inventory.populate([
+    new InventoryItem(1,1),
+    new InventoryItem(2,1),
+    new InventoryItem(2,2),
+    new InventoryItem(3,2)
+]);
