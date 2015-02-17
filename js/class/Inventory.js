@@ -18,6 +18,8 @@ var Inventory = function (width, height) {
     this.packer = new Packer(this.width, this.height);
 };
 
+EventEmitter.mixin(Inventory.prototype);
+
 Inventory.prototype.canAddItemAtPosition = function (item, position) {
 
     var iy, ix, existing = false,
