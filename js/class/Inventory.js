@@ -3,14 +3,15 @@ var Inventory = function (width, height) {
     this.width = width || 1;
     this.height = height || 1;
 
-    this.data = [];
+    this.items = [];
+    this.spatialData = [];
 
     // create empty grid
     var x, y;
     for (y = 0; y < this.height; y++) {
-        this.data[y] = [];
+        this.spatialData[y] = [];
         for (x = 0; x < this.width; x++) {
-            this.data[y][x] = null;
+            this.spatialData[y][x] = null;
         }
     }
 
@@ -38,7 +39,7 @@ Inventory.prototype.canAddItemAtPosition = function (item, position) {
 
     for (iy = position.y; iy < maxY; iy++) {
         for (ix = position.x; ix < maxX; ix++) {
-            if (this.data[iy][ix] !== null && this.data[iy][ix] !== item) {
+            if (this.spatialData[iy][ix] !== null && this.spatialData[iy][ix] !== item) {
                 existing = true;
             }
         }
@@ -50,24 +51,29 @@ Inventory.prototype.canAddItemAtPosition = function (item, position) {
 
 Inventory.prototype.addItemAtPosition = function (item, position) {
 
+    // todo check its not already there
+    this.items.push(item);
+
     item.position.set(position.x, position.y);
 
-    this.setData(item.position.x, item.position.y, item.width, item.height, item);
+    this.setSpatialData(item.position.x, item.position.y, item.width, item.height, item);
 };
 
 Inventory.prototype.removeItem = function (item) {
 
-    // remove from store
-    this.setData(item.position.x, item.position.y, item.width, item.height, null);
+    // todo test it exists first
+    this.items.splice( this.items.indexOf(item), 1 );
+
+    this.setSpatialData(item.position.x, item.position.y, item.width, item.height, null);
 };
 
-Inventory.prototype.setData = function (x, y, width, height, value) {
+Inventory.prototype.setSpatialData = function (x, y, width, height, value) {
 
     var iy, ix;
 
     for (iy = y; iy < y + height; iy++) {
         for (ix = x; ix < x + width; ix++) {
-            this.data[iy][ix] = value;
+            this.spatialData[iy][ix] = value;
         }
     }
 };

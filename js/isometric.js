@@ -292,3 +292,9 @@ inventory.populate([
     new InventoryItem(2,2),
     new InventoryItem(3,2)
 ]);
+
+var invui = new InventoryUI(inventory, 24, 24);
+invui.graphics.position.set(400,50);
+ui.addChild(invui.graphics);
+//DragDrop.registerDropTarget(invui);
+
