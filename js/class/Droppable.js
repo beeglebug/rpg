@@ -1,0 +1,3 @@
+var Droppable = function(displayObject) {
+
+};
