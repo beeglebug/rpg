@@ -18,6 +18,8 @@ var loader = new PIXI.AssetLoader([
     './img/ui.json'
 ]);
 
+var rng = new RNG();
+
 loader.addEventListener('onComplete', draw);
 loader.load();
 
@@ -65,10 +67,14 @@ var x, y, map = [];
 var data = [
     [0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0],
-    [2, 2, 2, 2, 2],
+    [0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0],
 ];
+
+var road = rng.randomIntBetween(0,4);
+console.log(road);
+data[road] = [2,2,2,2,2];
 
 var map = new MapData(data);
 
@@ -156,22 +162,28 @@ function draw() {
         }
     }
 
-    var h1 = makeHouse(0, 1);
-    objects.addChild(h1.sprite);
-    var h2 = makeHouse(1, 1);
-    objects.addChild(h2.sprite);
-    var h3 = makeHouse(1, 0);
-    objects.addChild(h3.sprite);
-    var h4 = makeHouse(4, 3);
-    objects.addChild(h4.sprite);
-    var t1 = makeTrees(2, 1);
-    objects.addChild(t1.sprite);
-    var t2 = makeTrees(3, 4);
-    objects.addChild(t2.sprite);
+    var object, x, y;
 
-    map.getTileAt(1,1).solid = true;
-    map.getTileAt(0,1).solid = true;
-    map.getTileAt(1,0).solid = true;
+    for(var i = 0; i < 3; i++) {
+        x = rng.randomIntBetween(0,4);
+        y = rng.randomIntBetween(0,4);
+        while(y == road) {
+            y = rng.randomIntBetween(0, 4);
+        }
+        object = makeHouse(x, y);
+        objects.addChild(object.sprite);
+        map.getTileAt(x, y).solid = true;
+    }
+
+    for(var i = 0; i < 3; i++) {
+        x = rng.randomIntBetween(0,4);
+        y = rng.randomIntBetween(0,4);
+        while(y == road) {
+            y = rng.randomIntBetween(0, 4);
+        }
+        object = makeTrees(x, y);
+        objects.addChild(object.sprite);
+    }
 
     player.setPosition(2, 2);
 }
