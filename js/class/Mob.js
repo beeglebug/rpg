@@ -1,29 +1,34 @@
-var Mob = function (x, y) {
-
-    x = x || 0;
-    y = y || 0;
+var Mob = function(x, y) {
 
     this.position = new PIXI.Point(x, y);
+
+    this.sprite = null;
     this.tile = null;
+};
+
+Mob.prototype.setPosition = function(x, y) {
+
+    this.position.set(x, y);
+
+    if(this.sprite) {
+        this.sprite.position.set(x,y);
+        mapToScreen(this.sprite.position);
+    }
+
+    if(this.tile) {
+        this.exitTile(this.tile);
+    }
+
+    this.tile = map.getTileAt(x, y);
+
+    this.enterTile(this.tile);
+};
+
+
+Mob.prototype.enterTile = function(tile) {
 
 };
 
-Mob.prototype.moveToTile = function(tile) {
-
-    this.position.set(tile.position.x, tile.position.y);
-    this.tile = tile;
-
-    mapRenderer.centerOnTile(tile);
-
-    map.resetVisibility();
-
-    map.calculateVisibility(
-        tile.position.x,
-        tile.position.y,
-        4
-    );
-
-    mapRenderer.renderLighting();
-
+Mob.prototype.exitTile = function(tile) {
 
 };

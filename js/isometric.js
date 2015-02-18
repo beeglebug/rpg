@@ -28,7 +28,7 @@ ISO_TILE_HEIGHT = 16;
 ISO_TILE_WIDTH_HALF = ISO_TILE_WIDTH / 2;
 ISO_TILE_HEIGHT_HALF = ISO_TILE_HEIGHT / 2;
 
-var player = new MapEntity();
+var player = new Player();
 
 var offset = new PIXI.Point(200, 100);
 iso.position.add(offset);
@@ -234,7 +234,8 @@ function sortIso(displayObject) {
 // map generation
 function makeHouse(x, y) {
 
-    var entity = new MapEntity(x, y);
+    // todo dont use mob
+    var entity = new Mob(x, y);
     entity.sprite = PIXI.Sprite.fromFrame('house.png');
     entity.sprite.setAnchor(17, 15);
     entity.sprite.position.set(x, y);
@@ -248,7 +249,8 @@ function makeHouse(x, y) {
 // map generation
 function makeTrees(x, y) {
 
-    var entity = new MapEntity(x, y);
+    // todo dont use mob
+    var entity = new Mob(x, y);
     entity.sprite = PIXI.Sprite.fromFrame('trees.png');
     entity.sprite.setAnchor(17, 14);
     entity.sprite.position.set(x, y);
