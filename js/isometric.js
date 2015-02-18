@@ -30,7 +30,7 @@ iso.click = function (e) {
 function generateIsoGraphics() {
 
     highlight.sprite = PIXI.Sprite.fromFrame('highlight.png');
-    highlight.sprite.setAnchor(16, 0);
+    highlight.sprite.setAnchor(17, 0);
     highlight.sprite.animationSpeed = 0.05;
     gridUI.addChild(highlight.sprite);
     highlight.hide();
@@ -77,11 +77,6 @@ function generateIsoGraphics() {
                     mapToScreen(sprite.position);
                     objects.addChild(sprite);
                     tile.objects.push(sprite);
-                    //todo move this
-                    // pre-populate
-                    tile.items.push(
-                        new InventoryItem(1,1, 'acorn')
-                    );
                     break;
             }
 

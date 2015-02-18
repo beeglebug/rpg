@@ -22,16 +22,7 @@ var InventoryUI = function (inventory, slotWidth, slotHeight) {
     this.graphics.interactive = true;
     this.graphics.hitArea = new PIXI.Rectangle(0, 0, this.inventory.width * this.slotWidth, this.inventory.height * this.slotHeight);
 
-    this.spatialIndex = [];
-
-    // todo make a helper for making quick 2d arrays
-    var x, y;
-    for (y = 0; y < this.inventory.width; y++) {
-        this.spatialIndex[y] = [];
-        for (x = 0; x < this.inventory.height; x++) {
-            this.spatialIndex[y][x] = null;
-        }
-    }
+    this.spatialIndex = array2d(this.inventory.width, this.inventory.height, null);
 
     this.inventory.items.forEach(function(item){
 

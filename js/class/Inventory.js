@@ -105,10 +105,12 @@ Inventory.prototype.populate = function (items) {
 
 Inventory.prototype.clear = function() {
 
+    if(!this.items.length) { return; }
+
     // clear items
-    this.items.forEach(function(item) {
-        this.removeItem(item);
-    }.bind(this));
+    for(var i = this.items.length - 1; i >= 0; i--) {
+        this.removeItem(this.items[i]);
+    };
 
     // reset packer
     this.packer.reset(this.width, this.height);

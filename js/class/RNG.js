@@ -113,6 +113,9 @@ RNG.prototype.randomElement = function(arr) {
 	return arr[this.randomIntBetween(0, arr.length-1)];
 };
 
+RNG.prototype.chance = function(odds) {
+    return this.randomIntBetween(0, odds) === 0;
+};
 
 RNG.prototype.hashcode = function(str) {
 

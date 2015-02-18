@@ -38,9 +38,9 @@ document.getElementById('canvas-wrapper').appendChild(renderer.view);
 DragDropManager.init();
 
 // ui experiments
-var floorInventory = new Inventory(7,7);
+var floorInventory = new Inventory(7, 7);
 var floorInventoryUI = new InventoryUI(floorInventory, 24, 24);
-floorInventoryUI.graphics.position.set(400,50);
+floorInventoryUI.graphics.position.set(400, 50);
 ui.addChild(floorInventoryUI.graphics);
 
 
@@ -49,7 +49,7 @@ ui.addChild(floorInventoryUI.graphics);
  */
 function animate(time) {
 
-    requestAnimFrame( animate );
+    requestAnimFrame(animate);
 
     TWEEN.update(time);
 
@@ -71,17 +71,61 @@ function assetsLoaded() {
 
     var btn = new Button('loot', lootCurrentTile);
     ui.addChild(btn);
-    btn.position.set(400,10);
+    btn.position.set(400, 10);
 
     generateIsoGraphics();
 
     player.setPosition(2, 2);
 
-    requestAnimFrame( animate );
+    requestAnimFrame(animate);
 }
 
 function lootCurrentTile() {
 
+    var tile = player.tile;
+    var loot = null;
+
+    switch (tile.type) {
+        case 'R':
+            if (rng.chance(20)) {
+                loot = new InventoryItem(1, 1, 'newspaper');
+            }
+            break;
+        case 'G':
+            if (rng.chance(5)) {
+                loot = new InventoryItem(1, 1, 'flower');
+            }
+            break;
+        case 'H':
+            if (rng.chance(2)) {
+                loot = new InventoryItem(1, 1, 'book');
+            }
+            break;
+        case 'T':
+            if (rng.chance(10)) {
+                loot = new InventoryItem(1, 1, 'acorn');
+            }
+            break;
+    }
+
+    if (loot) {
+        tile.items.push(loot);
+        floorInventory.clear();
+        floorInventory.populate(tile.items);
+    }
+}
 
 
+function array2d(width, height, fill) {
+
+    var x, y, arr = [];
+
+    for (y = 0; y < width; y++) {
+        arr[y] = [];
+        for (x = 0; x < height; x++) {
+            arr[y][x] = fill;
+        }
+    }
+
+    return arr;
 }
