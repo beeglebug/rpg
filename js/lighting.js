@@ -7,8 +7,8 @@ function renderLighting() {
         for (x = 0; x < map.data[0].length; x++) {
             tile = map.data[y][x];
             setLighting(tile.sprite, tile.visibility);
-            tile.entities.forEach(function (entity) {
-                setLighting(entity.sprite, tile.visibility);
+            tile.objects.forEach(function (sprite) {
+                setLighting(sprite, tile.visibility);
             });
         }
     }

@@ -64,6 +64,7 @@ function generateIsoGraphics() {
                     sprite.zIndex = 0;
                     mapToScreen(sprite.position);
                     objects.addChild(sprite);
+                    tile.objects.push(sprite);
                     //todo move this
                     tile.solid = true;
                     break;
@@ -75,6 +76,7 @@ function generateIsoGraphics() {
                     sprite.zIndex = 0;
                     mapToScreen(sprite.position);
                     objects.addChild(sprite);
+                    tile.objects.push(sprite);
                     //todo move this
                     // pre-populate
                     tile.items.push(

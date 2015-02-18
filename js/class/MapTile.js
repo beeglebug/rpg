@@ -3,7 +3,8 @@ var MapTile = function (type, x, y) {
     this.type = type;
     this.position = new PIXI.Point(x, y);
 
-    this.entities = [];
+    // other sprites from the objects layer
+    this.objects = [];
 
     this.name = null;
     this.sprite = null;
