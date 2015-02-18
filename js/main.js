@@ -1,19 +1,14 @@
 var stage = new PIXI.Stage(0xDDDDDD, true);
 var renderer = PIXI.autoDetectRenderer(800, 600);
+// add to dom
+document.getElementById('canvas-wrapper').appendChild(renderer.view);
+
 var ui = new PIXI.DisplayObjectContainer();
 
-//ui.scale.set(2);
 // init singletons
 DragDropManager.init();
-Debug.init(stage);
 
 Loader.add([
-    'img/items/1x1.png',
-    'img/items/2x1.png',
-    'img/items/1x2.png',
-    'img/items/1x4.png',
-    'img/items/2x2.png',
-    'img/items/2x3.png',
     'font/munro.fnt'
 ]);
 
@@ -23,13 +18,6 @@ Loader.load(function() {
     //bitmapFontText.position.y = 20;
     //stage.addChild(bitmapFontText);
 });
-
-// add to dom
-document.getElementById('canvas-wrapper').appendChild(renderer.view);
-
-
-// add to stage last so its on top
-stage.addChild(Debug.container);
 
 /**
  * main loop
@@ -46,12 +34,3 @@ function animate(time) {
 }
 
 requestAnimFrame( animate );
-
-
-function distanceBetween(a, b) {
-
-    var dx = Math.abs(a.x - b.x),
-        dy = Math.abs(a.y - b.y);
-
-    return (dx * dx) + (dy * dy);
-}
