@@ -1,9 +1,11 @@
 var Mob = function(x, y) {
 
     this.position = new PIXI.Point(x, y);
+    this.tile = null;
 
     this.sprite = null;
-    this.tile = null;
+
+    this.inventory = new Inventory(7,7);
 };
 
 Mob.prototype.setPosition = function(x, y) {
