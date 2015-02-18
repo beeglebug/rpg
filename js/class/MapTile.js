@@ -10,6 +10,9 @@ var MapTile = function (type, x, y) {
 
     this.visibility = MapTile.VISIBILITY_NONE;
     this.solid = false;
+
+    // stuff on the floor
+    this.items = [];
 };
 
 MapTile.VISIBILITY_NONE = 0;

@@ -59,6 +59,8 @@ Inventory.prototype.addItemAtPosition = function (item, position) {
     item.position.set(position.x, position.y);
 
     this.setSpatialData(item.position.x, item.position.y, item.width, item.height, item);
+
+    this.emit('item-added', item, this);
 };
 
 Inventory.prototype.removeItem = function (item) {
@@ -67,6 +69,8 @@ Inventory.prototype.removeItem = function (item) {
     this.items.splice( this.items.indexOf(item), 1 );
 
     this.setSpatialData(item.position.x, item.position.y, item.width, item.height, null);
+
+    this.emit('item-removed', item, this);
 };
 
 Inventory.prototype.setSpatialData = function (x, y, width, height, value) {
@@ -96,6 +100,18 @@ Inventory.prototype.populate = function (items) {
             this.addItemAtPosition(node.item, node.fit);
         }
     }.bind(this));
+
+};
+
+Inventory.prototype.clear = function() {
+
+    // clear items
+    this.items.forEach(function(item) {
+        this.removeItem(item);
+    }.bind(this));
+
+    // reset packer
+    this.packer.reset(this.width, this.height);
 };
 
 

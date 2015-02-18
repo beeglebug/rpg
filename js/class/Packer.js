@@ -5,6 +5,11 @@ var Packer = function (width, height) {
 
     this.heuristic = this.heuristics.sortByMaxSide;
 
+    this.reset(width, height);
+};
+
+Packer.prototype.reset = function(width, height) {
+
     this.root = {
         x: 0,
         y: 0,
@@ -12,7 +17,7 @@ var Packer = function (width, height) {
         height: height
     };
 
-};
+}
 
 Packer.prototype.fit = function (blocks) {
 

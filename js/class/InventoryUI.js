@@ -22,11 +22,36 @@ var InventoryUI = function (inventory, slotWidth, slotHeight) {
     this.graphics.interactive = true;
     this.graphics.hitArea = new PIXI.Rectangle(0, 0, this.inventory.width * this.slotWidth, this.inventory.height * this.slotHeight);
 
+    this.spatialIndex = [];
+
+    // todo make a helper for making quick 2d arrays
+    var x, y;
+    for (y = 0; y < this.inventory.width; y++) {
+        this.spatialIndex[y] = [];
+        for (x = 0; x < this.inventory.height; x++) {
+            this.spatialIndex[y][x] = null;
+        }
+    }
+
     this.inventory.items.forEach(function(item){
 
         this.addItem(item);
 
     }.bind(this));
+
+    // event listeners
+    this.inventory.addEventListener('item-added', function(item) {
+
+        this.addItem(item);
+
+    }.bind(this));
+
+    this.inventory.addEventListener('item-removed', function(item) {
+
+        this.removeItem(item);
+
+    }.bind(this));
+
 };
 
 /**
@@ -69,7 +94,20 @@ InventoryUI.prototype.addItem = function(item) {
     var draggable = new Draggable(gfx);
     draggable.position.set(item.position.x * this.slotWidth, item.position.y * this.slotHeight);
 
+    this.spatialIndex[item.position.y][item.position.x] = draggable;
+
     this.graphics.addChild(draggable);
+};
+
+InventoryUI.prototype.removeItem = function(item) {
+
+    var draggable = this.spatialIndex[item.position.y][item.position.x];
+
+    this.graphics.removeChild(draggable);
+
+    delete draggable;
+
+    this.spatialIndex[item.position.y][item.position.x ] = null;
 };
 
 //

@@ -66,11 +66,11 @@ iso.click = function (e) {
 var x, y, map = [];
 
 var data = [
-    [0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0],
+    [0,0,0,0,0],
+    [0,0,0,0,0],
+    [0,0,0,0,0],
+    [0,0,0,0,0],
+    [0,0,0,0,0],
 ];
 
 var road = rng.randomIntBetween(0,4);
@@ -258,6 +258,12 @@ function makeTrees(x, y) {
     mapToScreen(entity.sprite.position);
     var tile = map.getTileAt(x, y);
     tile.entities.push(entity);
+
+    // pre-populate
+    tile.items.push(
+        new InventoryItem(1,1, 'acorn')
+    );
+
     return entity;
 }
 

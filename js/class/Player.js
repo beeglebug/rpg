@@ -12,7 +12,17 @@ Player.prototype.setPosition = function(x, y) {
 
     map.resetVisibility();
     map.calculateVisibility(x, y, 2);
-    renderLighting();
 
-    //floorInventory.clear();
+    renderLighting();
+};
+
+Player.prototype.enterTile = function(tile) {
+
+    floorInventory.populate(tile.items);
+};
+
+Player.prototype.exitTile = function(tile) {
+
+    floorInventory.clear();
+
 };

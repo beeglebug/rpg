@@ -25,10 +25,6 @@ Mob.prototype.setPosition = function(x, y) {
 };
 
 
-Mob.prototype.enterTile = function(tile) {
+Mob.prototype.enterTile = function(tile) {};
 
-};
-
-Mob.prototype.exitTile = function(tile) {
-
-};
+Mob.prototype.exitTile = function(tile) {};
