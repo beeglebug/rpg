@@ -69,9 +69,19 @@ loader.load();
 
 function assetsLoaded() {
 
+    var btn = new Button('loot', lootCurrentTile);
+    ui.addChild(btn);
+    btn.position.set(400,10);
+
     generateIsoGraphics();
 
     player.setPosition(2, 2);
 
     requestAnimFrame( animate );
+}
+
+function lootCurrentTile() {
+
+
+
 }
