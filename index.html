@@ -1,10 +1,18 @@
 <html>
 <head>
+    /* external libraries */
     <script src="js/lib/pixi.dev.js"></script>
     <script src="js/lib/pixi.extra.js"></script>
     <script src="js/lib/moment.js"></script>
     <script src="js/lib/tween.min.js"></script>
+    <script src="js/lib/react.min.js"></script>
+    <script src="js/lib/JSXTransformer.js"></script>
 
+    /* react components */
+    <script type="text/jsx" src="js/components/Log.jsx"></script>
+    <script type="text/jsx" src="js/components/Message.jsx"></script>
+
+    /* internal classes */
     <script src="js/class/EventEmitter.js"></script>
     <script src="js/class/RNG.js"></script>
     <script src="js/class/Button.js"></script>
@@ -23,16 +31,25 @@
     <script src="js/class/Mob.js"></script>
     <script src="js/class/Player.js"></script>
 
+    /* stylesheets */
     <link rel=stylesheet href="css/style.css">
+
 </head>
 <body>
+
+    /* game related dom */
     <div class="game">
+        <div id="react-ui"></div>
         <div id="canvas-wrapper"></div>
     </div>
+
+    /* internal scripts */
     <script src="js/generate.js"></script>
     <script src="js/highlight.js"></script>
     <script src="js/lighting.js"></script>
     <script src="js/main.js"></script>
     <script src="js/isometric.js"></script>
+    <script type="text/jsx" src="js/react.jsx"></script>
+
 </body>
 </html>
