@@ -95,24 +95,16 @@ function lootCurrentTile() {
 
     switch (tile.type) {
         case 'R':
-            if (rng.chance(20)) {
-                loot = new InventoryItem(1, 1, 'newspaper');
-            }
+            loot = new InventoryItem(1, 1, 'newspaper');
             break;
         case 'G':
-            if (rng.chance(5)) {
-                loot = new InventoryItem(1, 1, 'flower');
-            }
+            loot = new InventoryItem(1, 1, 'flower');
             break;
         case 'H':
-            if (rng.chance(2)) {
-                loot = new InventoryItem(1, 1, 'book');
-            }
+            loot = new InventoryItem(1, 1, 'book');
             break;
         case 'T':
-            if (rng.chance(10)) {
-                loot = new InventoryItem(1, 1, 'acorn');
-            }
+            loot = new InventoryItem(1, 1, 'acorn');
             break;
     }
 
