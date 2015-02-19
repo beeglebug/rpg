@@ -32,7 +32,7 @@ stage.addChild(iso);
 stage.addChild(ui);
 
 // add to dom
-document.getElementById('canvas-wrapper').appendChild(renderer.view);
+//document.getElementById('canvas-wrapper').appendChild(renderer.view);
 
 // init singletons
 DragDropManager.init();
@@ -68,6 +68,8 @@ loader.addEventListener('onComplete', assetsLoaded);
 loader.load();
 
 function assetsLoaded() {
+
+    Logger.log('assets loaded');
 
     var btn = new Button('loot', lootCurrentTile);
     ui.addChild(btn);
