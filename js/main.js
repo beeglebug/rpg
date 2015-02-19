@@ -42,6 +42,12 @@ var floorInventory = new Inventory(7, 7);
 var floorInventoryUI = new InventoryUI(floorInventory, 24, 24);
 floorInventoryUI.graphics.position.set(400, 50);
 ui.addChild(floorInventoryUI.graphics);
+ui.interactive = true;
+ui.mousemove = function(e) {
+
+    Tooltip.onMouseMove(e);
+
+};
 
 
 /**
