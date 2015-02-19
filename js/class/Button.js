@@ -8,7 +8,7 @@ var Button = function(text, callback) {
 
     this.background = new PIXI.Graphics();
     this.background.beginFill(0x000000);
-    this.background.drawRect(0, 0, this.text.width + (margin*2), this.text.height + (margin*2));
+    this.background.drawRect(0, 0, this.text.textWidth + (margin*2), this.text.textHeight + (margin*2));
 
     this.text.position.set(margin, margin);
 
@@ -22,6 +22,8 @@ var Button = function(text, callback) {
     this.click = this.onClick;
     this.mouseover = this.onMouseOver;
     this.mouseout = this.onMouseOut;
+    this.mousedown = this.onMouseDown;
+    this.mouseup = this.onMouseUp;
 };
 
 Button.prototype = Object.create(PIXI.DisplayObjectContainer.prototype);
@@ -29,9 +31,19 @@ Button.prototype = Object.create(PIXI.DisplayObjectContainer.prototype);
 Button.prototype.onClick = function(e) {
     this.callback();
 };
+
 Button.prototype.onMouseOver = function(e) {
-    this.background.alpha = 0.5;
+    this.background.alpha = 0.7;
 };
+
 Button.prototype.onMouseOut = function(e) {
     this.background.alpha = 1;
+};
+
+Button.prototype.onMouseDown = function(e) {
+    this.background.alpha = 0.8;
+};
+
+Button.prototype.onMouseUp = function(e) {
+    this.background.alpha = 0.7;
 };
