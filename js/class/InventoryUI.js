@@ -22,7 +22,7 @@ var InventoryUI = function (inventory, slotWidth, slotHeight) {
     this.graphics.interactive = true;
     this.graphics.hitArea = new PIXI.Rectangle(0, 0, this.inventory.width * this.slotWidth, this.inventory.height * this.slotHeight);
 
-    this.spatialIndex = array2d(this.inventory.width, this.inventory.height, null);
+    this.index = [];
 
     this.inventory.items.forEach(function(item){
 
@@ -85,20 +85,20 @@ InventoryUI.prototype.addItem = function(item) {
     var draggable = new Draggable(gfx);
     draggable.position.set(item.position.x * this.slotWidth, item.position.y * this.slotHeight);
 
-    this.spatialIndex[item.position.y][item.position.x] = draggable;
+    this.index[item.id] = draggable;
 
     this.graphics.addChild(draggable);
 };
 
 InventoryUI.prototype.removeItem = function(item) {
 
-    var draggable = this.spatialIndex[item.position.y][item.position.x];
+    var draggable = this.index[item.id];
 
     this.graphics.removeChild(draggable);
 
     delete draggable;
 
-    this.spatialIndex[item.position.y][item.position.x ] = null;
+    delete this.index[item.id];
 };
 
 //

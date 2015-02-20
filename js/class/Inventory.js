@@ -7,13 +7,7 @@ var Inventory = function (width, height) {
     this.spatialData = [];
 
     // create empty grid
-    var x, y;
-    for (y = 0; y < this.height; y++) {
-        this.spatialData[y] = [];
-        for (x = 0; x < this.width; x++) {
-            this.spatialData[y][x] = null;
-        }
-    }
+    this.spatialData = array2d(this.width, this.height);
 
     this.packer = new Packer(this.width, this.height);
 };
@@ -84,7 +78,7 @@ Inventory.prototype.setSpatialData = function (x, y, width, height, value) {
     }
 };
 
-Inventory.prototype.populate = function (items) {
+Inventory.prototype.packAndFill = function (items) {
 
     // convert to packer nodes
     var nodes = items.map(function (item) {
@@ -94,13 +88,25 @@ Inventory.prototype.populate = function (items) {
     // try to fit
     this.packer.fit(nodes);
 
-    // apply the results
+    // copy the positions down to items
     nodes.forEach(function (node) {
         if (node.fit) {
-            this.addItemAtPosition(node.item, node.fit);
+            node.item.position.set(node.fit.x, node.fit.y);
         }
     }.bind(this));
 
+    this.fill(nodes);
+};
+
+Inventory.prototype.fill = function(items) {
+
+    this.clear();
+
+    items.forEach(function (item) {
+
+        this.addItemAtPosition(item, item.position);
+
+    }.bind(this));
 };
 
 Inventory.prototype.clear = function() {

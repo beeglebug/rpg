@@ -18,7 +18,7 @@ Player.prototype.setPosition = function(x, y) {
 
 Player.prototype.enterTile = function(tile) {
 
-    floorInventory.populate(tile.items);
+    floorInventory.fill(tile.items);
 };
 
 Player.prototype.exitTile = function(tile) {

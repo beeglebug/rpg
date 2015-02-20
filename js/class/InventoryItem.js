@@ -7,6 +7,8 @@
  */
 var InventoryItem = function(width, height, name) {
 
+    ObjectWithId.call(this);
+
     // position and size in the inventory
     this.position = new PIXI.Point();
     this.width = width || 1;
@@ -14,3 +16,5 @@ var InventoryItem = function(width, height, name) {
 
     this.name = name;
 };
+
+InventoryItem.prototype = Object.create(ObjectWithId.prototype);

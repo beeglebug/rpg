@@ -42,6 +42,12 @@ var floorInventory = new Inventory(7, 7);
 var floorInventoryUI = new InventoryUI(floorInventory, 24, 24);
 floorInventoryUI.graphics.position.set(400, 50);
 ui.addChild(floorInventoryUI.graphics);
+
+var playerInventoryUI = new InventoryUI(player.inventory, 24, 24);
+playerInventoryUI.graphics.position.set(400, 250);
+ui.addChild(playerInventoryUI.graphics);
+
+
 ui.interactive = true;
 ui.mousemove = function(e) {
 
@@ -111,7 +117,7 @@ function lootCurrentTile() {
     if (loot) {
         tile.items.push(loot);
         floorInventory.clear();
-        floorInventory.populate(tile.items);
+        floorInventory.fill(tile.items);
     }
 }
 

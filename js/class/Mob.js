@@ -5,7 +5,7 @@ var Mob = function(x, y) {
 
     this.sprite = null;
 
-    this.inventory = new Inventory(7,7);
+    this.inventory = new Inventory(5,5);
 };
 
 Mob.prototype.setPosition = function(x, y) {
