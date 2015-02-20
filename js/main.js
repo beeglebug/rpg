@@ -39,11 +39,11 @@ DragDropManager.init(stage);
 
 // ui experiments
 var floorInventory = new Inventory(7, 7);
-var floorInventoryUI = new InventoryUI(floorInventory, 24, 24);
+var floorInventoryUI = new InventoryGrid(floorInventory, 24, 24);
 floorInventoryUI.position.set(400, 50);
 ui.addChild(floorInventoryUI);
 
-var playerInventoryUI = new InventoryUI(player.inventory, 24, 24);
+var playerInventoryUI = new InventoryGrid(player.inventory, 24, 24);
 playerInventoryUI.position.set(400, 250);
 ui.addChild(playerInventoryUI);
 

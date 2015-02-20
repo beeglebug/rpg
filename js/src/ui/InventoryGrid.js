@@ -4,7 +4,7 @@
  * @extends Droppable
  * @mixes EventEmitterMixin
  */
-var InventoryUI = function (inventory, slotWidth, slotHeight) {
+var InventoryGrid = function (inventory, slotWidth, slotHeight) {
 
     this.inventory = inventory;
     this.slotWidth = slotWidth;
@@ -45,12 +45,12 @@ var InventoryUI = function (inventory, slotWidth, slotHeight) {
 
 };
 
-InventoryUI.prototype = Object.create(Droppable.prototype);
+InventoryGrid.prototype = Object.create(Droppable.prototype);
 
 /**
  * create graphics objects used by the grid
  */
-InventoryUI.prototype._generateGrid = function () {
+InventoryGrid.prototype._generateGrid = function () {
 
     var grid = new PIXI.Graphics();
 
@@ -76,7 +76,7 @@ InventoryUI.prototype._generateGrid = function () {
 };
 
 
-InventoryUI.prototype.addItem = function(item) {
+InventoryGrid.prototype.addItem = function(item) {
 
     var gfx = new PIXI.Graphics();
 
@@ -92,7 +92,7 @@ InventoryUI.prototype.addItem = function(item) {
     this.addChild(draggable);
 };
 
-InventoryUI.prototype.removeItem = function(item) {
+InventoryGrid.prototype.removeItem = function(item) {
 
     var draggable = this.index[item.id];
 
@@ -107,7 +107,7 @@ InventoryUI.prototype.removeItem = function(item) {
 ///**
 // * adjust the highlight graphics
 // */
-//InventoryUI.prototype.resizeHighlight = function (position, item) {
+//InventoryGrid.prototype.resizeHighlight = function (position, item) {
 //
 //    this.highlight.clear();
 //    this.highlight.beginFill(0xFFFFFF);
@@ -121,7 +121,7 @@ InventoryUI.prototype.removeItem = function(item) {
 ///**
 // * adjust the highlight graphics
 // */
-//InventoryUI.prototype.moveHighlight = function (position) {
+//InventoryGrid.prototype.moveHighlight = function (position) {
 //
 //    this.highlight.position.set(
 //        position.x * this.slotWidth,
@@ -132,14 +132,14 @@ InventoryUI.prototype.removeItem = function(item) {
 ///**
 // * adjust the highlight graphics
 // */
-//InventoryUI.prototype.showHighlight = function () {
+//InventoryGrid.prototype.showHighlight = function () {
 //    this.highlight.visible = true;
 //};
 //
 ///**
 // * adjust the highlight graphics
 // */
-//InventoryUI.prototype.hideHighlight = function () {
+//InventoryGrid.prototype.hideHighlight = function () {
 //    this.highlight.visible = false;
 //};
 //
@@ -147,7 +147,7 @@ InventoryUI.prototype.removeItem = function(item) {
 // * check if a draggable item is over the grid
 // * TODO rename isOver
 // */
-//InventoryUI.prototype.over = function (draggable) {
+//InventoryGrid.prototype.over = function (draggable) {
 //
 //    var pos = new PIXI.Point(
 //        draggable.position.x - this.graphics.position.x + (this.slotWidth / 2),
@@ -177,7 +177,7 @@ InventoryUI.prototype.removeItem = function(item) {
 //};
 //
 //
-//InventoryUI.prototype.dragEnter = function (draggable, pos) {
+//InventoryGrid.prototype.dragEnter = function (draggable, pos) {
 //
 //    this._dragging = true;
 //
@@ -189,7 +189,7 @@ InventoryUI.prototype.removeItem = function(item) {
 //
 //};
 //
-//InventoryUI.prototype.dragMove = function (draggable, pos) {
+//InventoryGrid.prototype.dragMove = function (draggable, pos) {
 //
 //    var slot = this.getGridPositionAt(pos);
 //
@@ -206,7 +206,7 @@ InventoryUI.prototype.removeItem = function(item) {
 //    this.moveHighlight(slot);
 //};
 //
-//InventoryUI.prototype.dragLeave = function (draggable, pos) {
+//InventoryGrid.prototype.dragLeave = function (draggable, pos) {
 //
 //    this._dragging = false;
 //
@@ -221,7 +221,7 @@ InventoryUI.prototype.removeItem = function(item) {
 ///**
 // * drop a draggable item on the grid
 // */
-//InventoryUI.prototype.drop = function (draggable) {
+//InventoryGrid.prototype.drop = function (draggable) {
 //
 //    var pos = new PIXI.Point(
 //        draggable.position.x - this.graphics.position.x + (this.slotWidth / 2),
@@ -255,7 +255,7 @@ InventoryUI.prototype.removeItem = function(item) {
 ///**
 // * get the grid position for a point on the graphics
 // */
-//InventoryUI.prototype.getGridPositionAt = function (position, point) {
+//InventoryGrid.prototype.getGridPositionAt = function (position, point) {
 //
 //    point = point || new PIXI.Point();
 //
