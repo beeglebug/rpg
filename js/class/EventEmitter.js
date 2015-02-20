@@ -5,8 +5,6 @@ var EventEmitter = {
 
     mixin: function (prototype) {
 
-        prototype._listeners = {};
-
         /**
          * register a listener
          * @param  {[type]}   event    [description]
@@ -14,6 +12,8 @@ var EventEmitter = {
          * @return {[type]}            [description]
          */
         prototype.addEventListener = function (event, fn) {
+
+            this._listeners = this._listeners || {};
 
             if (!this._listeners[event]) {
 
@@ -34,6 +34,8 @@ var EventEmitter = {
          * @return {Boolean} true if a listener was removed
          */
         prototype.removeEventListener = function (event, fn) {
+
+            this._listeners = this._listeners || {};
 
             if (!this._listeners[event]) {
                 return false;
@@ -58,6 +60,8 @@ var EventEmitter = {
          * @return {Boolean} false if nothing was deleted, otherwise true
          */
         prototype.removeAllListeners = function (event) {
+
+            this._listeners = this._listeners || {};
 
             if (event) {
 
@@ -85,6 +89,8 @@ var EventEmitter = {
          * @param  {String} event
          */
         prototype.emit = function (event) {
+
+            this._listeners = this._listeners || {};
 
             if (!this._listeners[event]) {
                 return false;
