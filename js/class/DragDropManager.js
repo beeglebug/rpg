@@ -80,7 +80,7 @@ DragDropManager.onDrop = function(e, draggable) {
     if(this.currentDropTarget) {
         // try to drop it on the target
         if(this.currentDropTarget.canAcceptDrop(e, draggable)) {
-            //dropped = true;
+            dropped = true;
         }
     }
 

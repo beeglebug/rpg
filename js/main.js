@@ -122,7 +122,7 @@ function lootCurrentTile() {
     }
 }
 
-
+// todo move to helpers
 function array2d(width, height, fill) {
 
     var x, y, arr = [];
@@ -136,3 +136,4 @@ function array2d(width, height, fill) {
 
     return arr;
 }
+
