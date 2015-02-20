@@ -1,8 +1,10 @@
-var Draggable = function(displayObject) {
+var Draggable = function(displayObject, type) {
 
     PIXI.DisplayObjectContainer.call(this);
 
     this.addChild(displayObject);
+
+    this.type = type || null;
 
     this.interactive = true;
 

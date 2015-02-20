@@ -1,28 +1,36 @@
-var Droppable = function(displayObject) {
+var Droppable = function(displayObject, accepts) {
 
     PIXI.DisplayObjectContainer.call(this);
 
+    this.interactive = true;
+
     this.addChild(displayObject);
 
-    this.interactive = true;
+    this.accepts = accepts || null;
 
     this.hitArea = displayObject.getBounds();
 
+    // register self with manager
     DragDropManager.addDropTarget(this);
 };
 
 Droppable.prototype = Object.create(PIXI.DisplayObjectContainer.prototype);
 
 
-Droppable.prototype.onDragOver = function(e, draggable) {
+// default drop check always passes
+Droppable.prototype.dropCheck = function(e, draggable) { return true; };
 
-
-
-};
+// does nothing by default
+Droppable.prototype.onDragOver = function(e, draggable) { };
 
 /**
- * by default always accepts drops
+ * check if this droppable can accept the draggable
+ * checks the type if needed, and then calls the dropCheck function
+ * which can be set externally by controlling classes
  */
 Droppable.prototype.canAcceptDrop = function(e, draggable) {
-    return true;
+
+    if(this.accepts && draggable.type !== this.accepts) { return false; }
+
+    return this.dropCheck(e, draggable);
 };
