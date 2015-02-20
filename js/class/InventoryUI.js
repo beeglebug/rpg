@@ -1,17 +1,26 @@
 /**
  * all the ui stuff for displaying and manipulating an inventory
  * @constructor
+ * @extends Droppable
+ * @mixes EventEmitterMixin
  */
 var InventoryUI = function (inventory, slotWidth, slotHeight) {
 
     this.inventory = inventory;
-
     this.slotWidth = slotWidth;
     this.slotHeight = slotHeight;
 
     var grid = this._generateGrid();
 
-    this.graphics = new Droppable(grid);
+    Droppable.call(this, grid);
+
+    this.addEventListener('drag-over', function(e, draggable) {
+
+    });
+
+    this.addEventListener('drop', function(e, draggable) {
+
+    });
 
     this.index = [];
 
@@ -35,6 +44,8 @@ var InventoryUI = function (inventory, slotWidth, slotHeight) {
     }.bind(this));
 
 };
+
+InventoryUI.prototype = Object.create(Droppable.prototype);
 
 /**
  * create graphics objects used by the grid
@@ -78,14 +89,14 @@ InventoryUI.prototype.addItem = function(item) {
 
     this.index[item.id] = draggable;
 
-    this.graphics.addChild(draggable);
+    this.addChild(draggable);
 };
 
 InventoryUI.prototype.removeItem = function(item) {
 
     var draggable = this.index[item.id];
 
-    this.graphics.removeChild(draggable);
+    this.removeChild(draggable);
 
     delete draggable;
 

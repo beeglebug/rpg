@@ -1,3 +1,11 @@
+/**
+ * A display object which can accept draggables
+ * @param displayObject
+ * @param accepts
+ * @constructor
+ * @extends PIXI.DisplayObjectContainer
+ * @mixes EventEmitter
+ */
 var Droppable = function(displayObject, accepts) {
 
     PIXI.DisplayObjectContainer.call(this);
@@ -15,6 +23,8 @@ var Droppable = function(displayObject, accepts) {
 };
 
 Droppable.prototype = Object.create(PIXI.DisplayObjectContainer.prototype);
+
+EventEmitterMixin.call(Droppable.prototype);
 
 
 // default drop check always passes

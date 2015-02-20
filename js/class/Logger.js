@@ -17,4 +17,4 @@ var Logger = {
 
 };
 
-EventEmitter.mixin(Logger);
+EventEmitterMixin.call(Logger);
