@@ -1,4 +1,4 @@
-var Button = function(text, callback) {
+var Button = function(text, callback, width, height) {
 
     PIXI.DisplayObjectContainer.call(this);
 
@@ -6,9 +6,12 @@ var Button = function(text, callback) {
 
     var margin = 5;
 
+    width = width || this.text.textWidth + (margin * 2);
+    height = height || this.text.textHeight + (margin * 2);
+
     this.background = new PIXI.Graphics();
     this.background.beginFill(0x000000);
-    this.background.drawRect(0, 0, this.text.textWidth + (margin*2), this.text.textHeight + (margin*2));
+    this.background.drawRect(0, 0, width, height);
 
     this.text.position.set(margin, margin);
 
