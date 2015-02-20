@@ -9,6 +9,7 @@ DragDropManager.init = function(root) {
     this.origin = new PIXI.Point();
 
     this.dropTargets = [];
+    this.currentDropTarget = null;
 
     this.root = root;
 
@@ -23,7 +24,7 @@ DragDropManager.addDropTarget = function(target) {
 
 };
 
-DragDropManager.onDragStart = function(draggable, e) {
+DragDropManager.onDragStart = function(e, draggable) {
 
     if(this.dragging) { return; }
 
@@ -56,27 +57,31 @@ DragDropManager.onDragMove = function(e) {
         this.origin.y + dy
     );
 
-    // go through all possible drop targets
+    this.currentDropTarget = null;
+
+    // go through all possible drop targets and see if we are over any
     for(var i = 0; i < this.dropTargets.length; i++) {
 
-
-
-        if(this.dropTargets[i].onDragOver(this.dragging)) {
-            this.over = this.dropTargets[i];
+        if(this.root.stage.interactionManager.hitTest(this.dropTargets[i], e)) {
+            this.currentDropTarget = this.dropTargets[i];
+            this.currentDropTarget.onDragOver(e, this.dragging);
             break;
         }
+
     }
 };
 
-DragDropManager.onDrop = function(draggable, e) {
+DragDropManager.onDrop = function(e, draggable) {
 
     if(!this.dragging) { return; }
 
     var dropped = false;
 
-    if(this.over) {
+    if(this.currentDropTarget) {
         // try to drop it on the target
-        dropped = this.over.drop(this.dragging);
+        if(this.currentDropTarget.canAcceptDrop(e, draggable)) {
+            //dropped = true;
+        }
     }
 
     // either not over a target at all

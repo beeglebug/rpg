@@ -7,16 +7,15 @@ var Draggable = function(displayObject) {
     this.interactive = true;
 
     this.mousedown = function(e) {
-        console.log('dragmousedown');
-        DragDropManager.onDragStart(this, e);
+        DragDropManager.onDragStart(e, this);
     }.bind(this);
 
     this.mouseup = function(e) {
-        DragDropManager.onDrop(this, e);
+        DragDropManager.onDrop(e, this);
     }.bind(this);
 
     this.mouseupoutside = function(e) {
-        DragDropManager.onDrop(this, e);
+        DragDropManager.onDrop(e, this);
     }.bind(this);
 
 };
