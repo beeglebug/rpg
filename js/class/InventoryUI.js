@@ -9,18 +9,9 @@ var InventoryUI = function (inventory, slotWidth, slotHeight) {
     this.slotWidth = slotWidth;
     this.slotHeight = slotHeight;
 
-    // create graphics
-    this.graphics = new PIXI.DisplayObjectContainer();
-
-    //this.highlight = new PIXI.Graphics();
-    //this.highlight.alpha = 0.3;
-    //this.graphics.addChild(this.highlight);
-
     var grid = this._generateGrid();
 
-    this.graphics.addChild(grid);
-    this.graphics.interactive = true;
-    this.graphics.hitArea = new PIXI.Rectangle(0, 0, this.inventory.width * this.slotWidth, this.inventory.height * this.slotHeight);
+    this.graphics = new Droppable(grid);
 
     this.index = [];
 

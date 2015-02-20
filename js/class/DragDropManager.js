@@ -1,6 +1,6 @@
 var DragDropManager = {};
 
-DragDropManager.init = function() {
+DragDropManager.init = function(root) {
 
     this.dragging = null;
 
@@ -9,8 +9,19 @@ DragDropManager.init = function() {
     this.origin = new PIXI.Point();
 
     this.dropTargets = [];
+
+    this.root = root;
+
+    this.root.mousemove = function(e) {
+        this.onDragMove(e);
+    }.bind(this);
 };
 
+DragDropManager.addDropTarget = function(target) {
+
+    this.dropTargets.push(target);
+
+};
 
 DragDropManager.onDragStart = function(draggable, e) {
 
@@ -23,6 +34,7 @@ DragDropManager.onDragStart = function(draggable, e) {
     this.offset.set(pos.x, pos.y);
 
     this.start.set(e.global.x, e.global.y);
+
     // remember where it came from
     this.origin.set(
         draggable.position.x,
@@ -31,9 +43,9 @@ DragDropManager.onDragStart = function(draggable, e) {
 };
 
 
-DragDropManager.onDragMove = function(draggable, e) {
+DragDropManager.onDragMove = function(e) {
 
-    if(!this.dragging || this.dragging !== draggable) { return; }
+    if(!this.dragging) { return; }
 
     // how far has the mouse moved?
     var dx = e.global.x - this.start.x,
@@ -46,7 +58,10 @@ DragDropManager.onDragMove = function(draggable, e) {
 
     // go through all possible drop targets
     for(var i = 0; i < this.dropTargets.length; i++) {
-        if(this.dropTargets[i].over(this.dragging)) {
+
+
+
+        if(this.dropTargets[i].onDragOver(this.dragging)) {
             this.over = this.dropTargets[i];
             break;
         }

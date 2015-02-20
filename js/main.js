@@ -35,7 +35,7 @@ stage.addChild(ui);
 document.getElementById('canvas-wrapper').appendChild(renderer.view);
 
 // init singletons
-DragDropManager.init();
+DragDropManager.init(stage);
 
 // ui experiments
 var floorInventory = new Inventory(7, 7);
@@ -90,6 +90,7 @@ function assetsLoaded() {
     generateIsoGraphics();
 
     player.setPosition(2, 2);
+    lootCurrentTile();
 
     requestAnimFrame(animate);
 }
