@@ -1,6 +1,6 @@
 var DragDropManager = {};
 
-DragDropManager.init = function(root) {
+DragDropManager.init = function (root) {
 
     this.dragging = null;
 
@@ -13,23 +13,25 @@ DragDropManager.init = function(root) {
 
     this.root = root;
 
-    this.root.mousemove = function(e) {
+    this.root.mousemove = function (e) {
         this.onDragMove(e);
     }.bind(this);
 };
 
-DragDropManager.addDropTarget = function(target) {
+DragDropManager.addDropTarget = function (target) {
 
     this.dropTargets.push(target);
 
 };
 
-DragDropManager.onDragStart = function(e, draggable) {
+DragDropManager.onDragStart = function (e, draggable) {
 
-    if(this.dragging) { return; }
+    if (this.dragging) {
+        return;
+    }
 
     this.dragging = draggable;
-    
+
     var pos = e.getLocalPosition(draggable);
 
     this.offset.set(pos.x, pos.y);
@@ -44,9 +46,11 @@ DragDropManager.onDragStart = function(e, draggable) {
 };
 
 
-DragDropManager.onDragMove = function(e) {
+DragDropManager.onDragMove = function (e) {
 
-    if(!this.dragging) { return; }
+    if (!this.dragging) {
+        return;
+    }
 
     // how far has the mouse moved?
     var dx = e.global.x - this.start.x,
@@ -60,9 +64,9 @@ DragDropManager.onDragMove = function(e) {
     this.currentDropTarget = null;
 
     // go through all possible drop targets and see if we are over any
-    for(var i = 0; i < this.dropTargets.length; i++) {
+    for (var i = 0; i < this.dropTargets.length; i++) {
 
-        if(this.root.stage.interactionManager.hitTest(this.dropTargets[i], e)) {
+        if (this.root.stage.interactionManager.hitTest(this.dropTargets[i], e)) {
             this.currentDropTarget = this.dropTargets[i];
             this.currentDropTarget.onDragOver(e, this.dragging);
             break;
@@ -71,22 +75,18 @@ DragDropManager.onDragMove = function(e) {
     }
 };
 
-DragDropManager.onDrop = function(e, draggable) {
+DragDropManager.onDrop = function (e, draggable) {
 
-    if(!this.dragging) { return; }
-
-    var dropped = false;
-
-    if(this.currentDropTarget) {
-        // try to drop it on the target
-        if(this.currentDropTarget.canAcceptDrop(e, draggable)) {
-            dropped = true;
-        }
+    if (!this.dragging) {
+        return;
     }
 
-    // either not over a target at all
-    // or unsuccessful for other reasons
-    if(!dropped) {
+    if (this.currentDropTarget && this.currentDropTarget.canAcceptDrop(e, draggable)) {
+
+        this.currentDropTarget.acceptDrop(e, draggable);
+
+    } else {
+
         this.revert();
     }
 
@@ -96,7 +96,7 @@ DragDropManager.onDrop = function(e, draggable) {
 /**
  * put the draggable back where it came from
  */
-DragDropManager.revert = function() {
+DragDropManager.revert = function () {
 
     this.dragging.position.set(
         this.origin.x,

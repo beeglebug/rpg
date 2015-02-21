@@ -18,6 +18,9 @@ var Droppable = function(displayObject, accepts) {
 
     this.hitArea = displayObject.getBounds();
 
+    // cached point for drop calculations
+    this._temp = new PIXI.Point();
+
     // register self with manager
     DragDropManager.addDropTarget(this);
 };
@@ -34,6 +37,13 @@ Droppable.prototype.onDragOver = function(e, draggable) {
 
     // pass the event on to anything listening
     this.emit('drag-over', e, draggable);
+};
+
+
+Droppable.prototype.acceptDrop = function(e, draggable) {
+
+    // pass the event on to anything listening
+    this.emit('drop-accepted', e, draggable);
 };
 
 /**

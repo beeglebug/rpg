@@ -4,10 +4,10 @@ var Inventory = function (width, height) {
     this.height = height || 1;
 
     this.items = [];
-    this.spatialData = [];
+    this.spatialIndex = [];
 
     // create empty grid
-    this.spatialData = array2d(this.width, this.height);
+    this.spatialIndex = array2d(this.width, this.height, null);
 
     this.packer = new Packer(this.width, this.height);
 };
@@ -35,7 +35,7 @@ Inventory.prototype.canAddItemAtPosition = function (item, position) {
 
     for (iy = position.y; iy < maxY; iy++) {
         for (ix = position.x; ix < maxX; ix++) {
-            if (this.spatialData[iy][ix] !== null && this.spatialData[iy][ix] !== item) {
+            if (this.spatialIndex[iy][ix] !== null && this.spatialIndex[iy][ix] !== item) {
                 existing = true;
             }
         }
@@ -44,36 +44,77 @@ Inventory.prototype.canAddItemAtPosition = function (item, position) {
     return !isOutside && !existing;
 };
 
+Inventory.prototype.containsItem = function(item) {
 
+    var x, y;
+
+    for (y = 0; y < this.height; y++) {
+        for (x = 0; x < this.width; x++) {
+            if (this.spatialIndex[y][x] == item) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+};
+
+/**
+ * @param item
+ * @param position
+ * @fires item-moved
+ * @fires item-added
+ */
 Inventory.prototype.addItemAtPosition = function (item, position) {
 
-    // todo check its not already there
-    this.items.push(item);
+    var ix = this.items.indexOf(item);
 
-    item.position.set(position.x, position.y);
+    // already exists, just move it
+    if(ix >= 0) {
 
-    this.setSpatialData(item.position.x, item.position.y, item.width, item.height, item);
+        // clear spatial data
+        this.setSpatialIndex(item.position.x, item.position.y, item.width, item.height, null);
 
-    this.emit('item-added', item, this);
+        item.position.set(position.x, position.y);
+
+        // set again
+        this.setSpatialIndex(item.position.x, item.position.y, item.width, item.height, item);
+
+        this.emit('item-moved', item, this);
+
+    } else {
+
+        this.items.push(item);
+
+        item.position.set(position.x, position.y);
+
+        this.setSpatialIndex(item.position.x, item.position.y, item.width, item.height, item);
+
+        this.emit('item-added', item, this);
+    }
 };
 
 Inventory.prototype.removeItem = function (item) {
 
-    // todo test it exists first
-    this.items.splice( this.items.indexOf(item), 1 );
+    var ix = this.items.indexOf(item);
 
-    this.setSpatialData(item.position.x, item.position.y, item.width, item.height, null);
+    // doesn't exist
+    if(ix < 0) { return; }
+
+    this.items.splice( ix, 1 );
+
+    this.setSpatialIndex(item.position.x, item.position.y, item.width, item.height, null);
 
     this.emit('item-removed', item, this);
 };
 
-Inventory.prototype.setSpatialData = function (x, y, width, height, value) {
+Inventory.prototype.setSpatialIndex = function (x, y, width, height, value) {
 
     var iy, ix;
 
     for (iy = y; iy < y + height; iy++) {
         for (ix = x; ix < x + width; ix++) {
-            this.spatialData[iy][ix] = value;
+            this.spatialIndex[iy][ix] = value;
         }
     }
 };

@@ -14,42 +14,24 @@ var InventoryGrid = function (inventory, slotWidth, slotHeight) {
 
     Droppable.call(this, grid);
 
-    this.addEventListener('drag-over', function(e, draggable) {
-
-    });
-
-    this.addEventListener('drop', function(e, draggable) {
-
-    });
-
     this.index = [];
 
-    this.inventory.items.forEach(function(item){
+    this.inventory.items.forEach(function (item) {
 
         this.addItem(item);
 
     }.bind(this));
 
     // event listeners
-    this.inventory.addEventListener('item-added', function(item) {
-
-        this.addItem(item);
-
-    }.bind(this));
-
-    this.inventory.addEventListener('item-removed', function(item) {
-
-        this.removeItem(item);
-
-    }.bind(this));
+    this.inventory.addEventListener('item-added', this.addItem.bind(this));
+    this.inventory.addEventListener('item-moved', this.moveItem.bind(this));
+    this.inventory.addEventListener('item-removed', this.removeItem.bind(this));
 
 };
 
 InventoryGrid.prototype = Object.create(Droppable.prototype);
 
-/**
- * create graphics objects used by the grid
- */
+
 InventoryGrid.prototype._generateGrid = function () {
 
     var grid = new PIXI.Graphics();
@@ -75,8 +57,14 @@ InventoryGrid.prototype._generateGrid = function () {
     return grid;
 };
 
+InventoryGrid.prototype.moveItem = function (item) {
 
-InventoryGrid.prototype.addItem = function(item) {
+    var draggable = this.index[item.id];
+
+    draggable.position.set(item.position.x * this.slotWidth, item.position.y * this.slotHeight);
+};
+
+InventoryGrid.prototype.addItem = function (item) {
 
     var gfx = new PIXI.Graphics();
 
@@ -85,14 +73,16 @@ InventoryGrid.prototype.addItem = function(item) {
     gfx.drawRect(0, 0, item.width * this.slotWidth, item.height * this.slotHeight);
 
     var draggable = new Draggable(gfx);
-    draggable.position.set(item.position.x * this.slotWidth, item.position.y * this.slotHeight);
 
     this.index[item.id] = draggable;
+    draggable.item = item;
+
+    draggable.position.set(item.position.x * this.slotWidth, item.position.y * this.slotHeight);
 
     this.addChild(draggable);
 };
 
-InventoryGrid.prototype.removeItem = function(item) {
+InventoryGrid.prototype.removeItem = function (item) {
 
     var draggable = this.index[item.id];
 
@@ -103,164 +93,54 @@ InventoryGrid.prototype.removeItem = function(item) {
     delete this.index[item.id];
 };
 
-//
-///**
-// * adjust the highlight graphics
-// */
-//InventoryGrid.prototype.resizeHighlight = function (position, item) {
-//
-//    this.highlight.clear();
-//    this.highlight.beginFill(0xFFFFFF);
-//
-//    var width = item.width * this.slotWidth,
-//        height = item.height * this.slotHeight;
-//
-//    this.highlight.drawRect(0, 0, width, height);
-//};
-//
-///**
-// * adjust the highlight graphics
-// */
-//InventoryGrid.prototype.moveHighlight = function (position) {
-//
-//    this.highlight.position.set(
-//        position.x * this.slotWidth,
-//        position.y * this.slotHeight
-//    );
-//};
-//
-///**
-// * adjust the highlight graphics
-// */
-//InventoryGrid.prototype.showHighlight = function () {
-//    this.highlight.visible = true;
-//};
-//
-///**
-// * adjust the highlight graphics
-// */
-//InventoryGrid.prototype.hideHighlight = function () {
-//    this.highlight.visible = false;
-//};
-//
-///**
-// * check if a draggable item is over the grid
-// * TODO rename isOver
-// */
-//InventoryGrid.prototype.over = function (draggable) {
-//
-//    var pos = new PIXI.Point(
-//        draggable.position.x - this.graphics.position.x + (this.slotWidth / 2),
-//        draggable.position.y - this.graphics.position.y + (this.slotHeight / 2)
-//    );
-//
-//    var over = this.graphics.hitArea.contains(pos.x, pos.y);
-//
-//    if (over) {
-//
-//        if (this._dragging) {
-//            this.dragMove(draggable, pos);
-//        } else {
-//            this.dragEnter(draggable, pos);
-//        }
-//
-//        return true;
-//
-//    } else {
-//
-//        if (this._dragging) {
-//            this.dragLeave(draggable, pos);
-//        }
-//
-//        return false;
-//    }
-//};
-//
-//
-//InventoryGrid.prototype.dragEnter = function (draggable, pos) {
-//
-//    this._dragging = true;
-//
-//    var slot = this.getGridPositionAt(pos);
-//
-//    this.resizeHighlight(slot, draggable.gridItem);
-//    this.moveHighlight(pos);
-//    this.showHighlight(pos);
-//
-//};
-//
-//InventoryGrid.prototype.dragMove = function (draggable, pos) {
-//
-//    var slot = this.getGridPositionAt(pos);
-//
-//    if (this.canDrop(draggable.gridItem, slot)) {
-//
-//        this.showHighlight();
-//
-//    } else {
-//
-//        this.hideHighlight();
-//
-//    }
-//
-//    this.moveHighlight(slot);
-//};
-//
-//InventoryGrid.prototype.dragLeave = function (draggable, pos) {
-//
-//    this._dragging = false;
-//
-//    this.hideHighlight();
-//
-//    if (!this.spatialConstraint) {
-//        draggable.gridItem.grow();
-//    }
-//};
-//
-//
-///**
-// * drop a draggable item on the grid
-// */
-//InventoryGrid.prototype.drop = function (draggable) {
-//
-//    var pos = new PIXI.Point(
-//        draggable.position.x - this.graphics.position.x + (this.slotWidth / 2),
-//        draggable.position.y - this.graphics.position.y + (this.slotHeight / 2)
-//    );
-//
-//    var slot = this.getGridPositionAt(pos);
-//
-//    var item = draggable.gridItem;
-//
-//    this._dragging = false;
-//
-//    this.hideHighlight();
-//
-//    if (this.canDrop(item, slot)) {
-//
-//        item.grid.remove(item);
-//
-//        this.add(
-//            item,
-//            slot.x, slot.y
-//        );
-//
-//        return true;
-//    }
-//
-//    return false;
-//};
-//
-//
-///**
-// * get the grid position for a point on the graphics
-// */
-//InventoryGrid.prototype.getGridPositionAt = function (position, point) {
-//
-//    point = point || new PIXI.Point();
-//
-//    point.x = Math.floor(position.x / this.size);
-//    point.y = Math.floor(position.y / this.size);
-//
-//    return point;
-//};
+InventoryGrid.prototype.onDragOver = function (e, draggable) {
+
+    // pass the event on to anything listening
+    this.emit('drag-over', e, draggable);
+};
+
+InventoryGrid.prototype.acceptDrop = function (e, draggable) {
+
+    e.getLocalPosition(this, this._temp);
+
+    this.getGridPositionAt(this._temp, this._temp);
+
+    var item = draggable.item;
+
+    // does it need moving from a different parent?
+    if(draggable.parent !== this) {
+
+        // kill the old one
+        draggable.parent.inventory.removeItem(item);
+    }
+
+    this.inventory.addItemAtPosition(item, this._temp);
+
+    // pass the event on to anything listening
+    this.emit('drop-accepted', e, draggable);
+};
+
+InventoryGrid.prototype.canAcceptDrop = function (e, draggable) {
+
+    if (this.accepts && draggable.type !== this.accepts) {
+        return false;
+    }
+
+    e.getLocalPosition(this, this._temp);
+
+    this.getGridPositionAt(this._temp, this._temp);
+
+    var item = draggable.item;
+
+    return this.inventory.canAddItemAtPosition(item, this._temp);
+};
+
+InventoryGrid.prototype.getGridPositionAt = function (position, point) {
+
+    point = point || new PIXI.Point();
+
+    point.x = Math.floor(position.x / this.slotWidth);
+    point.y = Math.floor(position.y / this.slotHeight);
+
+    return point;
+};
