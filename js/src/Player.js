@@ -19,7 +19,6 @@ Player.prototype.setPosition = function(x, y) {
 Player.prototype.enterTile = function(tile) {
 
     // todo emit events and subscribe to this from somewhere else
-
     floorInventoryUI.setInventory(tile.inventory);
 };
 

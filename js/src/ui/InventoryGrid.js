@@ -6,20 +6,20 @@
  */
 var InventoryGrid = function (inventory, slotWidth, slotHeight) {
 
-    this.setInventory(inventory);
-
     this.slotWidth = slotWidth;
     this.slotHeight = slotHeight;
+    
+    this.onAddItem = this.addItem.bind(this);
+    this.onMoveItem = this.moveItem.bind(this);
+    this.onRemoveItem = this.removeItem.bind(this);
+
+    this.setInventory(inventory);
 
     var grid = this._generateGrid();
 
     Droppable.call(this, grid);
 
     this.index = {};
-
-    this.onAddItem = this.addItem.bind(this);
-    this.onMoveItem = this.moveItem.bind(this);
-    this.onRemoveItem = this.removeItem.bind(this);
 };
 
 // inheritance
