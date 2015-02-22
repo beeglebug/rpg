@@ -13,7 +13,7 @@ var MapTile = function (type, x, y) {
     this.solid = false;
 
     // stuff on the floor
-    this.items = [];
+    this.inventory = new Inventory(7,7);
 };
 
 MapTile.VISIBILITY_NONE = 0;

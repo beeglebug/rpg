@@ -21,6 +21,8 @@ var gridUI = new PIXI.DisplayObjectContainer(); // highlights etc
 var objects = new PIXI.DisplayObjectContainer();
 var ui = new PIXI.DisplayObjectContainer();
 
+ui.interactive = true;
+
 iso.addChildren([floor, grid, gridUI, objects]);
 iso.position.set(200, 100);
 iso.interactive = true;
@@ -35,25 +37,16 @@ stage.addChild(ui);
 document.getElementById('canvas-wrapper').appendChild(renderer.view);
 
 // init singletons
-DragDropManager.init(stage);
+DragDropManager.init(ui);
 
 // ui experiments
-var floorInventory = new Inventory(7, 7);
-var floorInventoryUI = new InventoryGrid(floorInventory, 24, 24);
+var floorInventoryUI = new InventoryGrid(new Inventory(7,7), 24, 24);
 floorInventoryUI.position.set(400, 50);
 ui.addChild(floorInventoryUI);
 
 var playerInventoryUI = new InventoryGrid(player.inventory, 24, 24);
 playerInventoryUI.position.set(400, 250);
 ui.addChild(playerInventoryUI);
-
-
-ui.interactive = true;
-ui.mousemove = function(e) {
-
-    Tooltip.onMouseMove(e);
-
-};
 
 
 /**
@@ -116,9 +109,7 @@ function lootCurrentTile() {
     }
 
     if (loot) {
-        tile.items.push(loot);
-        floorInventory.clear();
-        floorInventory.fill(tile.items);
+        tile.inventory.addItem(loot);
     }
 }
 
@@ -137,3 +128,12 @@ function array2d(width, height, fill) {
     return arr;
 }
 
+
+function randomColor() {
+    var letters = '0123456789ABCDEF'.split('');
+    var color = '0x';
+    for (var i = 0; i < 6; i++ ) {
+        color += letters[rng.randomIntBetween(0,15)];
+    }
+    return color;
+}

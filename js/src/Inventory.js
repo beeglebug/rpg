@@ -4,11 +4,11 @@ var Inventory = function (width, height) {
     this.height = height || 1;
 
     this.items = [];
-    this.spatialIndex = [];
 
     // create empty grid
     this.spatialIndex = array2d(this.width, this.height, null);
 
+    // todo make singleton packer
     this.packer = new Packer(this.width, this.height);
 };
 
@@ -137,6 +137,14 @@ Inventory.prototype.packAndFill = function (items) {
     }.bind(this));
 
     this.fill(nodes);
+};
+
+Inventory.prototype.addItem = function(item) {
+
+    // todo find next available slot
+    var pos = new PIXI.Point();
+
+    this.addItemAtPosition(item, pos);
 };
 
 Inventory.prototype.fill = function(items) {

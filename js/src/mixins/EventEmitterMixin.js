@@ -18,6 +18,8 @@ var EventEmitterMixin = function () {
 
         }
 
+        // todo generate an id and return it, use that to remove events
+
         this._listeners[event].push(fn);
 
         return this;
@@ -39,13 +41,9 @@ var EventEmitterMixin = function () {
         }
 
         this._listeners[event].forEach(function (listener, ix, listeners) {
-
-            if (listener == fn) {
-
+            if (listener === fn) {
                 listeners.splice(ix, 1);
-
             }
-
         });
 
         return true;

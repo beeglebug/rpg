@@ -6,7 +6,11 @@ DragDropManager.init = function (root) {
 
     this.start = new PIXI.Point();
     this.offset = new PIXI.Point();
-    this.origin = new PIXI.Point();
+
+    this.origin = {
+        position : new PIXI.Point(),
+        parent : null
+    };
 
     this.dropTargets = [];
     this.currentDropTarget = null;
@@ -26,22 +30,36 @@ DragDropManager.addDropTarget = function (target) {
 
 DragDropManager.onDragStart = function (e, draggable) {
 
+    // already dragging (shouldn't be possible)
     if (this.dragging) {
         return;
     }
 
     this.dragging = draggable;
 
-    var pos = e.getLocalPosition(draggable);
+    // record mouse position inside element
+    e.getLocalPosition(draggable, this.offset);
 
-    this.offset.set(pos.x, pos.y);
-
-    this.start.set(e.global.x, e.global.y);
+    // record position within root element
+    e.getLocalPosition(this.root, this.start);
 
     // remember where it came from
-    this.origin.set(
+    this.origin.position.set(
         draggable.position.x,
         draggable.position.y
+    );
+
+    this.origin.parent = draggable.parent;
+
+    draggable.parent.onDragStart(e, draggable);
+
+    // move to root so as to be above other ui elements
+    this.root.addChild(draggable);
+
+    // set starting position
+    draggable.position.set(
+        this.start.x - this.offset.x,
+        this.start.y - this.offset.y
     );
 };
 
@@ -52,13 +70,11 @@ DragDropManager.onDragMove = function (e) {
         return;
     }
 
-    // how far has the mouse moved?
-    var dx = e.global.x - this.start.x,
-        dy = e.global.y - this.start.y;
+    var pos = e.getLocalPosition(this.root);
 
     this.dragging.position.set(
-        this.origin.x + dx,
-        this.origin.y + dy
+        pos.x - this.offset.x,
+        pos.y - this.offset.y
     );
 
     this.currentDropTarget = null;
@@ -80,26 +96,21 @@ DragDropManager.onDrop = function (e, draggable) {
     if (!this.dragging) {
         return;
     }
+    if (this.currentDropTarget && this.currentDropTarget.canAcceptDrop(e, this.dragging)) {
 
-    if (this.currentDropTarget && this.currentDropTarget.canAcceptDrop(e, draggable)) {
-
-        this.currentDropTarget.acceptDrop(e, draggable);
+        // do the drop
+        this.currentDropTarget.acceptDrop(e, this.dragging);
 
     } else {
 
-        this.revert();
+        // revert to where it came from
+        this.dragging.position.set(
+            this.origin.position.x,
+            this.origin.position.y
+        );
+
+        this.origin.parent.addChild(this.dragging);
     }
 
     this.dragging = null;
-};
-
-/**
- * put the draggable back where it came from
- */
-DragDropManager.revert = function () {
-
-    this.dragging.position.set(
-        this.origin.x,
-        this.origin.y
-    );
 };

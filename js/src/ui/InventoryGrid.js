@@ -6,7 +6,8 @@
  */
 var InventoryGrid = function (inventory, slotWidth, slotHeight) {
 
-    this.inventory = inventory;
+    this.setInventory(inventory);
+
     this.slotWidth = slotWidth;
     this.slotHeight = slotHeight;
 
@@ -14,22 +15,49 @@ var InventoryGrid = function (inventory, slotWidth, slotHeight) {
 
     Droppable.call(this, grid);
 
-    this.index = [];
+    this.index = {};
 
-    this.inventory.items.forEach(function (item) {
-
-        this.addItem(item);
-
-    }.bind(this));
-
-    // event listeners
-    this.inventory.addEventListener('item-added', this.addItem.bind(this));
-    this.inventory.addEventListener('item-moved', this.moveItem.bind(this));
-    this.inventory.addEventListener('item-removed', this.removeItem.bind(this));
-
+    this.onAddItem = this.addItem.bind(this);
+    this.onMoveItem = this.moveItem.bind(this);
+    this.onRemoveItem = this.removeItem.bind(this);
 };
 
+// inheritance
 InventoryGrid.prototype = Object.create(Droppable.prototype);
+
+
+InventoryGrid.prototype.setInventory = function (inventory) {
+
+    if (this.inventory) {
+
+        // clear old items
+        // todo add removeItems shortcut
+        this.inventory.items.forEach(function (item) {
+            this.removeItem(item);
+        }.bind(this));
+
+        // remove old event listeners
+        this.inventory.removeEventListener('item-added', this.onAddItem);
+        this.inventory.removeEventListener('item-moved', this.onMoveItem);
+        this.inventory.removeEventListener('item-removed', this.onRemoveItem);
+    }
+
+    if(inventory) {
+        // set new inventory
+        this.inventory = inventory;
+
+        // add new items
+        // todo add addItems shortcut
+        this.inventory.items.forEach(function (item) {
+            this.addItem(item);
+        }.bind(this));
+
+        // add new event listeners
+        this.inventory.addEventListener('item-added', this.onAddItem);
+        this.inventory.addEventListener('item-moved', this.onMoveItem);
+        this.inventory.addEventListener('item-removed', this.onRemoveItem);
+    }
+};
 
 
 InventoryGrid.prototype._generateGrid = function () {
@@ -66,18 +94,21 @@ InventoryGrid.prototype.moveItem = function (item) {
 
 InventoryGrid.prototype.addItem = function (item) {
 
+    // already made it
+    if(this.index[item.id]) { return; }
+
     var gfx = new PIXI.Graphics();
 
-    gfx.beginFill(0xFFFFFF);
-    gfx.alpha = 0.8;
+    gfx.beginFill(randomColor());
+    //gfx.alpha = 0.8;
     gfx.drawRect(0, 0, item.width * this.slotWidth, item.height * this.slotHeight);
 
     var draggable = new Draggable(gfx);
 
-    this.index[item.id] = draggable;
     draggable.item = item;
-
     draggable.position.set(item.position.x * this.slotWidth, item.position.y * this.slotHeight);
+
+    this.index[item.id] = draggable;
 
     this.addChild(draggable);
 };
@@ -88,9 +119,13 @@ InventoryGrid.prototype.removeItem = function (item) {
 
     this.removeChild(draggable);
 
-    delete draggable;
-
     delete this.index[item.id];
+};
+
+InventoryGrid.prototype.onDragStart = function (e, draggable) {
+
+    this.inventory.removeItem(draggable.item);
+
 };
 
 InventoryGrid.prototype.onDragOver = function (e, draggable) {
@@ -107,12 +142,9 @@ InventoryGrid.prototype.acceptDrop = function (e, draggable) {
 
     var item = draggable.item;
 
-    // does it need moving from a different parent?
-    if(draggable.parent !== this) {
-
-        // kill the old one
-        draggable.parent.inventory.removeItem(item);
-    }
+    // adding the item will add a new graphics
+    // so we need to remove the old one first
+    draggable.parent.removeChild(draggable);
 
     this.inventory.addItemAtPosition(item, this._temp);
 

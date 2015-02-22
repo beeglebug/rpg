@@ -18,11 +18,11 @@ Player.prototype.setPosition = function(x, y) {
 
 Player.prototype.enterTile = function(tile) {
 
-    floorInventory.fill(tile.items);
+    // todo emit events and subscribe to this from somewhere else
+
+    floorInventoryUI.setInventory(tile.inventory);
 };
 
 Player.prototype.exitTile = function(tile) {
-
-    floorInventory.clear();
 
 };

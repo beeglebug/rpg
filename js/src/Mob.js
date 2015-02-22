@@ -10,6 +10,9 @@ var Mob = function(x, y) {
 
 Mob.prototype.setPosition = function(x, y) {
 
+    // already here
+    if(this.position.x === x && this.position.y === y) { return; }
+
     this.position.set(x, y);
 
     if(this.sprite) {
