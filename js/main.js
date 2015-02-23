@@ -74,8 +74,6 @@ loader.load();
 
 function assetsLoaded() {
 
-    Logger.log('assets loaded');
-
     var btn = new Button('loot', lootCurrentTile);
     ui.addChild(btn);
     btn.position.set(400, 10);
