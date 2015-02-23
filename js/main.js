@@ -30,7 +30,7 @@ iso.scale.set(2);
 
 grid.alpha = 0.05;
 
-stage.addChild(iso);
+//stage.addChild(iso);
 stage.addChild(ui);
 
 // add to dom
@@ -95,13 +95,13 @@ function lootCurrentTile() {
 
     switch (tile.type) {
         case 'R':
-            loot = new InventoryItem(1, 1, 'newspaper');
+            loot = new InventoryItem(2, 2, 'newspaper');
             break;
         case 'G':
-            loot = new InventoryItem(1, 1, 'flower');
+            loot = new InventoryItem(1, 2, 'flower');
             break;
         case 'H':
-            loot = new InventoryItem(1, 1, 'book');
+            loot = new InventoryItem(2, 1, 'book');
             break;
         case 'T':
             loot = new InventoryItem(1, 1, 'acorn');

@@ -16,35 +16,35 @@ EventEmitterMixin.call(Inventory.prototype);
 
 Inventory.prototype.canAddItemAtPosition = function (item, position) {
 
-    var iy, ix, existing = false,
-        maxX = position.x + item.width,
+    // quick exit, already occupied
+    if (this.spatialIndex[position.y][position.x] !== null) {
+        return false;
+    }
+
+    var maxX = position.x + item.width,
         maxY = position.y + item.height;
 
-    var isOutside = (
-    maxX > this.width ||
-    maxY > this.height
-    );
-
-    if (maxX > this.width) {
-        maxX = this.width;
+    // quick exit, outside bounds
+    if (maxX > this.width || maxY > this.height) {
+        return;
     }
 
-    if (maxY > this.height) {
-        maxY = this.height;
-    }
+    var y, x;
 
-    for (iy = position.y; iy < maxY; iy++) {
-        for (ix = position.x; ix < maxX; ix++) {
-            if (this.spatialIndex[iy][ix] !== null && this.spatialIndex[iy][ix] !== item) {
-                existing = true;
+    for (y = position.y; y < maxY; y++) {
+        for (x = position.x; x < maxX; x++) {
+            if (this.spatialIndex[y][x] !== null && this.spatialIndex[y][x] !== item) {
+                // quick exit, something here
+                return false;
             }
         }
     }
 
-    return !isOutside && !existing;
+    // not outside, not occupied
+    return true;
 };
 
-Inventory.prototype.containsItem = function(item) {
+Inventory.prototype.containsItem = function (item) {
 
     var x, y;
 
@@ -70,7 +70,7 @@ Inventory.prototype.addItemAtPosition = function (item, position) {
     var ix = this.items.indexOf(item);
 
     // already exists, just move it
-    if(ix >= 0) {
+    if (ix >= 0) {
 
         // clear spatial data
         this.setSpatialIndex(item.position.x, item.position.y, item.width, item.height, null);
@@ -99,9 +99,11 @@ Inventory.prototype.removeItem = function (item) {
     var ix = this.items.indexOf(item);
 
     // doesn't exist
-    if(ix < 0) { return; }
+    if (ix < 0) {
+        return;
+    }
 
-    this.items.splice( ix, 1 );
+    this.items.splice(ix, 1);
 
     this.setSpatialIndex(item.position.x, item.position.y, item.width, item.height, null);
 
@@ -139,15 +141,38 @@ Inventory.prototype.packAndFill = function (items) {
     this.fill(nodes);
 };
 
-Inventory.prototype.addItem = function(item) {
+Inventory.prototype.addItem = function (item) {
 
-    // todo find next available slot
-    var pos = new PIXI.Point();
+    var pos = this.findAvailableSlot(item);
 
-    this.addItemAtPosition(item, pos);
+    if (pos) {
+        this.addItemAtPosition(item, pos);
+    }
+
+    return false;
 };
 
-Inventory.prototype.fill = function(items) {
+Inventory.prototype.findAvailableSlot = function (item) {
+
+    var slot = new PIXI.Point();
+
+    var x, y,
+        maxX = this.width - item.width,
+        maxY = this.height - item.height;
+
+    for (y = 0; y <= maxY; y++) {
+        for (x = 0; x <= maxX; x++) {
+            slot.set(x, y);
+            if (this.canAddItemAtPosition(item, slot)) {
+                return slot;
+            }
+        }
+    }
+
+    return false;
+};
+
+Inventory.prototype.fill = function (items) {
 
     this.clear();
 
@@ -158,14 +183,17 @@ Inventory.prototype.fill = function(items) {
     }.bind(this));
 };
 
-Inventory.prototype.clear = function() {
+Inventory.prototype.clear = function () {
 
-    if(!this.items.length) { return; }
+    if (!this.items.length) {
+        return;
+    }
 
     // clear items
-    for(var i = this.items.length - 1; i >= 0; i--) {
+    for (var i = this.items.length - 1; i >= 0; i--) {
         this.removeItem(this.items[i]);
-    };
+    }
+    ;
 
     // reset packer
     this.packer.reset(this.width, this.height);
