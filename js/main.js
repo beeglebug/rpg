@@ -30,7 +30,7 @@ iso.scale.set(2);
 
 grid.alpha = 0.05;
 
-//stage.addChild(iso);
+stage.addChild(iso);
 stage.addChild(ui);
 
 // add to dom
