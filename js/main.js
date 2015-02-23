@@ -125,11 +125,16 @@ function takeAllLoot() {
 
         item = player.tile.inventory.items[i];
 
+        // we need to remove it first
+        player.tile.inventory.removeItem(item);
+
         added = player.inventory.addItem(item);
 
-        if(added) {
-            player.tile.inventory.removeItem(item);
+        if(!added) {
+            // re-add to original inventory
+            player.tile.inventory.addItemAtPosition(item, item.position);
         }
+
     }
 
 }
