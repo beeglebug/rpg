@@ -1,3 +1,9 @@
+/**
+ * a mobile entity
+ * @param x
+ * @param y
+ * @constructor
+ */
 var Mob = function(x, y) {
 
     this.position = new PIXI.Point(x, y);

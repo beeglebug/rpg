@@ -1,3 +1,7 @@
+/**
+ * @class
+ * @name DragDropManager
+ */
 var DragDropManager = {};
 
 DragDropManager.init = function (root) {

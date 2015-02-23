@@ -1,3 +1,12 @@
+/**
+ *
+ * @param text
+ * @param callback
+ * @param width
+ * @param height
+ * @constructor
+ * @extends PIXI.DisplayObjectContainer
+ */
 var Button = function(text, callback, width, height) {
 
     PIXI.DisplayObjectContainer.call(this);

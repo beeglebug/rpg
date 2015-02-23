@@ -1,3 +1,10 @@
+/**
+ * a draggable object
+ * @param displayObject
+ * @param type
+ * @constructor
+ * @extends PIXI.DisplayObjectContainer
+ */
 var Draggable = function(displayObject, type) {
 
     PIXI.DisplayObjectContainer.call(this);

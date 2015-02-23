@@ -1,6 +1,5 @@
 /**
- * something which can be picked up
- * and placed in an inventory
+ * something which can be placed in an inventory
  * @constructor
  * todo pass an options object with all the settings
  * make a factory to make items, data pulled from json files

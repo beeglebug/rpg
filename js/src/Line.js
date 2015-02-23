@@ -1,4 +1,12 @@
-// Bresenham's algorithm
+/**
+ * a line
+ * calculated using bresenhams algorithm
+ * @param x0
+ * @param y0
+ * @param x1
+ * @param y1
+ * @constructor
+ */
 var Line = function(x0, y0, x1, y1) {
     
     this.points = [];

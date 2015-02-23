@@ -1,3 +1,10 @@
+/**
+ * an inventory, holds InventoryItems in a 2d spatial index
+ * @param width
+ * @param height
+ * @constructor
+ * @mixes EventEmitterMixin
+ */
 var Inventory = function (width, height) {
 
     this.width = width || 1;

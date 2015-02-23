@@ -4,7 +4,7 @@
  * @param accepts
  * @constructor
  * @extends PIXI.DisplayObjectContainer
- * @mixes EventEmitter
+ * @mixes EventEmitterMixin
  */
 var Droppable = function(displayObject, accepts) {
 

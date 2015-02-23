@@ -2,7 +2,6 @@
  * all the ui stuff for displaying and manipulating an inventory
  * @constructor
  * @extends Droppable
- * @mixes EventEmitterMixin
  */
 var InventoryUI = function (inventory, slotWidth, slotHeight) {
 
@@ -31,7 +30,6 @@ InventoryUI.prototype.setInventory = function (inventory) {
     if (this.inventory) {
 
         // clear old items
-        // todo add removeItems shortcut
         this.inventory.items.forEach(function (item) {
             this.removeItem(item);
         }.bind(this));
@@ -47,7 +45,6 @@ InventoryUI.prototype.setInventory = function (inventory) {
         this.inventory = inventory;
 
         // add new items
-        // todo add addItems shortcut
         this.inventory.items.forEach(function (item) {
             this.addItem(item);
         }.bind(this));
@@ -59,7 +56,10 @@ InventoryUI.prototype.setInventory = function (inventory) {
     }
 };
 
-
+/**
+ * @returns {PIXI.Graphics}
+ * @private
+ */
 InventoryUI.prototype._generateGrid = function () {
 
     var grid = new PIXI.Graphics();

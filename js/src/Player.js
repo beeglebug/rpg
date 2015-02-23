@@ -1,3 +1,10 @@
+/**
+ * the player
+ * @param x
+ * @param y
+ * @constructor
+ * @extends Mob
+ */
 var Player = function(x, y) {
 
     Mob.call(this, x, y);

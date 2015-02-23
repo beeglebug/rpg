@@ -1,5 +1,5 @@
 /**
- * instantiate an object with a unique id
+ * base class for objects with a unique id
  */
 var ObjectWithId = function() {
 
@@ -7,10 +7,21 @@ var ObjectWithId = function() {
 
 };
 
+/**
+ * get the next unique id number
+ * @returns {number}
+ * @private
+ */
 ObjectWithId.prototype._getId = function() {
 
     return ObjectWithId._currentId++;
 
 };
 
+/**
+ * the current auto increment id
+ * @type {number}
+ * @private
+ * @static
+ */
 ObjectWithId._currentId = 0;
