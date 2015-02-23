@@ -3,14 +3,14 @@
  */
 var ObjectWithId = function() {
 
-    this.id = this.__getId();
+    this.id = this._getId();
 
 };
 
-ObjectWithId.prototype.__getId = function() {
+ObjectWithId.prototype._getId = function() {
 
-    return ObjectWithId.__currentId++;
+    return ObjectWithId._currentId++;
 
 };
 
-ObjectWithId.__currentId = 0;
+ObjectWithId._currentId = 0;
