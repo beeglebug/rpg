@@ -7,9 +7,6 @@ var Inventory = function (width, height) {
 
     // create empty grid
     this.spatialIndex = array2d(this.width, this.height, null);
-
-    // todo make singleton packer
-    this.packer = new Packer(this.width, this.height);
 };
 
 EventEmitterMixin.call(Inventory.prototype);
@@ -121,26 +118,6 @@ Inventory.prototype.setSpatialIndex = function (x, y, width, height, value) {
     }
 };
 
-Inventory.prototype.packAndFill = function (items) {
-
-    // convert to packer nodes
-    var nodes = items.map(function (item) {
-        return {x: 0, y: 0, width: item.width, height: item.height, item: item};
-    });
-
-    // try to fit
-    this.packer.fit(nodes);
-
-    // copy the positions down to items
-    nodes.forEach(function (node) {
-        if (node.fit) {
-            node.item.position.set(node.fit.x, node.fit.y);
-        }
-    }.bind(this));
-
-    this.fill(nodes);
-};
-
 Inventory.prototype.addItem = function (item) {
 
     var pos = this.findAvailableSlot(item);
@@ -170,17 +147,6 @@ Inventory.prototype.findAvailableSlot = function (item) {
     }
 
     return false;
-};
-
-Inventory.prototype.fill = function (items) {
-
-    this.clear();
-
-    items.forEach(function (item) {
-
-        this.addItemAtPosition(item, item.position);
-
-    }.bind(this));
 };
 
 Inventory.prototype.clear = function () {
