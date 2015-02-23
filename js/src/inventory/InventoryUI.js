@@ -4,7 +4,7 @@
  * @extends Droppable
  * @mixes EventEmitterMixin
  */
-var InventoryGrid = function (inventory, slotWidth, slotHeight) {
+var InventoryUI = function (inventory, slotWidth, slotHeight) {
 
     this.slotWidth = slotWidth;
     this.slotHeight = slotHeight;
@@ -23,10 +23,10 @@ var InventoryGrid = function (inventory, slotWidth, slotHeight) {
 };
 
 // inheritance
-InventoryGrid.prototype = Object.create(Droppable.prototype);
+InventoryUI.prototype = Object.create(Droppable.prototype);
 
 
-InventoryGrid.prototype.setInventory = function (inventory) {
+InventoryUI.prototype.setInventory = function (inventory) {
 
     if (this.inventory) {
 
@@ -60,7 +60,7 @@ InventoryGrid.prototype.setInventory = function (inventory) {
 };
 
 
-InventoryGrid.prototype._generateGrid = function () {
+InventoryUI.prototype._generateGrid = function () {
 
     var grid = new PIXI.Graphics();
 
@@ -85,14 +85,14 @@ InventoryGrid.prototype._generateGrid = function () {
     return grid;
 };
 
-InventoryGrid.prototype.moveItem = function (item) {
+InventoryUI.prototype.moveItem = function (item) {
 
     var draggable = this.index[item.id];
 
     draggable.position.set(item.position.x * this.slotWidth, item.position.y * this.slotHeight);
 };
 
-InventoryGrid.prototype.addItem = function (item) {
+InventoryUI.prototype.addItem = function (item) {
 
     // already made it
     if(this.index[item.id]) { return; }
@@ -113,7 +113,7 @@ InventoryGrid.prototype.addItem = function (item) {
     this.addChild(draggable);
 };
 
-InventoryGrid.prototype.removeItem = function (item) {
+InventoryUI.prototype.removeItem = function (item) {
 
     var draggable = this.index[item.id];
 
@@ -122,19 +122,19 @@ InventoryGrid.prototype.removeItem = function (item) {
     delete this.index[item.id];
 };
 
-InventoryGrid.prototype.onDragStart = function (e, draggable) {
+InventoryUI.prototype.onDragStart = function (e, draggable) {
 
     this.inventory.removeItem(draggable.item);
 
 };
 
-InventoryGrid.prototype.onDragOver = function (e, draggable) {
+InventoryUI.prototype.onDragOver = function (e, draggable) {
 
     // pass the event on to anything listening
     this.emit('drag-over', e, draggable);
 };
 
-InventoryGrid.prototype.acceptDrop = function (e, draggable) {
+InventoryUI.prototype.acceptDrop = function (e, draggable) {
 
     e.getLocalPosition(this, this._temp);
 
@@ -152,7 +152,7 @@ InventoryGrid.prototype.acceptDrop = function (e, draggable) {
     this.emit('drop-accepted', e, draggable);
 };
 
-InventoryGrid.prototype.canAcceptDrop = function (e, draggable) {
+InventoryUI.prototype.canAcceptDrop = function (e, draggable) {
 
     if (this.accepts && draggable.type !== this.accepts) {
         return false;
@@ -167,7 +167,7 @@ InventoryGrid.prototype.canAcceptDrop = function (e, draggable) {
     return this.inventory.canAddItemAtPosition(item, this._temp);
 };
 
-InventoryGrid.prototype.getGridPositionAt = function (position, point) {
+InventoryUI.prototype.getGridPositionAt = function (position, point) {
 
     point = point || new PIXI.Point();
 

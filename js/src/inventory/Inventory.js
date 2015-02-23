@@ -89,6 +89,8 @@ Inventory.prototype.addItemAtPosition = function (item, position) {
 
         this.emit('item-added', item, this);
     }
+
+    return true;
 };
 
 Inventory.prototype.removeItem = function (item) {
@@ -123,7 +125,7 @@ Inventory.prototype.addItem = function (item) {
     var pos = this.findAvailableSlot(item);
 
     if (pos) {
-        this.addItemAtPosition(item, pos);
+        return this.addItemAtPosition(item, pos);
     }
 
     return false;

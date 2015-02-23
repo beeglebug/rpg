@@ -30,7 +30,7 @@ iso.scale.set(2);
 
 grid.alpha = 0.05;
 
-stage.addChild(iso);
+//stage.addChild(iso);
 stage.addChild(ui);
 
 // add to dom
@@ -40,11 +40,11 @@ document.getElementById('canvas-wrapper').appendChild(renderer.view);
 DragDropManager.init(ui);
 
 // ui experiments
-var floorInventoryUI = new InventoryGrid(new Inventory(7,7), 24, 24);
+var floorInventoryUI = new InventoryUI(new Inventory(7,7), 24, 24);
 floorInventoryUI.position.set(400, 50);
 ui.addChild(floorInventoryUI);
 
-var playerInventoryUI = new InventoryGrid(player.inventory, 24, 24);
+var playerInventoryUI = new InventoryUI(player.inventory, 24, 24);
 playerInventoryUI.position.set(400, 250);
 ui.addChild(playerInventoryUI);
 
@@ -80,6 +80,10 @@ function assetsLoaded() {
     ui.addChild(btn);
     btn.position.set(400, 10);
 
+    var btn = new Button('take all', takeAllLoot);
+    ui.addChild(btn);
+    btn.position.set(440, 10);
+
     generateIsoGraphics();
 
     player.setPosition(2, 2);
@@ -111,6 +115,23 @@ function lootCurrentTile() {
     if (loot) {
         tile.inventory.addItem(loot);
     }
+}
+
+function takeAllLoot() {
+
+    var i, item, added;
+
+    for(i = player.tile.inventory.items.length - 1; i >= 0; i--) {
+
+        item = player.tile.inventory.items[i];
+
+        added = player.inventory.addItem(item);
+
+        if(added) {
+            player.tile.inventory.removeItem(item);
+        }
+    }
+
 }
 
 // todo move to helpers
