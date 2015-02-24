@@ -24,13 +24,13 @@ var ui = new PIXI.DisplayObjectContainer();
 ui.interactive = true;
 
 iso.addChildren([floor, grid, gridUI, objects]);
-iso.position.set(200, 100);
 iso.interactive = true;
-iso.scale.set(2);
+//iso.scale.set(2);
 
 grid.alpha = 0.05;
 
-stage.addChild(iso);
+var camera = new Camera(iso);
+stage.addChild(camera);
 stage.addChild(ui);
 
 // add to dom
