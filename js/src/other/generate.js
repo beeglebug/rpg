@@ -10,7 +10,7 @@ function generateMapData() {
         'GGGGG'
     ];
 
-    var road = rng.randomIntBetween(0, 4);
+    var road = rng.randomIntBetween(0, data.length - 1);
 
     data[road] = 'RRRRR';
 
