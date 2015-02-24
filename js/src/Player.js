@@ -27,6 +27,12 @@ Player.prototype.enterTile = function(tile) {
 
     // todo emit events and subscribe to this from somewhere else
     floorInventoryUI.setInventory(tile.inventory);
+
+    camera.setTarget(tile.position);
+
+    // todo reset mouse hover
+    iso.mousemove(stage.interactionManager.mouse);
+
 };
 
 Player.prototype.exitTile = function(tile) {

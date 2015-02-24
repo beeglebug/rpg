@@ -29,7 +29,7 @@ iso.interactive = true;
 
 grid.alpha = 0.05;
 
-var camera = new Camera(iso);
+var camera = new Camera(200, 200, iso);
 stage.addChild(camera);
 stage.addChild(ui);
 
@@ -86,6 +86,8 @@ function assetsLoaded() {
 
     player.setPosition(2, 2);
     lootCurrentTile();
+
+    camera.setTarget(player.position);
 
     requestAnimFrame(animate);
 }
@@ -161,3 +163,31 @@ function randomColor() {
     }
     return color;
 }
+
+var hoverTile = null;
+
+iso.mousemove = function (e) {
+
+    var pos = e.getLocalPosition(this);
+
+    screenToMap(pos);
+
+    hoverTile = map.getTileAt(pos.x, pos.y);
+
+    if (hoverTile) {
+        highlight.move(pos);
+        highlight.show();
+    } else {
+        highlight.hide();
+    }
+};
+
+iso.click = function (e) {
+
+    if (hoverTile) {
+
+        // move player
+        player.setPosition(hoverTile.position.x, hoverTile.position.y);
+    }
+
+};

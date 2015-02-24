@@ -1,30 +1,4 @@
-var hoverTile = null;
 
-iso.mousemove = function (e) {
-
-    var pos = e.getLocalPosition(this);
-
-    screenToMap(pos);
-
-    hoverTile = map.getTileAt(pos.x, pos.y);
-
-    if (hoverTile) {
-        highlight.move(pos);
-        highlight.show();
-    } else {
-        highlight.hide();
-    }
-};
-
-iso.click = function (e) {
-
-    if (hoverTile) {
-
-        // move player
-        player.setPosition(hoverTile.position.x, hoverTile.position.y);
-    }
-
-};
 
 // generate graphics
 function generateIsoGraphics() {
