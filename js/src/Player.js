@@ -30,9 +30,6 @@ Player.prototype.enterTile = function(tile) {
 
     camera.setTarget(tile.position);
 
-    // todo reset mouse hover
-    iso.mousemove(stage.interactionManager.mouse);
-
 };
 
 Player.prototype.exitTile = function(tile) {

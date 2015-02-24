@@ -188,6 +188,9 @@ iso.click = function (e) {
 
         // move player
         player.setPosition(hoverTile.position.x, hoverTile.position.y);
-    }
 
+        var pos = e.getLocalPosition(this);
+
+        highlight.setPosition(pos);
+    }
 };
