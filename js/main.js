@@ -10,7 +10,7 @@ var stage = new PIXI.Stage(0xDDDDDD, true);
 var renderer = PIXI.autoDetectRenderer(800, 600);
 var rng = new RNG();
 var player = new Player();
-var data = generateMapData(17,17);
+var data = generateMapData(100, 100);
 var map = new MapData(data);
 
 // build display list

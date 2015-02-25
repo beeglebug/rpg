@@ -5,8 +5,30 @@ function generateMapData(width, height) {
         data.push( row(width, 'G') );
     }
 
-    var road = rng.randomIntBetween(0, height - 1);
-    data[road] = row(width, 'R');
+    var roadDensity = Math.round(height / 10); // 1 in 10
+    var treeDensity = Math.round( (width * height) / 10 ); // 1 in 10
+    var houseDensity = Math.round( (width * height) / 20 ); // 1 in 20
+
+    var i, road;
+
+    // roads
+    for(i = 0; i < roadDensity; i++) {
+        road = rng.randomIntBetween(0, height - 1);
+        data[road] = row(width, 'R');
+    }
+
+
+    // houses
+    for(i = 0; i < houseDensity; i++) {
+        setRandomGrassTile('H')
+    }
+
+    // trees
+    for(i = 0; i < treeDensity; i++) {
+        setRandomGrassTile('T')
+    }
+
+    return data;
 
     function setRandomGrassTile(value) {
 
@@ -27,20 +49,5 @@ function generateMapData(width, height) {
         }
         return arr;
     }
-
-    var treeDensity = Math.round( (width * height) / 10 ); // 1 in 10
-    var houseDensity = Math.round( (width * height) / 20 ); // 1 in 20
-
-    // houses
-    for(var i = 0; i < houseDensity; i++) {
-        setRandomGrassTile('H')
-    }
-
-    // trees
-    for(var i = 0; i < treeDensity; i++) {
-        setRandomGrassTile('T')
-    }
-
-    return data;
 }
 
