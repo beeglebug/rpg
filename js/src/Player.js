@@ -28,7 +28,7 @@ Player.prototype.enterTile = function(tile) {
     // todo emit events and subscribe to this from somewhere else
     floorInventoryUI.setInventory(tile.inventory);
 
-    camera.setTarget(tile.position);
+    //camera.setTarget(tile.position);
 
 };
 
