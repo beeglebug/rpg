@@ -2,7 +2,9 @@ var Camera = function(width, height, displayObject) {
 
     PIXI.DisplayObjectContainer.call(this);
 
-    this.child = displayObject;
+    this.scene = displayObject;
+
+    this.zoom = 1;
 
     var background = new PIXI.Graphics();
     background.beginFill(0x000000);
@@ -37,9 +39,26 @@ Camera.prototype.setTarget = function(pos) {
 
     mapToScreen(this.offset);
 
-    this.child.position.set(
-        this.center.x - (this.offset.x * this.child.scale.x),
-        this.center.y - (this.offset.y * this.child.scale.y)
+    this._reposition();
+};
+
+/**
+ * @private
+ */
+Camera.prototype._reposition = function() {
+
+    this.scene.position.set(
+        this.center.x - (this.offset.x * this.zoom),
+        this.center.y - (this.offset.y * this.zoom)
     );
 
+};
+
+Camera.prototype.setZoom = function(level) {
+
+    this.zoom = level;
+
+    this.scene.scale.set(this.zoom);
+
+    this._reposition();
 };

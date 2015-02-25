@@ -25,13 +25,14 @@ ui.interactive = true;
 
 iso.addChildren([floor, grid, gridUI, objects]);
 iso.interactive = true;
-iso.scale.set(2);
 
 grid.alpha = 0.05;
 
-var camera = new Camera(200, 200, iso);
+var camera = new Camera(480, 270, iso);
 stage.addChild(camera);
 stage.addChild(ui);
+
+camera.setZoom(2);
 
 // add to dom
 document.getElementById('canvas-wrapper').appendChild(renderer.view);
@@ -41,11 +42,11 @@ DragDropManager.init(ui);
 
 // ui experiments
 var floorInventoryUI = new InventoryUI(new Inventory(7,7), 24, 24);
-floorInventoryUI.position.set(400, 50);
+floorInventoryUI.position.set(500, 50);
 ui.addChild(floorInventoryUI);
 
 var playerInventoryUI = new InventoryUI(player.inventory, 24, 24);
-playerInventoryUI.position.set(400, 250);
+playerInventoryUI.position.set(500, 250);
 ui.addChild(playerInventoryUI);
 
 
@@ -76,11 +77,11 @@ function assetsLoaded() {
 
     var btn = new Button('loot', lootCurrentTile);
     ui.addChild(btn);
-    btn.position.set(400, 10);
+    btn.position.set(500, 10);
 
     var btn = new Button('take all', takeAllLoot);
     ui.addChild(btn);
-    btn.position.set(440, 10);
+    btn.position.set(540, 10);
 
     generateIsoGraphics();
 
