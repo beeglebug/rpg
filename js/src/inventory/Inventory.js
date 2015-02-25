@@ -18,6 +18,8 @@ var Inventory = function (width, height) {
 
 EventEmitterMixin.call(Inventory.prototype);
 
+// todo add functions to drop spatialIndex and just keep items, and restore
+
 Inventory.prototype.canAddItemAtPosition = function (item, position) {
 
     // quick exit, already occupied
