@@ -13,6 +13,14 @@ PIXI.Point.prototype.equals = function(point) {
 
 };
 
+PIXI.Point.prototype.distanceTo = function(point) {
+
+    var dx = Math.abs(this.x - point.x),
+        dy = Math.abs(this.y - point.y);
+
+    return Math.sqrt((dx * dx) + (dy * dy));
+};
+
 
 PIXI.DisplayObjectContainer.prototype.addChildren = function(children)
 {
