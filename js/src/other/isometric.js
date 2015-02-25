@@ -3,11 +3,8 @@
 // generate graphics
 function generateIsoGraphics() {
 
-    highlight.sprite = PIXI.Sprite.fromFrame('highlight.png');
-    highlight.sprite.setAnchor(17, 0);
-    highlight.sprite.animationSpeed = 0.05;
+    highlight.init();
     gridUI.addChild(highlight.sprite);
-    highlight.hide();
 
     player.sprite = PIXI.Sprite.fromFrame('man.png');
     player.sprite.setAnchor(3, 0);

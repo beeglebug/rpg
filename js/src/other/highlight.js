@@ -5,6 +5,13 @@ var highlight = {
 
     sprite: new PIXI.Sprite(),
 
+    init : function() {
+
+        this.sprite = PIXI.Sprite.fromFrame('highlight.png');
+        this.sprite.setAnchor(17, 0);
+
+    },
+
     move: function (pos) {
 
         if (this.position.equals(pos)) {
