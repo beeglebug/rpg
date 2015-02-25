@@ -20,15 +20,17 @@ function setLighting(sprite, visibility) {
     switch (visibility) {
         // never seen
         case 0:
-            sprite.tint = 0x000000;
+            sprite.visible = false;
             break;
         // previously seen
         case 1:
             sprite.tint = 0x555555;
+            sprite.visible = true;
             break;
         // currently visible
         case 2:
             sprite.tint = 0xFFFFFF;
+            sprite.visible = true;
             break;
     }
 
