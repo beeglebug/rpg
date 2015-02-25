@@ -10,7 +10,7 @@ var stage = new PIXI.Stage(0xDDDDDD, true);
 var renderer = PIXI.autoDetectRenderer(800, 600);
 var rng = new RNG();
 var player = new Player();
-var data = generateMapData();
+var data = generateMapData(17,17);
 var map = new MapData(data);
 
 // build display list
@@ -84,7 +84,10 @@ function assetsLoaded() {
 
     generateIsoGraphics();
 
-    player.setPosition(2, 2);
+    player.setPosition(
+        Math.floor(map.width / 2),
+        Math.floor(map.height / 2)
+    );
     lootCurrentTile();
 
     camera.setTarget(player.position);

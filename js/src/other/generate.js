@@ -1,24 +1,13 @@
-function generateMapData() {
+function generateMapData(width, height) {
 
-    var x, y;
-
-    var data = [
-        'GGGGG',
-        'GGGGG',
-        'GGGGG',
-        'GGGGG',
-        'GGGGG'
-    ];
+    var data = [];
+    for(var i = 0; i < height; i++) {
+        data.push( row(width, 'G') );
+    }
 
     var road = rng.randomIntBetween(0, data.length - 1);
 
-    data[road] = 'RRRRR';
-
-    data = data.map(function(row){
-        return row.split('');
-    });
-
-    var object, x, y;
+    data[road] = row(width, 'R');
 
     function setRandomGrassTile(value) {
 
@@ -30,6 +19,14 @@ function generateMapData() {
         }
 
         return data[y][x] = value;
+    }
+
+    function row(len, val) {
+        var arr = [];
+        for(var i = 0; i < len; i++) {
+            arr.push(val);
+        }
+        return arr;
     }
 
     // three houses
@@ -44,3 +41,4 @@ function generateMapData() {
 
     return data;
 }
+
