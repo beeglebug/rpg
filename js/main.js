@@ -188,7 +188,7 @@ iso.mousemove = function (e) {
 
 iso.click = function (e) {
 
-    if (hoverTile) {
+    if (hoverTile && hoverTile.position.distanceTo(player.tile.position) < 1.5) {
 
         // move player
         player.setPosition(hoverTile.position.x, hoverTile.position.y);
