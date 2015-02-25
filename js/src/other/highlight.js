@@ -12,6 +12,23 @@ var highlight = {
 
     },
 
+    setTile: function(tile) {
+
+        if (tile) {
+            this.move(tile.position);
+            this.show();
+
+            if(tile.visibility == 0) {
+                this.sprite.alpha = 0.1;
+            } else {
+                this.sprite.alpha = 1;
+            }
+
+        } else {
+            this.hide();
+        }
+    },
+
     move: function (pos) {
 
         if (this.position.equals(pos)) {
