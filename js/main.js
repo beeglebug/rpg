@@ -178,12 +178,7 @@ iso.mousemove = function (e) {
 
     hoverTile = map.getTileAt(pos.x, pos.y);
 
-    if (hoverTile) {
-        highlight.move(pos);
-        highlight.show();
-    } else {
-        highlight.hide();
-    }
+    highlight.setTile(hoverTile);
 };
 
 iso.click = function (e) {
