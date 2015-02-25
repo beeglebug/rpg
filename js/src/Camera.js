@@ -38,8 +38,8 @@ Camera.prototype.setTarget = function(pos) {
     mapToScreen(this.offset);
 
     this.child.position.set(
-        this.center.x - this.offset.x,
-        this.center.y - this.offset.y
+        this.center.x - (this.offset.x * this.child.scale.x),
+        this.center.y - (this.offset.y * this.child.scale.y)
     );
 
 };

@@ -10,7 +10,7 @@ var stage = new PIXI.Stage(0xDDDDDD, true);
 var renderer = PIXI.autoDetectRenderer(800, 600);
 var rng = new RNG();
 var player = new Player();
-var data = generateMapData(100, 100);
+var data = generateMapData(50,50);
 var map = new MapData(data);
 
 // build display list
@@ -25,7 +25,7 @@ ui.interactive = true;
 
 iso.addChildren([floor, grid, gridUI, objects]);
 iso.interactive = true;
-//iso.scale.set(2);
+iso.scale.set(2);
 
 grid.alpha = 0.05;
 
