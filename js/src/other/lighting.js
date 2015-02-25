@@ -18,12 +18,15 @@ function renderLighting() {
 function setLighting(sprite, visibility) {
 
     switch (visibility) {
+        // never seen
         case 0:
             sprite.tint = 0x000000;
             break;
+        // previously seen
         case 1:
-            sprite.tint = 0x999999;
+            sprite.tint = 0x555555;
             break;
+        // currently visible
         case 2:
             sprite.tint = 0xFFFFFF;
             break;
