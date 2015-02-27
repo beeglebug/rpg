@@ -82,7 +82,7 @@ loader.load();
 
 function assetsLoaded() {
 
-    var btn = new Button('loot', lootCurrentTile);
+    var btn = new Button('search', searchCurrentTile);
     ui.addChild(btn);
     btn.position.set(500, 10);
 
@@ -100,14 +100,15 @@ function assetsLoaded() {
         Math.floor(map.width / 2),
         Math.floor(map.height / 2)
     );
-    lootCurrentTile();
+
+    searchCurrentTile();
 
     camera.setTarget(player.position);
 
     requestAnimFrame(animate);
 }
 
-function lootCurrentTile() {
+function searchCurrentTile() {
 
     var tile = player.tile;
     var loot = null;
