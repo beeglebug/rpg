@@ -184,6 +184,7 @@ iso.mousemove = function (e) {
         camera.scene.position.x += (rightCurrent.x - rightStart.x);
         camera.scene.position.y += (rightCurrent.y - rightStart.y);
     }
+
 };
 
 iso.click = function (e) {
