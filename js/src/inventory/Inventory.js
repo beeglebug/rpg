@@ -177,3 +177,26 @@ Inventory.prototype.clear = function () {
 };
 
 
+Inventory.prototype.moveAllTo = function(inventory) {
+
+    var i, item, added, allMoved = true;
+
+    for(i = this.items.length - 1; i >= 0; i--) {
+
+        item = this.items[i];
+
+        // we need to remove it first
+        this.removeItem(item);
+
+        added = inventory.addItem(item);
+
+        if(!added) {
+            allMoved = false;
+            // re-add to original inventory
+            this.addItemAtPosition(item, item.position);
+        }
+
+    }
+
+    return allMoved;
+};

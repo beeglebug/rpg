@@ -135,23 +135,7 @@ function searchCurrentTile() {
 
 function takeAllLoot() {
 
-    var i, item, added;
-
-    for(i = player.tile.inventory.items.length - 1; i >= 0; i--) {
-
-        item = player.tile.inventory.items[i];
-
-        // we need to remove it first
-        player.tile.inventory.removeItem(item);
-
-        added = player.inventory.addItem(item);
-
-        if(!added) {
-            // re-add to original inventory
-            player.tile.inventory.addItemAtPosition(item, item.position);
-        }
-
-    }
+    player.tile.inventory.moveAllTo(player.inventory);
 
 }
 
