@@ -56,6 +56,7 @@ playerInventoryUI.position.set(500, 250);
 ui.addChild(playerInventoryUI);
 
 
+
 /**
  * main loop
  */
@@ -88,6 +89,10 @@ function assetsLoaded() {
     var btn = new Button('take all', takeAllLoot);
     ui.addChild(btn);
     btn.position.set(540, 10);
+
+    tileInfo = new TileInfo();
+    ui.addChild(tileInfo);
+    tileInfo.position.set(20,300);
 
     generateIsoGraphics();
 
