@@ -72,7 +72,8 @@ function animate(time) {
 }
 
 var loader = new PIXI.AssetLoader([
-    'font/munro.fnt',
+    'font/munro-11-white.fnt',
+    'font/munro-11-black.fnt',
     'img/tiles.json',
     'img/ui.json'
 ]);

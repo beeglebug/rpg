@@ -11,7 +11,7 @@ var Button = function(text, callback, width, height) {
 
     PIXI.DisplayObjectContainer.call(this);
 
-    this.text = new PIXI.BitmapText(text, { font: "11px Munro", align: "center" });
+    this.text = new PIXI.BitmapText(text, { font: "munro-11-white", align: "center" });
 
     var margin = 5;
 
