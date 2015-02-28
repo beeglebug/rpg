@@ -1,43 +1,75 @@
-var Tooltip = {
+var Tooltip = function() {
 
-    graphics: null,
-    text: null,
-    margin: 5,
-    timeout: null,
-    delay: 500,
+    PIXI.DisplayObjectContainer.call(this);
 
-    init: function () {
+    this.background = new PIXI.Graphics();
 
-        this.graphics = new PIXI.Graphics();
+    this.text = new PIXI.BitmapText('tooltip', { font: "munro-11-white" });
 
-        this.text = new PIXI.BitmapText(text, { font: "11px Munro" });
+    this.addChild(this.background);
+    this.addChild(this.text);
 
-        this.graphics.addChild(this.text);
+    this.delay = 500;
+    this.margin = 5;
+    this.offset = new PIXI.Point(3,3);
 
-        this.setText('');
-    },
+    this.text.position.set(this.margin, this.margin);
 
-    setText: function(text) {
+    this.visible = false;
 
-        this.text.setText(text);
+    this.setText('tooltip');
+};
 
-        this.graphics.clear();
-        this.graphics.beginFill(0x000000);
-        this.graphics.drawRect(0, 0, this.text.textWidth + (this.margin * 2), this.text.textHeight + (this.margin * 2));
-    },
+Tooltip.prototype = Object.create(PIXI.DisplayObjectContainer.prototype);
 
-    onMouseMove: function(e) {
+Tooltip.prototype.setText = function(text) {
 
-        clearTimeout(this.timeout);
-        this.timeout = setTimeout(this.update.bind(this), this.delay);
+    this.text.setText(text);
+    // immediate update (to get measurements)
+    this.text.updateText();
+    this.text.dirty = false;
 
-    },
+    this.backgroundWidth = this.text.textWidth + (this.margin * 2);
+    this.backgroundHeight = this.text.textHeight + (this.margin * 2);
 
-    update: function() {
+    this.background.clear();
+    this.background.beginFill(0x222222);
+    this.background.drawRect(0, 0, this.backgroundWidth, this.backgroundHeight);
 
-        // check what we are over
+};
 
+Tooltip.prototype.onMouseMove = function(e) {
 
+    this.visible = false;
+
+    clearTimeout(this.timeout);
+
+    var self = this;
+
+    this.timeout = setTimeout(function() {
+        self.update(e);
+    }, this.delay);
+};
+
+Tooltip.prototype.update = function(e) {
+
+    // no tooltip for you
+    if(hoverTile.visibility == MapTile.VISIBILITY_NONE) { return; }
+
+    var text = hoverTile.type;
+
+    if(hoverTile.visibility == MapTile.VISIBILITY_VISIBLE && hoverTile.inventory.items.length) {
+        text += ' (' + pluralize('items', hoverTile.inventory.items.length, true) + ')';
     }
 
+    this.setText(text);
+
+    var pos = e.getLocalPosition(this.parent);
+
+    this.position.set(
+        pos.x + this.offset.x,
+        pos.y - this.backgroundHeight - this.offset.y
+    );
+
+    this.visible = true;
 };

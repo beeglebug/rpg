@@ -93,7 +93,11 @@ function assetsLoaded() {
 
     tileInfo = new TileInfo();
     ui.addChild(tileInfo);
-    tileInfo.position.set(20,300);
+    tileInfo.position.set(10,300);
+
+    tooltip = new Tooltip();
+    ui.addChild(tooltip);
+    tooltip.position.set(200, 300);
 
     generateIsoGraphics();
 
@@ -185,6 +189,8 @@ iso.mousemove = function (e) {
         camera.scene.position.x += (rightCurrent.x - rightStart.x);
         camera.scene.position.y += (rightCurrent.y - rightStart.y);
     }
+
+    tooltip.onMouseMove(e);
 
 };
 
