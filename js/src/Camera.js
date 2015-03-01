@@ -2,7 +2,11 @@ var Camera = function(width, height, displayObject) {
 
     PIXI.DisplayObjectContainer.call(this);
 
+    this.interactive = true;
+
     this.scene = displayObject;
+
+    this.scene.hitArea = new PIXI.Rectangle(0,0, width, height);
 
     this.zoom = 1;
 
@@ -18,7 +22,7 @@ var Camera = function(width, height, displayObject) {
 
     this.addChild(background);
     this.addChild(mask);
-    this.addChild(displayObject);
+    this.addChild(this.scene);
 
     this.mask = mask;
 

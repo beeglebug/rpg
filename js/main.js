@@ -171,9 +171,17 @@ function randomColor() {
 
 var hoverTile = null;
 
-iso.mousemove = function (e) {
+camera.mousemove = function (e) {
 
-    var pos = e.getLocalPosition(this);
+    if(!this.stage.interactionManager.hitTest(this,e)) {
+        highlight.hide();
+        tooltip.clear();
+        return;
+    } else {
+        highlight.show();
+    }
+
+    var pos = e.getLocalPosition(iso);
 
     screenToMap(pos);
 
@@ -191,10 +199,9 @@ iso.mousemove = function (e) {
     }
 
     tooltip.onMouseMove(e);
-
 };
 
-iso.click = function (e) {
+camera.click = function (e) {
 
     if (hoverTile && hoverTile.position.distanceTo(player.tile.position) < 1.5) {
 

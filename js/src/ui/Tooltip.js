@@ -40,15 +40,20 @@ Tooltip.prototype.setText = function(text) {
 
 Tooltip.prototype.onMouseMove = function(e) {
 
-    this.visible = false;
-
-    clearTimeout(this.timeout);
+    this.clear();
 
     var self = this;
 
     this.timeout = setTimeout(function() {
         self.update(e);
     }, this.delay);
+};
+
+Tooltip.prototype.clear = function() {
+
+    this.visible = false;
+
+    clearTimeout(this.timeout);
 };
 
 Tooltip.prototype.update = function(e) {
