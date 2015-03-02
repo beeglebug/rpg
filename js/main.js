@@ -75,13 +75,23 @@ var loader = new PIXI.AssetLoader([
     'font/munro-11-white.fnt',
     'font/munro-11-black.fnt',
     'img/tiles.json',
-    'img/ui.json'
+    'img/ui.json',
+    'data/tile-types.json'
 ]);
 
+var jsonData = {};
+
 loader.addEventListener('onComplete', assetsLoaded);
+loader.addEventListener('onProgress', function(e){
+    if(e.content.loader.json && e.content.loader.baseUrl == 'data/') {
+        //todo save data
+    }
+});
 loader.load();
 
-function assetsLoaded() {
+
+
+function assetsLoaded(e) {
 
     var btn = new Button('search', searchCurrentTile);
     ui.addChild(btn);
