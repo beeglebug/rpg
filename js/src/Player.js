@@ -8,9 +8,18 @@
 var Player = function(x, y) {
 
     Mob.call(this, x, y);
+
+    this.hydration = 100;
+    this.nutrition = 100;
 };
 
 Player.prototype = Object.create(Mob.prototype);
+
+
+Player.prototype.eat = function(edible) {
+
+};
+
 
 Player.prototype.setPosition = function(x, y) {
 

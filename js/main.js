@@ -84,7 +84,8 @@ var jsonData = {};
 loader.addEventListener('onComplete', assetsLoaded);
 loader.addEventListener('onProgress', function(e){
     if(e.content.loader.json && e.content.loader.baseUrl == 'data/') {
-        //todo save data
+        //todo save data globally
+        console.log(1);
     }
 });
 loader.load();
