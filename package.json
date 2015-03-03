@@ -1,0 +1,23 @@
+{
+  "name": "rpg",
+  "version": "0.0.0",
+  "description": "Trello Boards\r - https://trello.com/b/pWmURv5h/prototype\r - https://trello.com/b/mdlchskj/prototype-history",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/beeglebug/rpg.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/beeglebug/rpg/issues"
+  },
+  "homepage": "https://github.com/beeglebug/rpg",
+  "devDependencies": {
+    "browserify": "^9.0.3",
+    "gulp": "^3.8.11"
+  }
+}
