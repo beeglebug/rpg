@@ -1,0 +1,1 @@
+var PIXI = require('./lib/pixi.dev.js');

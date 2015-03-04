@@ -4,7 +4,8 @@
   "description": "Trello Boards\r - https://trello.com/b/pWmURv5h/prototype\r - https://trello.com/b/mdlchskj/prototype-history",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "./node_modules/.bin/browserify js/index.js -o build/build.js"
   },
   "repository": {
     "type": "git",
@@ -18,6 +19,7 @@
   "homepage": "https://github.com/beeglebug/rpg",
   "devDependencies": {
     "browserify": "^9.0.3",
-    "gulp": "^3.8.11"
+    "gulp": "^3.8.11",
+    "gulp-concat": "~2.5.2"
   }
 }
