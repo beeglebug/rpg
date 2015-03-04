@@ -20,6 +20,13 @@
   "devDependencies": {
     "browserify": "^9.0.3",
     "gulp": "^3.8.11",
-    "gulp-concat": "~2.5.2"
+    "gulp-concat": "~2.5.2",
+    "gulp-concat-util": "^0.5.2",
+    "gulp-wrap": "^0.11.0",
+    "gulp-header": "^1.2.2",
+    "gulp-footer": "^1.0.5",
+    "gulp-file-contents-to-json": "^0.1.2",
+    "gulp-through": "^0.3.0",
+    "change-case": "^2.2.0"
   }
 }
