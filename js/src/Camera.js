@@ -1,3 +1,8 @@
+/* jshint node: true */
+'use strict';
+
+var PIXI = require('pixi.extra');
+
 var Camera = function(width, height, displayObject) {
 
     PIXI.DisplayObjectContainer.call(this);
@@ -66,3 +71,5 @@ Camera.prototype.setZoom = function(level) {
 
     this._reposition();
 };
+
+module.exports = Camera;

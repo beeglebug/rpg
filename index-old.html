@@ -1,0 +1,56 @@
+<html>
+<head>
+    <!-- external libraries -->
+    <script src="js/lib/pixi.dev.js"></script>
+    <script src="js/lib/pixi.extra.js"></script>
+    <script src="js/lib/moment.js"></script>
+    <script src="js/lib/tween.min.js"></script>
+    <script src="js/lib/pluralize.js"></script>
+
+    <!-- internal classes -->
+    <script src="js/src/ObjectWithId.js"></script>
+    <script src="js/src/mixins/EventEmitterMixin.js"></script>
+    <script src="js/src/util/RNG.js"></script>
+    <script src="js/src/util/deepProperty.js"></script>
+    <script src="js/src/ui/Draggable.js"></script>
+    <script src="js/src/ui/Droppable.js"></script>
+    <script src="js/src/ui/DragDropManager.js"></script>
+    <script src="js/src/ui/Button.js"></script>
+    <script src="js/src/inventory/Inventory.js"></script>
+    <script src="js/src/inventory/InventoryItem.js"></script>
+    <script src="js/src/inventory/InventoryUI.js"></script>
+    <script src="js/src/map/MapTile.js"></script>
+    <script src="js/src/map/MapData.js"></script>
+    <script src="js/src/map/MapChunk.js"></script>
+    <script src="js/src/Lang.js"></script>
+    <script src="js/src/Line.js"></script>
+    <script src="js/src/Mob.js"></script>
+    <script src="js/src/Player.js"></script>
+    <script src="js/src/Camera.js"></script>
+    <script src="js/src/ui/Tooltip.js"></script>
+    <script src="js/src/ui/TileInfo.js"></script>
+    <script src="js/src/ui/TurnManager.js"></script>
+
+    <!-- stylesheets -->
+    <link rel=stylesheet href="css/style.css">
+
+</head>
+<body>
+
+    <!-- game related dom -->
+    <div class="game">
+        <div id="canvas-wrapper"></div>
+        <div id="react-ui"></div>
+    </div>
+
+    <!-- internal scripts -->
+    <script src="js/src/other/save.js"></script>
+    <script src="js/src/other/generate.js"></script>
+    <script src="js/src/other/highlight.js"></script>
+    <script src="js/src/other/lighting.js"></script>
+    <script src="js/src/other/isometric.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/test.js"></script>
+
+</body>
+</html>

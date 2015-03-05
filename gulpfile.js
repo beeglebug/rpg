@@ -11,12 +11,6 @@ var transform = through('transform', function(file, contents) {
     }).join('.');
 });
 
-gulp.task('pixi', function() {
-    return gulp.src(['./js/lib/pixi.dev.js', './js/lib/pixi.extra.js'])
-        .pipe(concat('pixi.js'))
-        .pipe(gulp.dest('./js/lib/'));
-});
-
 gulp.task('data', function() {
     return gulp.src('data/**/*.json')
         .pipe(transform())

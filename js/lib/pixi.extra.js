@@ -1,3 +1,5 @@
+var PIXI = require('./pixi.dev.js');
+
 PIXI.Point.prototype.add = function(point) {
 
     this.x += point.x;
@@ -39,3 +41,5 @@ PIXI.Sprite.prototype.setAnchor = function(x, y) {
 
     return this;
 };
+
+module.exports = PIXI;
