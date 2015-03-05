@@ -1,3 +1,6 @@
+/* jshint node: true */
+'use strict';
+
 /**
  * base class for objects with a unique id
  */
@@ -25,3 +28,5 @@ ObjectWithId.prototype._getId = function() {
  * @static
  */
 ObjectWithId._currentId = 0;
+
+module.exports = ObjectWithId;

@@ -1,3 +1,9 @@
+/* jshint node: true */
+'use strict';
+
+var PIXI = require('pixi');
+var DragDropManager = require('DragDropManager');
+
 /**
  * a draggable object
  * @param displayObject
@@ -30,3 +36,5 @@ var Draggable = function(displayObject, type) {
 };
 
 Draggable.prototype = Object.create(PIXI.DisplayObjectContainer.prototype);
+
+module.exports = Draggable;

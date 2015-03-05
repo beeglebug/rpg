@@ -1,3 +1,5 @@
+/* jshint node: true */
+'use strict';
 /**
  * an inventory, holds InventoryItems in a 2d spatial index
  * @param width
@@ -200,3 +202,5 @@ Inventory.prototype.moveAllTo = function(inventory) {
 
     return allMoved;
 };
+
+module.exports = Inventory;

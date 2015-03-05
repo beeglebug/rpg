@@ -1,5 +1,9 @@
+/* jshint node: true */
+'use strict';
+
+var PIXI = require('pixi');
+
 /**
- *
  * @param text
  * @param callback
  * @param width
@@ -59,3 +63,5 @@ Button.prototype.onMouseDown = function(e) {
 Button.prototype.onMouseUp = function(e) {
     this.background.alpha = 0.7;
 };
+
+module.exports = Button;

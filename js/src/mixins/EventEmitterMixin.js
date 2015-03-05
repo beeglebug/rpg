@@ -1,3 +1,6 @@
+/* jshint node: true */
+'use strict';
+
 /**
  * @mixin
  */
@@ -103,3 +106,5 @@ var EventEmitterMixin = function () {
 
     };
 };
+
+module.exports = EventEmitterMixin;

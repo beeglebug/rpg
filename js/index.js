@@ -1,12 +1,16 @@
 /* jshint node: true */
+'use strict';
 var PIXI = require('pixi.extra');
 var Camera = require('Camera');
+var Inventory = require('Inventory');
+var InventoryUI = require('InventoryUI');
+var DragDropManager = require('DragDropManager');
 
 // constants
-ISO_TILE_WIDTH = 32;
-ISO_TILE_HEIGHT = 16;
-ISO_TILE_WIDTH_HALF = ISO_TILE_WIDTH / 2;
-ISO_TILE_HEIGHT_HALF = ISO_TILE_HEIGHT / 2;
+var ISO_TILE_WIDTH = 32,
+    ISO_TILE_HEIGHT = 16,
+    ISO_TILE_WIDTH_HALF = ISO_TILE_WIDTH / 2,
+    ISO_TILE_HEIGHT_HALF = ISO_TILE_HEIGHT / 2;
 
 PIXI.scaleModes.DEFAULT = PIXI.scaleModes.NEAREST;
 
@@ -41,8 +45,22 @@ iso.addChildren([floor, grid, gridUI, objects]);
 // add to dom
 var wrapper = document.getElementById('canvas-wrapper');
 wrapper.appendChild(renderer.view);
+
 // stop context menu
 wrapper.addEventListener("contextmenu", function(e) {
     e.preventDefault();
     return false;
 });
+
+
+// init singletons
+DragDropManager.init(ui);
+
+// ui experiments
+var floorInventoryUI = new InventoryUI(new Inventory(7,7), 24, 24);
+floorInventoryUI.position.set(500, 50);
+ui.addChild(floorInventoryUI);
+
+var playerInventoryUI = new InventoryUI(player.inventory, 24, 24);
+playerInventoryUI.position.set(500, 250);
+ui.addChild(playerInventoryUI);

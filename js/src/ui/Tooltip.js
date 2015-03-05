@@ -1,3 +1,8 @@
+/* jshint node: true */
+'use strict';
+
+var PIXI = require('pixi');
+
 var Tooltip = function() {
 
     PIXI.DisplayObjectContainer.call(this);
@@ -78,3 +83,5 @@ Tooltip.prototype.update = function(e) {
 
     this.visible = true;
 };
+
+module.exports = Tooltip;

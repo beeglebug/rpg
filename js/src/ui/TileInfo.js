@@ -1,3 +1,8 @@
+/* jshint node: true */
+'use strict';
+
+var PIXI = require('pixi');
+
 var TileInfo = function() {
 
     PIXI.DisplayObjectContainer.call(this);
@@ -29,3 +34,5 @@ TileInfo.prototype.setTile = function(tile) {
     this.typeText.setText('type: ' + tile.type);
     this.searchedText.setText('not searched');
 };
+
+module.exports = TileInfo;

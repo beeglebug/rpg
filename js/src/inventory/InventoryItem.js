@@ -1,3 +1,9 @@
+/* jshint node: true */
+'use strict';
+
+var ObjectWithId = require('ObjectWithId');
+var PIXI = require('pixi');
+
 /**
  * something which can be placed in an inventory
  * @constructor
@@ -17,3 +23,5 @@ var InventoryItem = function(width, height, name) {
 };
 
 InventoryItem.prototype = Object.create(ObjectWithId.prototype);
+
+module.exports = InventoryItem;
