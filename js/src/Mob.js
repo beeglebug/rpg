@@ -26,7 +26,7 @@ Mob.prototype.setPosition = function(x, y) {
 
     if(this.sprite) {
         this.sprite.position.set(x,y);
-        mapToScreen(this.sprite.position);
+        this.sprite.position.toScreen();
     }
 
     if(this.tile) {

@@ -84,4 +84,4 @@ Tooltip.prototype.update = function(e) {
     this.visible = true;
 };
 
-module.exports = Tooltip;
+module.exports = new Tooltip();

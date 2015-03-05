@@ -1,4 +1,3 @@
-// generate graphics
 function generateIsoGraphics() {
 
     highlight.init();
@@ -31,7 +30,7 @@ function generateIsoGraphics() {
                     sprite.setAnchor(17, 15);
                     sprite.position.set(x, y);
                     sprite.zIndex = 0;
-                    mapToScreen(sprite.position);
+                    sprite.position.toScreen();
                     objects.addChild(sprite);
                     tile.objects.push(sprite);
                     //todo move this
@@ -43,7 +42,7 @@ function generateIsoGraphics() {
                     sprite.setAnchor(17, 14);
                     sprite.position.set(x, y);
                     sprite.zIndex = 0;
-                    mapToScreen(sprite.position);
+                    sprite.position.toScreen();
                     objects.addChild(sprite);
                     tile.objects.push(sprite);
                     break;
@@ -52,7 +51,7 @@ function generateIsoGraphics() {
             tile.position.set(x, y);
             tile.sprite.position.set(x, y);
             tile.sprite.setAnchor(17, 0);
-            mapToScreen(tile.sprite.position);
+            tile.sprite.position.toScreen();
             floor.addChild(tile.sprite);
         }
     }
@@ -65,92 +64,13 @@ function generateIsoGraphics() {
             gridTile = PIXI.Sprite.fromFrame('grid.png');
             gridTile.position.set(x, y);
             gridTile.setAnchor(17, 0);
-            mapToScreen(gridTile.position);
+            gridTile.position.toScreen();
             grid.addChild(gridTile);
         }
     }
 
 }
 
-
-// isometric functions
-function mapToScreen(map) {
-
-    map.set(
-        (map.x - map.y) * ISO_TILE_WIDTH_HALF,
-        (map.x + map.y) * ISO_TILE_HEIGHT_HALF
-    );
-
-    return map;
-}
-
-// isometric functions
-function screenToMap(screen) {
-
-    screen.set(
-        Math.floor((screen.x / ISO_TILE_WIDTH_HALF + screen.y / ISO_TILE_HEIGHT_HALF) / 2),
-        Math.floor((screen.y / ISO_TILE_HEIGHT_HALF - (screen.x / ISO_TILE_WIDTH_HALF)) / 2)
-    );
-
-    return screen;
-}
-
-// isometric functions
-function sortIso(displayObject) {
-
-    var zA, zB;
-
-    displayObject.children.sort(function (a, b) {
-
-        zA = a.position.x + a.position.y + (a.zIndex / 10);
-        zB = b.position.x + b.position.y + (b.zIndex / 10);
-
-        return zA - zB;
-    });
-}
-
-var loader = new PIXI.AssetLoader([
-    'font/munro-11-white.fnt',
-    'font/munro-11-black.fnt',
-    'img/tiles.json',
-    'img/ui.json',
-    'data/tile-types.json'
-]);
-
-loader.addEventListener('onComplete', assetsLoaded);
-loader.load();
-
-function assetsLoaded(e) {
-
-    var btn = new Button('search', searchCurrentTile);
-    ui.addChild(btn);
-    btn.position.set(500, 10);
-
-    var btn = new Button('take all', takeAllLoot);
-    ui.addChild(btn);
-    btn.position.set(540, 10);
-
-    tileInfo = new TileInfo();
-    ui.addChild(tileInfo);
-    tileInfo.position.set(10,300);
-
-    tooltip = new Tooltip();
-    ui.addChild(tooltip);
-    tooltip.position.set(200, 300);
-
-    generateIsoGraphics();
-
-    player.setPosition(
-        Math.floor(map.width / 2),
-        Math.floor(map.height / 2)
-    );
-
-    searchCurrentTile();
-
-    camera.setTarget(player.position);
-
-    requestAnimFrame(animate);
-}
 
 function searchCurrentTile() {
 
@@ -183,9 +103,6 @@ function takeAllLoot() {
 
 }
 
-
-
-
 function randomColor() {
     var letters = '0123456789ABCDEF'.split('');
     var color = '0x';
@@ -195,75 +112,6 @@ function randomColor() {
     return color;
 }
 
-var hoverTile = null;
-
-camera.mousemove = function (e) {
-
-    if(!this.stage.interactionManager.hitTest(this,e)) {
-        highlight.hide();
-        tooltip.clear();
-        return;
-    } else {
-        highlight.show();
-    }
-
-    var pos = e.getLocalPosition(iso);
-
-    screenToMap(pos);
-
-    hoverTile = map.getTileAt(pos.x, pos.y);
-
-    highlight.setTile(hoverTile);
-
-    // todo move into camera code
-    if(rightDrag) {
-
-        e.getLocalPosition(this, rightCurrent);
-
-        camera.scene.position.x += (rightCurrent.x - rightStart.x);
-        camera.scene.position.y += (rightCurrent.y - rightStart.y);
-    }
-
-    tooltip.onMouseMove(e);
-};
-
-camera.click = function (e) {
-
-    if (hoverTile && hoverTile.position.distanceTo(player.tile.position) < 1.5) {
-
-        // move player
-        player.setPosition(hoverTile.position.x, hoverTile.position.y);
-
-        this.updateTransform();
-
-        var pos = e.getLocalPosition(this);
-
-        highlight.setPosition(pos);
-    }
-};
-
-// todo move into camera code
-var rightStart = new PIXI.Point();
-var rightDrag = false;
-var rightCurrent = new PIXI.Point();
-
-iso.rightdown = function(e) {
-
-    // save start position
-    e.getLocalPosition(this, rightStart);
-
-    rightDrag = true;
-
-};
-
-iso.rightup = function(e) {
-
-    rightDrag = false;
-
-};
-
-
-// lighting
 function renderLighting() {
 
     var x, y, tile;
@@ -277,27 +125,28 @@ function renderLighting() {
             });
         }
     }
-}
 
-// lighting
-function setLighting(sprite, visibility) {
+    function setLighting(sprite, visibility) {
 
-    switch (visibility) {
-        // never seen
-        case 0:
-            sprite.visible = false;
-            break;
-        // previously seen
-        case 1:
-            sprite.tint = 0x555555;
-            sprite.visible = true;
-            break;
-        // currently visible
-        case 2:
-            sprite.tint = 0xFFFFFF;
-            sprite.visible = true;
-            break;
+        switch (visibility) {
+            // never seen
+            case 0:
+                sprite.visible = false;
+                break;
+            // previously seen
+            case 1:
+                sprite.tint = 0x555555;
+                sprite.visible = true;
+                break;
+            // currently visible
+            case 2:
+                sprite.tint = 0xFFFFFF;
+                sprite.visible = true;
+                break;
+        }
+
     }
+
 
 }
 
@@ -347,7 +196,7 @@ var highlight = {
 
         this.sprite.position.set(pos.x, pos.y);
 
-        mapToScreen(this.sprite.position);
+        this.sprite.position.toScreen();
     },
 
     show: function () {
@@ -411,4 +260,3 @@ function generateMapData(width, height) {
         return arr;
     }
 }
-

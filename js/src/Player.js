@@ -48,4 +48,4 @@ Player.prototype.exitTile = function(tile) {
 
 };
 
-module.exports = Player;
+module.exports = new Player();

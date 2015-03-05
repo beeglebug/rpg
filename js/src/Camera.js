@@ -46,7 +46,7 @@ Camera.prototype.setTarget = function(pos) {
 
     this.offset.set(pos.x, pos.y);
 
-    mapToScreen(this.offset);
+    this.offset.toScreen();
 
     this._reposition();
 };

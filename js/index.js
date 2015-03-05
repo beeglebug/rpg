@@ -3,15 +3,11 @@
 var PIXI = require('pixi');
 var Camera = require('Camera');
 var Player = require('Player');
+var Button = require('ui/Button');
 var Inventory = require('inventory/Inventory');
 var InventoryUI = require('inventory/InventoryUI');
 var DragDropManager = require('ui/DragDropManager');
-
-// constants
-var ISO_TILE_WIDTH = 32,
-    ISO_TILE_HEIGHT = 16,
-    ISO_TILE_WIDTH_HALF = ISO_TILE_WIDTH / 2,
-    ISO_TILE_HEIGHT_HALF = ISO_TILE_HEIGHT / 2;
+var Tooltip = require('Tooltip');
 
 PIXI.scaleModes.DEFAULT = PIXI.scaleModes.NEAREST;
 
@@ -28,7 +24,6 @@ var objects = new PIXI.DisplayObjectContainer();
 var ui = new PIXI.DisplayObjectContainer();
 
 //var rng = new RNG();
-var player = new Player();
 var data = generateMapData(50,50);
 var map = new MapData(data);
 
@@ -63,9 +58,53 @@ var floorInventoryUI = new InventoryUI(new Inventory(7,7), 24, 24);
 floorInventoryUI.position.set(500, 50);
 ui.addChild(floorInventoryUI);
 
-var playerInventoryUI = new InventoryUI(player.inventory, 24, 24);
+var playerInventoryUI = new InventoryUI(Player.inventory, 24, 24);
 playerInventoryUI.position.set(500, 250);
 ui.addChild(playerInventoryUI);
+
+var hoverTile = null;
+
+var loader = new PIXI.AssetLoader([
+    'font/munro-11-white.fnt',
+    'font/munro-11-black.fnt',
+    'img/tiles.json',
+    'img/ui.json',
+    'data/tile-types.json'
+]);
+
+loader.addEventListener('onComplete', assetsLoaded);
+loader.load();
+
+function assetsLoaded(e) {
+
+    var btn = new Button('search', searchCurrentTile);
+    ui.addChild(btn);
+    btn.position.set(500, 10);
+
+    var btn = new Button('take all', takeAllLoot);
+    ui.addChild(btn);
+    btn.position.set(540, 10);
+
+    ui.addChild(TileInfo);
+    TileInfo.position.set(10,300);
+
+    ui.addChild(Tooltip);
+    Tooltip.position.set(200, 300);
+
+    generateIsoGraphics();
+
+    Player.setPosition(
+        Math.floor(map.width / 2),
+        Math.floor(map.height / 2)
+    );
+
+    searchCurrentTile();
+
+    camera.setTarget(Player.position);
+
+    requestAnimFrame(animate);
+}
+
 
 /**
  * main loop
@@ -74,7 +113,13 @@ function animate(time) {
 
     requestAnimFrame(animate);
 
-    sortIso(objects);
+    objects.children.sort(function (a, b) {
+
+        var zA = a.position.x + a.position.y + (a.zIndex / 10),
+            zB = b.position.x + b.position.y + (b.zIndex / 10);
+
+        return zA - zB;
+    });
 
     renderer.render(stage);
 }
