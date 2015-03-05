@@ -1,10 +1,11 @@
 /* jshint node: true */
 'use strict';
-var PIXI = require('pixi.extra');
+var PIXI = require('pixi');
 var Camera = require('Camera');
-var Inventory = require('Inventory');
-var InventoryUI = require('InventoryUI');
-var DragDropManager = require('DragDropManager');
+var Player = require('Player');
+var Inventory = require('inventory/Inventory');
+var InventoryUI = require('inventory/InventoryUI');
+var DragDropManager = require('ui/DragDropManager');
 
 // constants
 var ISO_TILE_WIDTH = 32,
@@ -27,7 +28,7 @@ var objects = new PIXI.DisplayObjectContainer();
 var ui = new PIXI.DisplayObjectContainer();
 
 //var rng = new RNG();
-//var player = new Player();
+var player = new Player();
 //var data = generateMapData(50,50);
 //var map = new MapData(data);
 

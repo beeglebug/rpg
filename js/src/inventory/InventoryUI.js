@@ -1,7 +1,7 @@
-/* jshint node:true */
+/* jshint node: true */
 'use strict';
 
-var Droppable = require('Droppable');
+var Droppable = require('ui/Droppable');
 var PIXI = require('pixi');
 
 /**

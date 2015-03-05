@@ -1,5 +1,9 @@
 /* jshint node: true */
 'use strict';
+
+var EventEmitterMixin = require('mixins/EventEmitterMixin');
+var array2d = require('util/array2d');
+
 /**
  * an inventory, holds InventoryItems in a 2d spatial index
  * @param width

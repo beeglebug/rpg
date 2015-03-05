@@ -2,8 +2,8 @@
 'use strict';
 
 var PIXI = require('pixi');
-var DragDropManager = require('DragDropManager');
-var EventEmitterMixin = require('EventEmitterMixin');
+var DragDropManager = require('ui/DragDropManager');
+var EventEmitterMixin = require('mixins/EventEmitterMixin');
 
 /**
  * A display object which can accept draggables

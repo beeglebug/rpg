@@ -1,3 +1,6 @@
+var PIXI = require('pixi');
+var Inventory = require('inventory/Inventory');
+
 /**
  * a mobile entity
  * @param x
@@ -39,3 +42,5 @@ Mob.prototype.setPosition = function(x, y) {
 Mob.prototype.enterTile = function(tile) {};
 
 Mob.prototype.exitTile = function(tile) {};
+
+module.exports = Mob;

@@ -1,7 +1,7 @@
 /* jshint node: true */
 'use strict';
 
-var PIXI = require('pixi.extra');
+var PIXI = require('pixi');
 
 var Camera = function(width, height, displayObject) {
 

@@ -1,3 +1,5 @@
+var Mob = require('Mob');
+
 /**
  * the player
  * @param x
@@ -45,3 +47,5 @@ Player.prototype.enterTile = function(tile) {
 Player.prototype.exitTile = function(tile) {
 
 };
+
+module.exports = Player;

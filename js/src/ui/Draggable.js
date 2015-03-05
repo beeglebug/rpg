@@ -2,7 +2,7 @@
 'use strict';
 
 var PIXI = require('pixi');
-var DragDropManager = require('DragDropManager');
+var DragDropManager = require('ui/DragDropManager');
 
 /**
  * a draggable object
