@@ -29,8 +29,8 @@ var ui = new PIXI.DisplayObjectContainer();
 
 //var rng = new RNG();
 var player = new Player();
-//var data = generateMapData(50,50);
-//var map = new MapData(data);
+var data = generateMapData(50,50);
+var map = new MapData(data);
 
 ui.interactive = true;
 iso.interactive = true;
@@ -57,6 +57,7 @@ wrapper.addEventListener("contextmenu", function(e) {
 // init singletons
 DragDropManager.init(ui);
 
+// todo move to a ui object
 // ui experiments
 var floorInventoryUI = new InventoryUI(new Inventory(7,7), 24, 24);
 floorInventoryUI.position.set(500, 50);
@@ -65,3 +66,15 @@ ui.addChild(floorInventoryUI);
 var playerInventoryUI = new InventoryUI(player.inventory, 24, 24);
 playerInventoryUI.position.set(500, 250);
 ui.addChild(playerInventoryUI);
+
+/**
+ * main loop
+ */
+function animate(time) {
+
+    requestAnimFrame(animate);
+
+    sortIso(objects);
+
+    renderer.render(stage);
+}
