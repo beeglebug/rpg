@@ -1,4 +1,12 @@
+/* jshint node: true */
+'use strict';
+
 var PIXI = require('./pixi.dev.js');
+
+/**
+ * assorted extensions to pixi objects, grouped together with original pixi
+ */
+
 
 PIXI.Point.prototype.add = function(point) {
 
