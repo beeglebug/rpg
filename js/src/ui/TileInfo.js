@@ -35,4 +35,4 @@ TileInfo.prototype.setTile = function(tile) {
     this.searchedText.setText('not searched');
 };
 
-module.exports = TileInfo;
+module.exports = new TileInfo();
