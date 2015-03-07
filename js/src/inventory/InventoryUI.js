@@ -3,6 +3,7 @@
 
 var Droppable = require('ui/Droppable');
 var PIXI = require('pixi');
+var randomColor = require('util/randomColor');
 
 /**
  * all the ui stuff for displaying and manipulating an inventory

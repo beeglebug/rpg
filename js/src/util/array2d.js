@@ -1,7 +1,7 @@
 /* jshint node: true */
 'use strict';
 
-module.exports = function(width, height, fill) {
+function array2d(width, height, fill) {
 
     var x, y, arr = [];
 
@@ -13,4 +13,6 @@ module.exports = function(width, height, fill) {
     }
 
     return arr;
-};
+}
+
+module.exports = array2d;
