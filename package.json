@@ -4,8 +4,7 @@
   "description": "Trello Boards\r - https://trello.com/b/pWmURv5h/prototype\r - https://trello.com/b/mdlchskj/prototype-history",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "node scripts/build.js > build/rpg.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -18,15 +17,10 @@
   },
   "homepage": "https://github.com/beeglebug/rpg",
   "devDependencies": {
-    "browserify": "^9.0.3",
     "gulp": "^3.8.11",
-    "gulp-concat": "~2.5.2",
-    "gulp-concat-util": "^0.5.2",
-    "gulp-wrap": "^0.11.0",
-    "gulp-header": "^1.2.2",
-    "gulp-footer": "^1.0.5",
-    "gulp-file-contents-to-json": "^0.1.2",
-    "gulp-through": "^0.3.0",
-    "change-case": "^2.2.0"
+    "browserify": "^9.0.3",
+    "gulp-uglify": "^1.1.0",
+    "gulp-rename": "^1.2.0",
+    "vinyl-transform": "^1.0.0"
   }
 }
