@@ -1,3 +1,6 @@
+/* jshint node: true */
+'use strict';
+
 /**
  * a line
  * calculated using bresenhams algorithm
@@ -54,11 +57,4 @@ Line.prototype.calculate = function(x0, y0, x1, y1) {
     return this.points;
 };
 
-
-
-
-
-
-
-
-
+module.exports = Line;

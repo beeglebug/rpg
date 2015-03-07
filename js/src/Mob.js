@@ -1,3 +1,6 @@
+/* jshint node: true */
+'use strict';
+
 var PIXI = require('pixi');
 var Inventory = require('inventory/Inventory');
 
@@ -17,6 +20,7 @@ var Mob = function(x, y) {
     this.inventory = new Inventory(5,5);
 };
 
+// todo remove tile references
 Mob.prototype.setPosition = function(x, y) {
 
     // already here
@@ -33,7 +37,7 @@ Mob.prototype.setPosition = function(x, y) {
         this.exitTile(this.tile);
     }
 
-    this.tile = map.getTileAt(x, y);
+    //this.tile = map.getTileAt(x, y);
 
     this.enterTile(this.tile);
 };

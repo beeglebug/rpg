@@ -3,6 +3,7 @@
 
 var PIXI = require('pixi');
 
+//todo remove and just handle in maprenderer
 var MapHighlight = function() {
 
     this.position = new PIXI.Point();

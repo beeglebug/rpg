@@ -2,6 +2,7 @@
 'use strict';
 
 var Inventory = require('inventory/Inventory');
+var PIXI = require('pixi');
 
 var MapTile = function (type, x, y) {
 

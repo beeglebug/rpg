@@ -6,6 +6,7 @@ var RNG = require('util/RNG');
 var Camera = require('Camera');
 var MapGenerator = require('map/MapGenerator');
 var MapRenderer = require('map/MapRenderer');
+var Player = require('Player');
 
 var Game = {
 
@@ -20,21 +21,23 @@ var Game = {
 
         this.mapRenderer = new MapRenderer(this.map);
 
+        this.player = new Player();
+
         // display objects
         this.stage = new PIXI.Stage(0xDDDDDD, true);
         this.renderer = PIXI.autoDetectRenderer(800, 600);
 
         this.ui = new PIXI.DisplayObjectContainer();
-
         this.ui.interactive = true;
 
-        this.camera = new Camera(480, 270, this.iso);
+        this.camera = new Camera(480, 270, this.mapRenderer);
         this.camera.setZoom(2);
 
         this.stage.addChild(this.camera);
         this.stage.addChild(this.ui);
 
-        this.boundLoop = this.loop.bind(this);
+        // bind loop
+        this.loop = this._loop.bind(this);
 
         this.addToDom(domElement);
     },
@@ -53,17 +56,12 @@ var Game = {
         });
     },
 
-    loop : function(time) {
 
-        requestAnimFrame(this.boundLoop);
+    _loop : function(time) {
 
-        this.objects.children.sort(function (a, b) {
+        requestAnimationFrame(this.loop);
 
-            var zA = a.position.x + a.position.y + (a.zIndex / 10),
-                zB = b.position.x + b.position.y + (b.zIndex / 10);
-
-            return zA - zB;
-        });
+        this.mapRenderer.sort();
 
         this.renderer.render(this.stage);
     }

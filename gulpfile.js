@@ -3,6 +3,7 @@ var gulp = require('gulp');
 var browserify = require('browserify');
 var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
+var watch = require('gulp-watch');
 var transform = require('vinyl-transform');
 
 gulp.task('browserify', function() {
@@ -16,8 +17,9 @@ gulp.task('browserify', function() {
         .pipe(browserified)
         .pipe(rename(project.name + '.js'))
         .pipe(gulp.dest('./build/'))
-        .pipe(uglify())
-        .pipe(rename(project.name + '.min.js'))
-        .pipe(gulp.dest('./build/'))
     ;
+});
+
+gulp.task('watch', function () {
+    gulp.watch('./js/**/*.js', ['browserify']);
 });

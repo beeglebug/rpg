@@ -1,29 +1,36 @@
 /* jshint node: true */
 'use strict';
 
+var MapHighlight = require('map/MapHighlight');
+var PIXI = require('pixi');
+
+//todo inherit displayobject
 var MapRenderer = function(map) {
+
+    PIXI.DisplayObjectContainer.call(this);
+
+    this.map = map;
 
     this.highlight = new MapHighlight();
 
-    this.iso = new PIXI.DisplayObjectContainer();
+    this.floor = new PIXI.DisplayObjectContainer();
+    this.grid = new PIXI.DisplayObjectContainer();
+    this.gridUI = new PIXI.DisplayObjectContainer(); // highlights etc
+    this.objects = new PIXI.DisplayObjectContainer();
 
-    var floor = new PIXI.DisplayObjectContainer();
-    var grid = new PIXI.DisplayObjectContainer();
-    var gridUI = new PIXI.DisplayObjectContainer(); // highlights etc
-    var objects = new PIXI.DisplayObjectContainer();
+    this.addChildren([
+        this.floor, this.grid, this.gridUI, this.objects
+    ]);
 
-    this.iso.addChildren([floor, grid, gridUI, objects]);
+    this.interactive = true;
+    this.grid.alpha = 0.05;
 
-    iso.interactive = true;
-    grid.alpha = 0.05;
+    this.gridUI.addChild(this.highlight.sprite);
 
-
-    gridUI.addChild(highlight.sprite);
-
-    player.sprite = PIXI.Sprite.fromFrame('man.png');
-    player.sprite.setAnchor(3, 0);
-    player.sprite.zIndex = 1;
-    objects.addChild(player.sprite);
+    //player.sprite = PIXI.Sprite.fromFrame('man.png');
+    //player.sprite.setAnchor(3, 0);
+    //player.sprite.zIndex = 1;
+    //objects.addChild(player.sprite);
 
     var x, y, sprite, tile;
 
@@ -48,7 +55,7 @@ var MapRenderer = function(map) {
                     sprite.position.set(x, y);
                     sprite.zIndex = 0;
                     sprite.position.toScreen();
-                    objects.addChild(sprite);
+                    this.objects.addChild(sprite);
                     tile.objects.push(sprite);
                     //todo move this
                     tile.solid = true;
@@ -60,7 +67,7 @@ var MapRenderer = function(map) {
                     sprite.position.set(x, y);
                     sprite.zIndex = 0;
                     sprite.position.toScreen();
-                    objects.addChild(sprite);
+                    this.objects.addChild(sprite);
                     tile.objects.push(sprite);
                     break;
             }
@@ -69,7 +76,7 @@ var MapRenderer = function(map) {
             tile.sprite.position.set(x, y);
             tile.sprite.setAnchor(17, 0);
             tile.sprite.position.toScreen();
-            floor.addChild(tile.sprite);
+            this.floor.addChild(tile.sprite);
         }
     }
 
@@ -82,12 +89,13 @@ var MapRenderer = function(map) {
             gridTile.position.set(x, y);
             gridTile.setAnchor(17, 0);
             gridTile.position.toScreen();
-            grid.addChild(gridTile);
+            this.grid.addChild(gridTile);
         }
     }
 
 };
 
+MapRenderer.prototype = Object.create(PIXI.DisplayObjectContainer.prototype);
 
 MapRenderer.prototype.renderLighting = function() {
 
@@ -122,6 +130,18 @@ MapRenderer.prototype.setLighting = function(sprite, visibility) {
             sprite.visible = true;
             break;
     }
+
+};
+
+MapRenderer.prototype.sort = function() {
+
+    this.objects.children.sort(function (a, b) {
+
+        var zA = a.position.x + a.position.y + (a.zIndex / 10),
+            zB = b.position.x + b.position.y + (b.zIndex / 10);
+
+        return zA - zB;
+    });
 
 };
 
