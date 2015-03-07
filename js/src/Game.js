@@ -4,7 +4,7 @@
 var PIXI = require('pixi');
 var RNG = require('util/RNG');
 var Camera = require('Camera');
-var MapData = require('map/MapData');
+var MapGenerator = require('map/MapGenerator');
 var MapRenderer = require('map/MapRenderer');
 
 var Game = {
@@ -14,9 +14,9 @@ var Game = {
         // set up global stuff
         this.rng = new RNG();
 
-        this.map = new MapData(
-            generateMapData(50,50)
-        );
+        var generator = new MapGenerator();
+
+        this.map = generator.generate(50,50);
 
         this.mapRenderer = new MapRenderer(this.map);
 
