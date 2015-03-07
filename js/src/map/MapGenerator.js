@@ -15,7 +15,7 @@ MapGenerator.prototype.generate = function(width, height) {
         data = [];
 
     for (i = 0; i < height; i++) {
-        data.push(row(width, 'G'));
+        data.push(this.blankRow(width, 'G'));
     }
 
     var roadDensity = Math.round(height / 10); // 1 in 10
@@ -27,7 +27,6 @@ MapGenerator.prototype.generate = function(width, height) {
         road = this.rng.randomIntBetween(0, height - 1);
         data[road] = this.blankRow(width, 'R');
     }
-
 
     // houses
     for (i = 0; i < houseDensity; i++) {
@@ -42,10 +41,10 @@ MapGenerator.prototype.generate = function(width, height) {
     return new MapData(data);
 };
 
-MapGenerator.prototype.setRandomGrassTile = function(data, value) {
+MapGenerator.prototype.setRandomGrassTile = function(value, data) {
 
-    var x = this.rng.randomIntBetween(0, height - 1);
-    var y = this.rng.randomIntBetween(0, height - 1);
+    var y = this.rng.randomIntBetween(0, data.length - 1);
+    var x = this.rng.randomIntBetween(0, data[y].length - 1);
 
     if(data[y][x] !== 'G') {
         return this.setRandomGrassTile(data, value);

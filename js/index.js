@@ -4,11 +4,12 @@
 var game = require('Game');
 var DragDropManager = require('ui/DragDropManager');
 
+var PIXI = require('pixi');
 var Player = require('Player');
 var Button = require('ui/Button');
 var Inventory = require('inventory/Inventory');
 var InventoryUI = require('inventory/InventoryUI');
-var Tooltip = require('ui/Tooltip');
+//var Tooltip = require('ui/Tooltip');
 
 PIXI.scaleModes.DEFAULT = PIXI.scaleModes.NEAREST;
 
@@ -51,8 +52,8 @@ function assetsLoaded(e) {
     game.ui.addChild(TileInfo);
     TileInfo.position.set(10,300);
 
-    game.ui.addChild(Tooltip);
-    Tooltip.position.set(200, 300);
+    //game.ui.addChild(Tooltip);
+    //Tooltip.position.set(200, 300);
 
     generateIsoGraphics();
 

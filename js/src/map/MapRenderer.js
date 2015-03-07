@@ -86,4 +86,43 @@ var MapRenderer = function(map) {
         }
     }
 
-}
+};
+
+
+MapRenderer.prototype.renderLighting = function() {
+
+    var x, y, tile;
+
+    for (y = 0; y < this.map.data.length; y++) {
+        for (x = 0; x < this.map.data[0].length; x++) {
+            tile = this.map.data[y][x];
+            this.setLighting(tile.sprite, tile.visibility);
+            tile.objects.forEach(function (sprite) {
+                this.setLighting(sprite, tile.visibility);
+            }.bind(this));
+        }
+    }
+};
+
+MapRenderer.prototype.setLighting = function(sprite, visibility) {
+
+    switch (visibility) {
+        // never seen
+        case 0:
+            sprite.visible = false;
+            break;
+        // previously seen
+        case 1:
+            sprite.tint = 0x555555;
+            sprite.visible = true;
+            break;
+        // currently visible
+        case 2:
+            sprite.tint = 0xFFFFFF;
+            sprite.visible = true;
+            break;
+    }
+
+};
+
+module.exports = MapRenderer;

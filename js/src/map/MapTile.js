@@ -1,3 +1,8 @@
+/* jshint node: true */
+'use strict';
+
+var Inventory = require('inventory/Inventory');
+
 var MapTile = function (type, x, y) {
 
     this.type = type;
@@ -19,3 +24,5 @@ var MapTile = function (type, x, y) {
 MapTile.VISIBILITY_NONE = 0;
 MapTile.VISIBILITY_PREVIOUS = 1;
 MapTile.VISIBILITY_VISIBLE = 2;
+
+module.exports = MapTile;
