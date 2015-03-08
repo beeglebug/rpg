@@ -37,14 +37,18 @@ PIXI.Point.ISO_TILE_HEIGHT = 16;
 
 PIXI.Point.prototype.toScreen = function() {
 
-    this.x = (this.x - this.y) * (PIXI.Point.ISO_TILE_WIDTH / 2);
-    this.y = (this.x + this.y) * (PIXI.Point.ISO_TILE_HEIGHT / 2);
+    this.set(
+        (this.x - this.y) * (PIXI.Point.ISO_TILE_WIDTH / 2),
+        (this.x + this.y) * (PIXI.Point.ISO_TILE_HEIGHT / 2)
+    );
 };
 
 PIXI.Point.prototype.toIso = function() {
 
-    this.x = Math.floor((this.x / (PIXI.Point.ISO_TILE_WIDTH / 2) + this.y / (PIXI.Point.ISO_TILE_HEIGHT / 2)) / 2);
-    this.y = Math.floor((this.y / (PIXI.Point.ISO_TILE_HEIGHT / 2) - (this.x / (PIXI.Point.ISO_TILE_WIDTH / 2))) / 2);
+    this.set(
+        Math.floor((this.x / (PIXI.Point.ISO_TILE_WIDTH / 2) + this.y / (PIXI.Point.ISO_TILE_HEIGHT / 2)) / 2),
+        Math.floor((this.y / (PIXI.Point.ISO_TILE_HEIGHT / 2) - (this.x / (PIXI.Point.ISO_TILE_WIDTH / 2))) / 2)
+    );
 };
 
 
