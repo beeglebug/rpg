@@ -35,11 +35,10 @@ var MapRenderer = function(map) {
     var x, y, sprite, tile;
 
     // build floor layer
-    for (y = 0; y < map.data.length; y++) {
+    for (y = 0; y < this.map.data.length; y++) {
+        for (x = 0; x < this.map.data[y].length; x++) {
 
-        for (x = 0; x < map.data[0].length; x++) {
-
-            tile = map.getTileAt(x, y);
+            tile = this.map.getTileAt(x, y);
 
             switch(tile.type) {
                 case 'R':
@@ -57,8 +56,6 @@ var MapRenderer = function(map) {
                     sprite.position.toScreen();
                     this.objects.addChild(sprite);
                     tile.objects.push(sprite);
-                    //todo move this
-                    tile.solid = true;
                     break;
                 case 'T':
                     tile.sprite = PIXI.Sprite.fromFrame('grass.png');
@@ -83,8 +80,8 @@ var MapRenderer = function(map) {
     var gridTile;
 
     // make a grid
-    for (y = 0; y < map.data.length; y++) {
-        for (x = 0; x < map.data[0].length; x++) {
+    for (y = 0; y < this.map.data.length; y++) {
+        for (x = 0; x < this.map.data[0].length; x++) {
             gridTile = PIXI.Sprite.fromFrame('grid.png');
             gridTile.position.set(x, y);
             gridTile.setAnchor(17, 0);

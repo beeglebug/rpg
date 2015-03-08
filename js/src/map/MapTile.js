@@ -18,6 +18,11 @@ var MapTile = function (type, x, y) {
     this.visibility = MapTile.VISIBILITY_NONE;
     this.solid = false;
 
+    // todo get attributes from config
+    if(this.type == 'H') {
+        this.solid = true;
+    }
+
     // stuff on the floor
     this.inventory = new Inventory(7,7);
 };

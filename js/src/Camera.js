@@ -68,15 +68,15 @@ var Camera = function(width, height, displayObject) {
 
         var pos = e.getLocalPosition(self.scene);
 
-        pos.toMap();
+        pos.toIso();
 
         //hoverTile = map.getTileAt(pos.x, pos.y);
         //highlight.setTile(hoverTile);
 
         if(self.dragging) {
             e.getLocalPosition(this, self.dragCurrent);
-            camera.scene.position.x += (self.dragCurrent.x - self.dragStart.x);
-            camera.scene.position.y += (self.dragCurrent.y - self.dragStart.y);
+            this.scene.position.x += (self.dragCurrent.x - self.dragStart.x);
+            this.scene.position.y += (self.dragCurrent.y - self.dragStart.y);
         }
 
         // todo listen to emmited events
