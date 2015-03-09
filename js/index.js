@@ -40,11 +40,11 @@ function assetsLoaded(e) {
 
     var hoverTile = null;
 
-    var btn = new Button('search', searchCurrentTile);
+    var btn = new Button('search', game.player.searchCurrentTile);
     game.ui.addChild(btn);
     btn.position.set(500, 10);
 
-    var btn = new Button('take all', takeAllLoot);
+    var btn = new Button('take all', game.player.takeAllLootFromCurrentTile);
     game.ui.addChild(btn);
     btn.position.set(540, 10);
 

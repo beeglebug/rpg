@@ -2,6 +2,7 @@
 'use strict';
 
 var Mob = require('Mob');
+var InventoryItem = require('inventory/InventoryItem');
 
 /**
  * the player
@@ -50,5 +51,40 @@ Player.prototype.enterTile = function(tile) {
 Player.prototype.exitTile = function(tile) {
 
 };
+
+Player.prototype.searchCurrentTile = function() {
+
+    var loot = null;
+
+    switch (this.tile.type) {
+        case 'R':
+            loot = new InventoryItem(2, 2, 'newspaper');
+            break;
+        case 'G':
+            loot = new InventoryItem(1, 2, 'flower');
+            break;
+        case 'H':
+            loot = new InventoryItem(2, 1, 'book');
+            break;
+        case 'T':
+            loot = new InventoryItem(1, 1, 'acorn');
+            break;
+    }
+
+    if (loot) {
+        this.tile.inventory.addItem(loot);
+    }
+};
+
+Player.prototype.takeAllLootFromCurrentTile = function() {
+
+    this.tile.inventory.moveAllTo(this.inventory);
+
+};
+
+
+
+
+
 
 module.exports = Player;
