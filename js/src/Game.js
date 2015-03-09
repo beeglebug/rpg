@@ -23,6 +23,11 @@ var Game = {
 
         this.player = new Player();
 
+        this.player.sprite = PIXI.Sprite.fromFrame('man.png');
+        this.player.sprite.setAnchor(3, 0);
+        this.player.sprite.zIndex = 1;
+        this.mapRenderer.objects.addChild(this.player.sprite);
+
         // display objects
         this.stage = new PIXI.Stage(0xDDDDDD, true);
         this.renderer = PIXI.autoDetectRenderer(800, 600);

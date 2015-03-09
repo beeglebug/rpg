@@ -27,11 +27,6 @@ var MapRenderer = function(map) {
 
     this.gridUI.addChild(this.highlight.sprite);
 
-    //player.sprite = PIXI.Sprite.fromFrame('man.png');
-    //player.sprite.setAnchor(3, 0);
-    //player.sprite.zIndex = 1;
-    //objects.addChild(player.sprite);
-
     var x, y, sprite, tile;
 
     // build floor layer
