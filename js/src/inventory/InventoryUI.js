@@ -1,3 +1,10 @@
+/* jshint node: true */
+'use strict';
+
+var Droppable = require('ui/Droppable');
+var PIXI = require('pixi');
+var randomColor = require('util/randomColor');
+
 /**
  * all the ui stuff for displaying and manipulating an inventory
  * @constructor
@@ -176,3 +183,5 @@ InventoryUI.prototype.getGridPositionAt = function (position, point) {
 
     return point;
 };
+
+module.exports = InventoryUI;

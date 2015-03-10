@@ -1,3 +1,8 @@
+/* jshint node: true */
+'use strict';
+
+var PIXI = require('pixi');
+
 /**
  * @class
  * @name DragDropManager
@@ -118,3 +123,5 @@ DragDropManager.onDrop = function (e, draggable) {
 
     this.dragging = null;
 };
+
+module.exports = DragDropManager;

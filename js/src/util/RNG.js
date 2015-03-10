@@ -1,9 +1,12 @@
+/* jshint node: true */
+'use strict';
+
 /**
  * modified version of node-mersenne
  * https://github.com/jwatte/node-mersenne
  * @constructor
  */
-RNG = function(seed) {
+var RNG = function(seed) {
 
 	this.N = 624;
 	this.M = 397;
@@ -125,3 +128,5 @@ RNG.prototype.hashcode = function(str) {
 
 	return hash;
 };
+
+module.exports = RNG;

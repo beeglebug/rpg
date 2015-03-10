@@ -1,3 +1,8 @@
+/* jshint node: true */
+'use strict';
+
+var deepProperty = require('util/deepProperty');
+
 var Lang = {
 
     locale : 'en',
@@ -13,3 +18,5 @@ var Lang = {
         // todo load from json
     }
 };
+
+module.exports = Lang;

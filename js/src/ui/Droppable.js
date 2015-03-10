@@ -1,3 +1,10 @@
+/* jshint node: true */
+'use strict';
+
+var PIXI = require('pixi');
+var DragDropManager = require('ui/DragDropManager');
+var EventEmitterMixin = require('mixins/EventEmitterMixin');
+
 /**
  * A display object which can accept draggables
  * @param displayObject
@@ -55,3 +62,5 @@ Droppable.prototype.canAcceptDrop = function(e, draggable) {
 
     return true;
 };
+
+module.exports = Droppable;

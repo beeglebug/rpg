@@ -1,3 +1,6 @@
+/* jshint node: true */
+'use strict';
+
 function deepProperty(root, key) {
 
     var keys = key.split('.'),
@@ -11,3 +14,5 @@ function deepProperty(root, key) {
 
     return node;
 }
+
+module.exports = deepProperty;

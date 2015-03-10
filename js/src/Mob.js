@@ -1,3 +1,9 @@
+/* jshint node: true */
+'use strict';
+
+var PIXI = require('pixi');
+var Inventory = require('inventory/Inventory');
+
 /**
  * a mobile entity
  * @param x
@@ -14,6 +20,7 @@ var Mob = function(x, y) {
     this.inventory = new Inventory(5,5);
 };
 
+// todo remove tile references
 Mob.prototype.setPosition = function(x, y) {
 
     // already here
@@ -23,14 +30,14 @@ Mob.prototype.setPosition = function(x, y) {
 
     if(this.sprite) {
         this.sprite.position.set(x,y);
-        mapToScreen(this.sprite.position);
+        this.sprite.position.toScreen();
     }
 
     if(this.tile) {
         this.exitTile(this.tile);
     }
 
-    this.tile = map.getTileAt(x, y);
+    //this.tile = map.getTileAt(x, y);
 
     this.enterTile(this.tile);
 };
@@ -39,3 +46,5 @@ Mob.prototype.setPosition = function(x, y) {
 Mob.prototype.enterTile = function(tile) {};
 
 Mob.prototype.exitTile = function(tile) {};
+
+module.exports = Mob;

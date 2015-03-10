@@ -1,3 +1,9 @@
+/* jshint node: true */
+'use strict';
+
+var Inventory = require('inventory/Inventory');
+var PIXI = require('pixi');
+
 var MapTile = function (type, x, y) {
 
     this.type = type;
@@ -12,6 +18,11 @@ var MapTile = function (type, x, y) {
     this.visibility = MapTile.VISIBILITY_NONE;
     this.solid = false;
 
+    // todo get attributes from config
+    if(this.type == 'H') {
+        this.solid = true;
+    }
+
     // stuff on the floor
     this.inventory = new Inventory(7,7);
 };
@@ -19,3 +30,5 @@ var MapTile = function (type, x, y) {
 MapTile.VISIBILITY_NONE = 0;
 MapTile.VISIBILITY_PREVIOUS = 1;
 MapTile.VISIBILITY_VISIBLE = 2;
+
+module.exports = MapTile;
